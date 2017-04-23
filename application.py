@@ -1,18 +1,17 @@
-import pymonetdb
-#import redis
-#import pymongo
+import connections
 
-#redisConn = redis.Redis()
-#mongoConn = pymongo.MongoClient()
-monetConn = pymonetdb.connect(database="moneteamdb3",username = "monetdb", password = "moneteamPhrase433", hostname = "moneteam-3.csse.rose-hulman.edu")
-
+monetConn = connections.monetConn()
 
 def main():
+    #mongoConn = conn.mongoConn()
+    #redisConn = conn.redisConn()
+
     print("Welcome the StoreScheduler, by Moneteam.")
     command = ""
     while(True):
         command = raw_input("Scheduler>> ")
-        if (command == 'quit'):
+        command = command.lower()
+        if (command == 'quit') or (command == 'exit'):
             break
         elif (command == 'help'):
             printhelp()
@@ -25,7 +24,6 @@ def printhelp():
     print("To get a list of employees, type: \'get-emp\'.")
 
 def handle(command):
-    command = command.lower()
     args = command.split(" ")
     if args[0] == "add-emp":
         addEmp(args[1],args[2],args[3],args[4])
