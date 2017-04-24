@@ -7,14 +7,16 @@ from pyomo.opt import *
 # Initialize
 openning_time = 8
 closing_time = 22
-bts = ["james","jone","jake"]
+openning_hours = closing_time-openning_time
+shift_diff = openning_hours/2-1
+bts = ["james","jone","jake","johnny"]
 bt_salary = 7
 ssv_salary = 14
-ssv = ["amy","emily",'erica']
+ssv = ["amy","emily",'erica','essabella']
 minimal_server = 2
 hours_limit_per_week = 45
 hours_min_per_week = 35
-n_days_limit = 6
+n_days_limit = 5
 
 # start model
 model = ConcreteModel()
@@ -77,21 +79,21 @@ def con_shift_morning_ssv(model,a,b,c):
 def con_shift_evening_ssv(model,a,b,c):
     return getattr(model,"shift_evening_ssv")[a,b] >= model.x_ssv[a,b,c]
 model.conShiftMorningSSV = Constraint(model.ssv,model.days,
-                               RangeSet(openning_time,openning_time+5),
+                               RangeSet(openning_time,openning_time+shift_diff),
                                rule = con_shift_morning_ssv)
 model.conShiftEveningSSV = Constraint(model.ssv,model.days,
-                               RangeSet(closing_time-5,closing_time),
+                               RangeSet(closing_time-shift_diff,closing_time),
                                rule = con_shift_evening_ssv)
 
 def con_morning_shift_bts(model,a,b,c):
     return model.shift_morning_bts[a,b] >= model.x_bts[a,b,c]
 model.conMorningShiftBts = Constraint(model.bts,model.days,
-                                      RangeSet(openning_time,openning_time+5),
+                                      RangeSet(openning_time,openning_time+shift_diff),
                                       rule = con_morning_shift_bts)
 def con_evening_shift_bts(model,a,b,c):
     return model.shift_evening_bts[a,b] >= model.x_bts[a,b,c]
 model.conEveningShiftBts = Constraint(model.bts,model.days,
-                                      RangeSet(closing_time-5,closing_time),
+                                      RangeSet(closing_time-shift_diff,closing_time),
                                       rule = con_evening_shift_bts)
 
 def con_bts_morning_evening(model,a,b):
@@ -190,9 +192,11 @@ instance.solutions.load_from(Soln)
 # display(instance)
 #print instance.solutions
 
+result = ""
+
 for var in instance.component_data_objects(Var):
      if var.value ==1:
-         print var
+         result += str(var)+";"
 
 
 
