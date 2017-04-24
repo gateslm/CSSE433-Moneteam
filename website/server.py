@@ -21,6 +21,17 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+@app.route('/schedule_generator')
+    return "<html><head></head><body>Schedule_generator</body></html>"
+
+@app.route('/employee_settings')
+    return "<html><head></head><body>employee_settings</body></html>"
+
+@app.route('/admin')
+    return "<html><head></head><body>admin</body></html>"
+
+
+
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')
