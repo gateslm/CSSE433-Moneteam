@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>HW5 Gateslm</title>
+	<script type="text/javascript" src="static/index.js"></script>
+	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+
+<body>
+	<h1>Simple Library System</h1>
+	<div id="option_div">
+		<div id="book_main_div">
+			<h3>Book Actions</h3>
+			<button id="add_book">Add a Book</button>
+			<button id="delete_book">Delete a Book</button>
+			<button id="edit_book">Edit a book</button>
+			<!-- <button id="remove_attribute">Remove Attribute from book</button> -->
+			<br> <br>
+			<div id="search_book">
+				Search by <select id="book_search_select">
+					<option value="title" selected>Title</option>
+					<option value="author">Author</option>
+					<option value="ISBN">ISBN</option>
+				</select> : <input type="text" id="book_search_input">
+				<button id="search_button">Search</button>
+			</div>
+			<br>
+			<div id="sort_book">
+				Sort by <select id="book_sort_select">
+					<option value="title" selected>Title</option>
+					<option value="author">Author</option>
+					<option value="pgcount">Page Count</option>
+					<option value="ISBN">ISBN</option>
+				</select> :
+				<button id="sort_button">Sort</button>
+			</div>
+		</div>
+		<br>
+		<hr>
+		<div id="borrower_main_div">
+			<h3>Borrower Actions</h3>
+			<button id="add_borrower">Add Borrower</button>
+			<button id="delete_borrower">Delete Borrower</button>
+			<button id="edit_borrower">Edit Borrower Information</button>
+			<button id="checkout_borrower" onmousedown="checkoutBookForBorrower()">Checkout a book</button>
+			<button id="return_borrower" onmousedown="returnBookFromBorrower()">Return
+				a book</button>
+			<br> <br>
+			<div id="borrower_search">
+				Search by <select id="borrower_search_select">
+					<option value="name">Name</option>
+					<option value="username">Username</option>
+				</select> : <input type="text" id="borrower_input">
+				<button id="borrower_search_button">Search</button>
+			</div>
+		</div>
+		<br>
+		<hr>
+		<div id="track">
+			<h3>Tracking</h3>
+			<button id="borrower_checkout">Borrower Checkout Count</button>
+			<button id="book_to_user">Book Checked Out to User</button>
+		</div>
+	</div>
+	<br>
+	<hr>
+	<div id="results">
+		<button id="show_original_menu">Go Back to Main Screen</button>
+		<div id="result_desc"></div>
+	</div>
+	<div id="add_author_div" style="display: block;">
+		<br>
+		<p>
+			Title : <input type="text" id="title_add">
+		</p>
+		<p>
+			Author(s) : <input type="text" id="authors_add"> (Separate with commas)
+		</p>
+		<p>
+			ISBN : <input type="text" id="isbn_add">
+		</p>
+		<p>
+			Page Count: <input type="text" id="pages_add">
+		</p>
+		<br>
+		<button id="add_book_final">Add book</button>
+	</div>
+	<div id="delete_book_drop">
+		<br> Delete book by isbn: <select id="delete_book_drop_select">
+			<option value="none" selected>None</option>
+		</select> <br>
+		<button id="book_delete_button">Confirm Delete</button>
+	</div>
+	<div id="delete_borrower_drop">
+		<br> Delete borrower by username: <select id="delete_borrower_drop_select">
+			<option value="none" selected>None</option>
+		</select> <br>
+		<button id="delete_borrower_drop_button">Confirm Delete</button>
+	</div>
+	<div id="track_book_to_user">
+		Select book to track: <select id="track_book_to_user_select">
+		</select>
+		<button id="track_book_to_user_show">Show Username</button>
+	</div>
+	<div id="add_borrower_div" style="display: block;">
+		<br>
+		<p>
+			Name : <input type="text" id="name_add">
+		</p>
+		<p>
+			Username : <input type="text" id="username_add">
+		</p>
+		<p>
+			Phone : <input type="text" id="phone_add">
+		</p>
+		<br>
+		<button id="add_borrower_final">Add book</button>
+	</div>
+	<div id="track_book_count">
+		Select user to find book count: <select id="track_book_count_select"></select>
+		<button id="track_book_count_button">Show count</button>
+	</div>
+	<div id="edit_book_div" style="display: block;">
+		<p>
+			To remove attribute, please type in: x1234abc
+		</p>
+		<p>
+			Select a book: <select id="edit_book_drop_select">
+				<option value="none" selected>None</option>
+			</select>
+		</p>
+		<br>
+		<p>
+			Title : <input type="text" id="title_edit">
+		</p>
+		<p>
+			Author(s) : <input type="text" id="authors_edit"> (Separate with commas)
+		</p>
+		<p>
+			Page Count: <input type="text" id="pages_edit">
+		</p>
+		<br>
+		<button id="edit_book_final">Edit book</button>
+	</div>
+	<div id="edit_borrower_div" style="display: block;">
+		<p>
+			Select a book: <select id="edit_borrower_drop_select">
+				<option value="none" selected>None</option>
+			</select>
+		</p>
+		<br>
+		<p>
+			Name : <input type="text" id="name_edit">
+		</p>
+		<p>
+			Phone : <input type="text" id="phone_edit">
+		</p>
+		<br>
+		<button id="edit_borrower_final">Add book</button>
+	</div>
+	<div id="book_check_out_div">
+		<p>
+			Select user to checkout a book: <select id="book_checkout_user_select"><option value="none"
+					selected>None</option></select>
+		</p>
+		<p>
+			Select book to checkout: <select id="book_to_checkout_select"><option
+					value="none" selected>None</option></select>
+			<p>
+				<button id="check_out_book_final" onmousedown="checkOutFinalBook()">Select book to user
+				checkout</button>
+			</p>
+	</div>
+	<div id="book_return_div">
+		<p>
+			Select book to return: <select id="book_to_return_select"><option
+					value="none" selected>None</option></select>
+			<p>
+				<button id="return_book_final" onmousedown="returnFinalBook()">Select book to return</button>
+			</p>
+	</div>
+</body>
+
+</html>
