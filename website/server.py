@@ -22,12 +22,15 @@ def index():
      return render_template('index.html')
 
 @app.route('/schedule_generator')
+def schedule_generator():
      return '<html><head></head><body>Schedule_generator</body></html>'
 
 @app.route('/employee_settings')
+def employee_settings():
      return '<html><head></head><body>employee_settings</body></html>'
 
 @app.route('/admin')
+def admin():
      return '<html><head></head><body>admin</body></html>'
 
 
