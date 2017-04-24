@@ -4,13 +4,11 @@ import pyomo
 from pyomo.environ import *
 from pyomo.opt import *
 import re
+import pandas as pd
 
 def generate():
     raw = schedule.result
     raw_list = raw.split(";")
-    # for r in raw_list:
-    #     print r
-
     ssv_clean = clean_text(raw_list,"x_ssv")
     bts_clean = clean_text(raw_list,"x_bts")
     upload_redis(bts_clean)
@@ -28,6 +26,7 @@ def clean_text(raw_list,key):
     return gen_list
 
 def upload_redis(list):
+
     for sublist in list:
         name = sublist[0]
         day = sublist[1]
