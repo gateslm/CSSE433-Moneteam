@@ -9,7 +9,7 @@ import redis
 import json
 from bson.objectid import ObjectId
 import ast
-import generate_schedule_html_table
+import generate_schedule_html_table as GenSched
 
 
 mongoClient = MongoClient() # TODO: Add the connection info
@@ -33,7 +33,7 @@ def schedule_generator():
      opening_time =8
      closing_time = 22
 
-     schedule = import_schedule(employee_name,week_id)
+     schedule = GenSched.import_schedule(employee_name,week_id)
      schedule = np.transpose(schedule)
      df = pd.DataFrame(schedule,columns = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"])
      df.index = range(opening_time,closing_time)
