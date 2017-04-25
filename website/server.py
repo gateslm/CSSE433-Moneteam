@@ -33,7 +33,7 @@ def schedule_generator():
      opening_time =8
      closing_time = 22
 
-     schedule = GenSched.import_schedule(redisClient, employee_name,week_id)
+     schedule = GenSched.import_schedule(redisClient, employee_name,week_id, opening_time, closing_time)
      schedule = np.transpose(schedule)
      df = pd.DataFrame(schedule,columns = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"])
      df.index = range(opening_time,closing_time)

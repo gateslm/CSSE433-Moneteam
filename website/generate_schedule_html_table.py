@@ -4,7 +4,7 @@ import numpy as np
 import re
 # import auto_scheduler
 
-def import_schedule(conn, name = "james", week_id = 1):
+def import_schedule(conn, name = "james", week_id = 1, opening_time = 8, closing_time = 22):
     gen_list = []
     for day in range(1,8):
         key= "week"+str(week_id)+"_day"+str(day)+"_"+name
