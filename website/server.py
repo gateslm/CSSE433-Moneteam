@@ -10,6 +10,9 @@ import json
 from bson.objectid import ObjectId
 import ast
 import generate_schedule_html_table as GenSched
+import numpy as np
+import re
+import pandas as pd
 
 
 mongoClient = MongoClient() # TODO: Add the connection info
