@@ -15,7 +15,7 @@ moneteam-1 has access to repo. Added more text
 ### Examples of connecting to remote monetdb server through pymonetdb
 ```
 import pymonetdb
-conn = pymonetdb.connect(database="voc",username = "monetdb", password = "monetdb", hostname = "moneteam-3.csse.rose-hulman.edu")
+conn = pymonetdb.connect()
 cursor = conn.cursor()
 cursor.execute("select * from voctable")
 ```
@@ -23,7 +23,7 @@ cursor.execute("select * from voctable")
 ### Set mongoDB Replica Sets
 ```
 rs.initiate()
-rs.add("moneteam-X.csse.rose-hulman.edu:00000")
+rs.add("moneteam-X....:00000")
 
 # set arbiter
 rs.add("...",{arbiter:true})
@@ -34,4 +34,4 @@ rs.status()
 # allow read on secondary
 rs.slaveOK()
 ```
-# mongod --fork --logpath
+mongod --fork --logpath
