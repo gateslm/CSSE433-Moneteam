@@ -3,31 +3,31 @@ import hashlib
 
 mc = connections.monetConn()
 
-cursor = mc.cursor()
+#cursor = mc.cursor()
 
 
 def insertEmp(empid,name,pwd,street,city,position,wage,banknum,bankname):
-    query = "insert into Employees "
+    query = "insert into employees "
     query += "(empid, name, password, address, workinfo, preferences, paymentinfo) "
     query += "values ("
     # Empid, Name, Password
     pwdhash = hashlib.sha1(b"%s"%pwd).hexdigest()
-    query += "%d, \'%s\', \'{\"password\": \"%s\"}\'," % (empid, name, pwdhash)
+    query += '%d, \'%s\', \'{\"password\": \"%s\"}\',' % (empid, name, pwdhash)
     # Address
-    query += "\'{\"city\": \"%s\", \"street\": \"%s\"}\'," % (city, street)
+    query += '\'{\"city\": \"%s\", \"street\": \"%s\"}\',' % (city, street)
     # Workinfo
-    query += "\'{\"position\": \"%s\", \"wage\": \"%f\"}\'," % (position, wage)
+    query += '\'{\"position\": \"%s\", \"wage\": \"%f\"}\',' % (position, wage)
     # Preferences
-    query += "\'{\"monday_morning\": \"1\", \"tuesday_evening\": \"1\"}\',"
+    query += '\'{\"monday_morning\": \"1\", \"tuesday_evening\": \"1\"}\','
     # Paymentinfo
-    query += "\'{\"bankname\": \"%s\", \"bankaccountnum\": \"%d\"}\'" % (bankname, banknum)
+    query += '\'{\"bankname\": \"%s\", \"bankaccountnum\": \"%d\"}\'' % (bankname, banknum)
 
 
     query += ");"
-    #print(query)
+    print(query)
     x = mc.execute(query)
-    print(x)
-    #y = cursor.commit()
+    #print(x)
+    mc.commit()
     #print(y)
     #print(cursor.fetchone())
     #cursor.execute("Insert into Employees " + \
@@ -35,10 +35,9 @@ def insertEmp(empid,name,pwd,street,city,position,wage,banknum,bankname):
                #"\'{\"bankaccount\": \'%d\', \"bankname\": \'%s\'});\'"
                #% (empid,name,pwd,city,street,position,wage,banknum,bankname))
 
-insertEmp(11,"james","123","1323 magnolia drive","greenfield","manager",14.00,5678765,"PNC")
+insertEmp(10,"james","123","1323 magnolia drive","greenfield","manager",14.00,5678765,"PNC")
 
-cursor.execute('select * from employees;')
-print(cursor.fetchone())
+mc.execute('select * from employees;')
 #insertEmp(12,"johnny","456","1324 database drive","terre haute","bartender",7.00,4499777,"Chase")
 #insertEmp(13,"jone","789","1355 database drive","btown","bartender",7.00,4499449,"Chase")
 #insertEmp(14,"jake","234","5533 database blvd","shanghai","bartender",7.00,1347878,"PNC")
