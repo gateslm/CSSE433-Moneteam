@@ -29,7 +29,7 @@ def index():
 def login():
     print(request.form['username'])
     print(request.form['pwd'])
-    return render_template('login.html')
+    return render_template('login.html');
 
 @app.route('/employee_settings'):
 def employee_settings_login():
