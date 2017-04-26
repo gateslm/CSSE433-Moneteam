@@ -1,6 +1,6 @@
 # Python code to be the main server file
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 import connections
 from pymongo import MongoClient
@@ -24,6 +24,16 @@ app = Flask(__name__)
 @app.route('/')
 def index():
      return render_template('index.html')
+
+@app.route('/login', methods=["POST"])
+def login():
+    print(request.form['username'])
+    print(request.form['pwd'])
+    return render_template('login.html')
+
+@app.route('/employee_settings'):
+def employee_settings_login():
+    return render_template('login.html')
 
 @app.route('/schedule_generator')
 def schedule_generator():
