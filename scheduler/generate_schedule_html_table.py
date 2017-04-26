@@ -29,7 +29,7 @@ def import_schedule(name = "james", week_id = 1):
 if __name__ == "__main__":
     conn = redis.Redis(host='moneteam-1.csse.rose-hulman.edu', port=6379);
     week_id = 1
-    employee_name = "james"
+    employee_name = "emily"
 
     # opening_time = auto_scheduler.openning_time
     # closing_time = auto_scheduler.closing_time
@@ -45,5 +45,9 @@ if __name__ == "__main__":
     html_table = df.to_html()
     html_table = re.sub("False","",html_table)
     html_table = re.sub("True","&#10004",html_table)
+
+    target = open("schedule.html","w+")
+    target.write(html_table)
+    target.close()
 
     print html_table
