@@ -4,6 +4,7 @@ from flask import Flask, render_template, request
 
 import connections
 from pymongo import MongoClient
+import gridfs
 import pymonetdb
 import redis
 import json
@@ -15,7 +16,10 @@ import re
 import pandas as pd
 
 
-mongoClient = MongoClient() # TODO: Add the connection info
+mongoClient = MongoClient('mongodb://localhost:27017/') # TODO: Add the connection info
+mongoDB = mongoClient.moneteam
+fs = gridfs.GridFS(mongoDB)
+
 monetClient = connections.monetConn() # TODO: Add the connection info
 redisClient = redis.Redis(host='moneteam-1.csse.rose-hulman.edu', port=6379) # TODO: Add the connection info
 app = Flask(__name__)
@@ -29,7 +33,7 @@ def index():
 def login():
     print(request.form['username'])
     print(request.form['pwd'])
-    return render_template('login.html');
+    return render_template('index.html');
 
 @app.route('/employee_settings')
 def employee_settings_login():
