@@ -31,7 +31,7 @@ def login():
     print(request.form['pwd'])
     return render_template('login.html');
 
-@app.route('/employee_settings'):
+@app.route('/employee_settings')
 def employee_settings_login():
     return render_template('login.html')
 
