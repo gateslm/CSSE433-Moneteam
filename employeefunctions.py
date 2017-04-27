@@ -1,7 +1,10 @@
 import connections
 import hashlib
 
-mc = connections.monetConn()
+
+mc1 = connections.monetConn1()
+mc2 = connections.monetConn2()
+mc3 = connections.monetConn3()
 
 #cursor = mc.cursor()
 
@@ -25,19 +28,20 @@ def insertEmp(empid,name,pwd,street,city,position,wage,banknum,bankname):
 
     query += ");"
     print(query)
-    x = mc.execute(query)
-    #print(x)
-    mc.commit()
-    #print(y)
-    #print(cursor.fetchone())
-    #cursor.execute("Insert into Employees " + \
-               #"\'{\"monday_morning\": \'1\', \"tuesday_evening\": \'1\'}\'" + \
-               #"\'{\"bankaccount\": \'%d\', \"bankname\": \'%s\'});\'"
-               #% (empid,name,pwd,city,street,position,wage,banknum,bankname))
+    if empid % 2 == 1:
+        # Odd empIDs go to node 1
+        x = mc1.execute(query)
+        mc1.commit()
+    else:
+        # Even empIDs go to node 2
+        x = mc2.execute(query)
+        mc2.commit()
+
+    print(x)
 
 insertEmp(10,"james","123","1323 magnolia drive","greenfield","manager",14.00,5678765,"PNC")
 
-mc.execute('select * from employees;')
+mc3.execute('select * from employees;')
 #insertEmp(12,"johnny","456","1324 database drive","terre haute","bartender",7.00,4499777,"Chase")
 #insertEmp(13,"jone","789","1355 database drive","btown","bartender",7.00,4499449,"Chase")
 #insertEmp(14,"jake","234","5533 database blvd","shanghai","bartender",7.00,1347878,"PNC")
