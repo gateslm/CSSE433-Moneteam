@@ -2,7 +2,9 @@
 
 from flask import Flask, render_template, request
 
+import getEmpPWD
 import connections
+import hashlib
 from pymongo import MongoClient
 import gridfs
 import pymonetdb
@@ -31,9 +33,18 @@ def index():
 
 @app.route('/login', methods=["POST"])
 def login():
-    print(request.form['username'])
-    print(request.form['pwd'])
-    return render_template('index.html');
+    username = request.form['username']
+    pwd = request.form['pwd']
+    result = getEmpPWD.getpassword(username, monetClient)
+    result = result.replace("[","").replace("]","").replace("\"","").replace(" ","")
+    print(result)
+    inputPwd = getEmpPWD.getpasswordhash(pwd)
+    print(inputPwd)
+    if result == inputPwd:
+        print("PWD match")
+    else:
+        print("PWD don't match")
+    return render_template('index.html')
 
 @app.route('/employee_settings')
 def employee_settings_login():
