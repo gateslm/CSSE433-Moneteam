@@ -42,9 +42,26 @@ def login():
     print(inputPwd)
     if result == inputPwd:
         print("PWD match")
+        return render_template("index.html")
     else:
         print("PWD don't match")
-    return render_template('index.html')
+        return render_template('login_failed.html')
+
+@app.route('/admin_login', methods=["POST"])
+def login_admin():
+    username = request.form['username']
+    pwd = request.form['pwd']
+    result = getEmpPWD.getpasswordhashmgr(username, monetClient)
+    result = result.replace("[","").replace("]","").replace("\"","").replace(" ","")
+    print(result)
+    inputPwd = getEmpPWD.getpasswordhash(pwd)
+    print(inputPwd)
+    if result == inputPwd:
+        print("PWD match")
+        return render_template("index.html")
+    else:
+        print("PWD don't match")
+        return render_template('login_failed_admin.html')
 
 @app.route('/employee_settings')
 def employee_settings_login():
@@ -77,7 +94,8 @@ def employee_settings():
 
 @app.route('/admin')
 def admin():
-     return '<html><head></head><body>admin</body></html>'
+     return render_template('login_admin.html')
+     # return '<html><head></head><body>admin</body></html>'
 
 
 
