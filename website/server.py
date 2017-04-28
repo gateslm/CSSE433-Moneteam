@@ -1,8 +1,9 @@
 # Python code to be the main server file
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 
 import getEmpPWD
+import employeefunctions
 import connections
 import hashlib
 from pymongo import MongoClient
@@ -105,9 +106,20 @@ def admin_edit_age():
 
 @app.route('/admin_get_employee_wage/<int:empid>')
 def getEmpWage(empid):
-    return empid
+    query = "SELECT json.filter(workinfo, \'wage\') FROM employees "
+    query += "WHERE empid = %d;" % int(empid)
+    return employeefunctions.executeEmpQueryCursor(query, empid)
 
+@app.route('/user_get_employee_preferences/<int:empid>')
+def getemployeepreferences(empid):
+    query = "SELECT preferences FROM employees "
+    query += "WHERE empid = %d;" % int(empid)
+    return employeefunctions.executeEmpQueryCursor(query, empid)
 
+@app.route('/view_work_history/<int:empid>')
+def view_work_history(empid):
+    result = mongoDB.pastWork.find()
+    return jsonify(result)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
