@@ -103,18 +103,18 @@ def updateEmp(empid, pwd, attr, newVal):
     query = "select password from employees where empid = %d;" % (empid)
     realPwd = executeEmpQuery(query,empid)
     if realPwd !=  getPwdHash(pwd):
-        print("Passwords do not match.") 
+        print("Passwords do not match.")
         return -1
-    
+
     newvalconvert = getMonetConvertedVal(newVal)
     query = "update employees set %s = %s where empid = %d;" % (attr, empid)
-    
+
 def getPwdHash(pwd):
     return hashlib.sha1(b"%s"%pwd).hexdigest()
 
 def getMonetConvertedVal(val):
     return pymonetdb.sql.monetize.convert(val)
-    
+
 
 
 def getAllEmployees():
@@ -125,7 +125,7 @@ def getAllEmployees():
     y = cursor.fetchall()
     print(x)
     print(y)
-    
+
 
 
 #insertEmp(101,"james","123","1323 magnolia drive","greenfield","manager",14.00,5678765,"PNC")
