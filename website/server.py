@@ -50,16 +50,30 @@ def login():
 
 @app.route('/admin_login', methods=["POST"])
 def login_admin():
-    username = request.form['username']
+    username = int(request.form['username'])
     pwd = request.form['pwd']
-    result = getEmpPWD.getpasswordhashmgr(username, monetClient)
-    result = result.replace("[","").replace("]","").replace("\"","").replace(" ","")
+    
+    if username % 2 ==1:
+        query = "SELECT json.filter(password, \'password\') FROM employees1 WHERE empid = %d;" % username
+        result = employeefunctions.executeEmpQueryCursor(query, username)
+    else:
+        query = "SELECT json.filter(password, \'password\') FROM employees2 WHERE empid = %d;" % username
+        result = employeefunctions.executeEmpQueryCursor(query, username)
+    # result = getEmpPWD.getpasswordhashmgr(username, monetClient) # FIXME: Use correct query
+    # result = result.replace("[","").replace("]","").replace("\"","").replace(" ","")
     print(result)
+    print(result[1])
+    if len(result[1]) == 0:
+        return render_template("login_failed_admin.html")
+    print(type(result[1][0]))
+    print(type(result[1][0][0]))
+    result = result[1][0][0]
+    result = result.replace("[","").replace("]","").replace("\"","").replace(" ","")
     inputPwd = getEmpPWD.getpasswordhash(pwd)
     print(inputPwd)
     if result == inputPwd:
         print("PWD match")
-        return render_template("index.html")
+        return render_template("admin_settings_page.html", empid=username)
     else:
         print("PWD don't match")
         return render_template('login_failed_admin.html')
