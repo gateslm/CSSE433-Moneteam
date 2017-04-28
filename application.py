@@ -1,7 +1,7 @@
 import connections
 
 monetConn = connections.monetConn()
-#create table employees (empid int, name varchar(30) not null, address JSON, workinfo JSON, preferences JSON, paymentinfo JSON, primary key (empid) );
+#create table employees (empid int, name varchar(30) not null, password JSON, address JSON, workinfo JSON, preferences JSON, paymentinfo JSON, primary key (empid) );
 #Address -> street address: X, city: Y, state: Z, zip: 12345
 #Workinfo -> position: X, wage: Y, startdate: 20170423
 #Preferences -> monday_morning: 1, monday_evening: 0
