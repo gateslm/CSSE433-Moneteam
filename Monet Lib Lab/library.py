@@ -20,7 +20,9 @@ if __name__ == '__main__':
     cursor.arraysize = 100
 
     # init()
-    cursor.execute("INSERT INTO books (Authors, ISBN, Title, Pages) VALUES (database, prof, 1234, 89);")
+    name = 'bookname'
+    prof = 'mohan'
+    conn.execute("INSERT INTO books (Authors, ISBN, Title, Pages) VALUES (\'%s\', \'%s\', 1234, 89);" % (name,prof))
     conn.commit()
 
     # print cursor.execute("select * from books;")
