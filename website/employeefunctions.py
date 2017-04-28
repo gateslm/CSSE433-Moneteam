@@ -141,7 +141,7 @@ insertEmp(108,"essabella","345","2345 monet road","shanghai","manager",14.00,567
 
 mc3.execute('select * from employees;')
 '''
-getAllEmployees()
+# getAllEmployees()
 
 #print(pymonetdb.sql.monetize.convert("hello"))
 #print(pymonetdb.sql.monetize.convert(55))

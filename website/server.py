@@ -23,7 +23,7 @@ mongoClient = MongoClient('mongodb://localhost:27017/') # TODO: Add the connecti
 mongoDB = mongoClient.moneteam
 fs = gridfs.GridFS(mongoDB)
 
-monetClient = connections.monetConn() # TODO: Add the connection info
+monetClient = connections.monetConn1() # TODO: Add the connection info FIXME: Need to fix this
 redisClient = redis.Redis(host='moneteam-1.csse.rose-hulman.edu', port=6379) # TODO: Add the connection info
 app = Flask(__name__)
 
@@ -36,7 +36,7 @@ def index():
 def login():
     username = request.form['username']
     pwd = request.form['pwd']
-    result = getEmpPWD.getpassword(username, monetClient)
+    result = getEmpPWD.getpassword(username, monetClient) # FIXME: Use different query
     result = result.replace("[","").replace("]","").replace("\"","").replace(" ","")
     print(result)
     inputPwd = getEmpPWD.getpasswordhash(pwd)
