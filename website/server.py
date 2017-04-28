@@ -98,6 +98,15 @@ def admin():
      # return '<html><head></head><body>admin</body></html>'
 
 
+@app.route('/admin_edit_page')
+def admin_edit_age():
+    return render_template('admin_edit.html')
+
+
+@app.route('/admin_get_employee_wage/<int:empid>')
+def getEmpWage(empid):
+    return empid
+
 
 
 if __name__ == '__main__':
