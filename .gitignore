@@ -2,3 +2,4 @@
 
 connections.py
 .monetdb
+website/*.pyc
