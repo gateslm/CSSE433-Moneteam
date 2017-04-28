@@ -8,33 +8,41 @@ mc1 = connections.monetConn1()
 mc2 = connections.monetConn2()
 mc3 = connections.monetConn3()
 
+jsonattrs = ["password","address","workinfo","preferences","paymentinfo"]
+
 #cursor = mc.cursor()
 
 
 def insertEmp(empid,name,pwd,street,city,position,wage,banknum,bankname):
+    print("Starting to insert emp")
     if checkIfEmpExists(empid):
         return "An employee with this empID already exists."
-    
-    pwdhash = hashlib.sha1(b"%s"%pwd).hexdigest()
-    passwordjson = pymonetdb.sql.monetize.convert({"password":pwdhash})
-    addressjson = pymonetdb.sql.monetize.convert({"city":city,"street":street})
-    positionjson = pymonetdb.sql.monetize.convert({"position":position,"wage":wage})
-    bankjson = pymonetdb.sql.monetize.convert({"bankname":bankname,"banknum":banknum})
-    query = "insert into employees "
+    print("Emp not exist, now make query to insert emp")
+    pwdhash = getPwdHash(pwd)
+    print(pwdhash)
+    idconvert = getMonetConvertedVal(empid)
+    nameconvert = getMonetConvertedVal(name)
+    passwordjson = getMonetConvertedVal(json.dumps({"password":pwdhash}))
+    addressjson = getMonetConvertedVal(json.dumps({"city":city,"street":street}))
+    positionjson = getMonetConvertedVal(json.dumps({"position":position,"wage":wage}))
+    bankjson = getMonetConvertedVal(json.dumps({"bankname":bankname,"banknum":banknum}))
+    query = "insert into employees1 "
+    if empid % 2 == 0:
+        query = "insert into employees2 "
     query += "(empid, name, password, address, workinfo, preferences, paymentinfo) "
     query += "values ("
     # Empid, Name, Password
-    query += "%d, \'%s\', %s, " % (empid, name, passwordjson)
+    query += "%s, %s, %s, " % (idconvert, nameconvert, passwordjson)
     # Address
     query += "%s, " % (addressjson)
     # Workinfo
     query += "%s, " % (positionjson)
     # Preferences
-    preferences = {"monday_morning":0, "wednesday_evening":0}
+    preferences = json.dumps({"monday_morning":0, "wednesday_evening":0})
     preferencesjson = pymonetdb.sql.monetize.convert(preferences)
-    query += "%s, " % (positionjson)
+    query += "%s, " % (preferencesjson)
     # Paymentinfo
-    query += "%s, " % (bankjson)
+    query += "%s " % (bankjson)
     query += ");"
     print(query)
 
@@ -43,37 +51,76 @@ def insertEmp(empid,name,pwd,street,city,position,wage,banknum,bankname):
 
 
 def executeEmpQuery(query, empid):
+    print("started to exec query")
     if empid % 2 == 1:
         # Odd empIDs go to node 1
         x = mc1.execute(query)
+        print("Mc1 execute result", x)
         mc1.commit()
     else:
         # Even empIDs go to node 2
         x = mc2.execute(query)
+        print("Mc2 execute result", x)
         mc2.commit()
+    print("returning from exec query")
     return x
+
+def executeEmpQueryCursor(query, empid):
+    print("started to exec query cursor")
+    print(query)
+    if empid % 2 == 1:
+        # Odd empIDs go to node 1
+        curs = mc1.cursor()
+        print(curs)
+        x = curs.execute(query)
+        print("Mc1 cursor execute result", x)
+    else:
+        # Even empIDs go to node 2
+        curs = mc2.cursor()
+        print(curs)
+        x = curs.execute(query)
+        print("Mc2 cursor execute result", x)
+    print("returning from exec query cursor")
+    return x, curs.fetchall()
 
 
 def checkIfEmpExists(empid):
-    query = "Select count(*) from employees where empid = %d;" % empid
-    x = executeEmpQuery(query, empid)
-    if x > 0:
-        return True
+    print("Start to check if emp exists")
+    query = "Select count(*) from employees1 where empid = %d;" % empid
+    if empid % 2 == 0:
+        query = "Select count(*) from employees2 where empid = %d;" % empid
+    print(query)
+    c, vals = executeEmpQueryCursor(query, empid)
+    print("check exists count", c)
+    print(vals)
+    print("executed check query")
     return False
 
 
-def updateEmp(empid, attr, newVal):
+def updateEmp(empid, pwd, attr, newVal):
     if not checkIfEmpExists(empid):
         return "An employee with this empID does not exist."
-    query = "update employees set %s = %s where empid = %d;" % (attr, newVal, empid)
+    query = "select password from employees where empid = %d;" % (empid)
+    realPwd = executeEmpQuery(query,empid)
+    if realPwd !=  getPwdHash(pwd):
+        print("Passwords do not match.") 
+        return -1
     
-    x = executeEmpQuery(query)
-    print(x)
+    newvalconvert = getMonetConvertedVal(newVal)
+    query = "update employees set %s = %s where empid = %d;" % (attr, empid)
+    
+def getPwdHash(pwd):
+    return hashlib.sha1(b"%s"%pwd).hexdigest()
+
+def getMonetConvertedVal(val):
+    return pymonetdb.sql.monetize.convert(val)
+    
 
 
 def getAllEmployees():
-    query = "select * from employees;"
+    query = "select * from employees1;"
     cursor = mc3.cursor()
+    print(cursor)
     x = cursor.execute(query)
     y = cursor.fetchall()
     print(x)
@@ -81,9 +128,9 @@ def getAllEmployees():
     
 
 
-insertEmp(101,"james","123","1323 magnolia drive","greenfield","manager",14.00,5678765,"PNC")
+#insertEmp(101,"james","123","1323 magnolia drive","greenfield","manager",14.00,5678765,"PNC")
+#insertEmp(102,"johnny","456","1324 database drive","terre haute","bartender",7.00,4499777,"Chase")
 '''
-insertEmp(102,"johnny","456","1324 database drive","terre haute","bartender",7.00,4499777,"Chase")
 insertEmp(103,"jone","789","1355 database drive","btown","bartender",7.00,4499449,"Chase")
 insertEmp(104,"jake","234","5533 database blvd","shanghai","bartender",7.00,1347878,"PNC")
 
@@ -94,7 +141,7 @@ insertEmp(108,"essabella","345","2345 monet road","shanghai","manager",14.00,567
 
 mc3.execute('select * from employees;')
 '''
-#getAllEmployees()
+getAllEmployees()
 
 #print(pymonetdb.sql.monetize.convert("hello"))
 #print(pymonetdb.sql.monetize.convert(55))
