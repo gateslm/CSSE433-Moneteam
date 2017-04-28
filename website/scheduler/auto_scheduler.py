@@ -3,27 +3,28 @@ from __future__ import division
 import pyomo
 from pyomo.environ import *
 from pyomo.opt import *
+from parameters import *
 
 # Initialize
-openning_time = 8
-closing_time = 22
-openning_hours = closing_time-openning_time
-shift_diff = openning_hours/2-1
-bts = ["james","jone","jake","johnny"]
-bt_salary = 7
-ssv_salary = 14
-ssv = ["amy","emily",'erica','essabella']
-minimal_server = 2
-hours_limit_per_week = 45
-hours_min_per_week = 35
-n_days_limit = 5
+# opening_time = 8
+# closing_time = 22
+# opening_hours = closing_time - opening_time
+# shift_diff = opening_hours / 2 - 1
+# bts = ["james","jone","jake","johnny"]
+# bt_salary = 7
+# ssv_salary = 14
+# ssv = ["amy","emily",'erica','essabella']
+# minimal_server = 2
+# hours_limit_per_week = 45
+# hours_min_per_week = 35
+# n_days_limit = 5
 
 # start model
 model = ConcreteModel()
 model.name="scheduler"
 
 model.days = RangeSet(1,7)
-model.hours = RangeSet(openning_time,closing_time)
+model.hours = RangeSet(opening_time, closing_time)
 model.bts = Set(initialize=bts)
 model.ssv = Set(initialize = ssv)
 
@@ -78,17 +79,17 @@ def con_shift_morning_ssv(model,a,b,c):
     return getattr(model,"shift_morning_ssv")[a,b] >= model.x_ssv[a,b,c]
 def con_shift_evening_ssv(model,a,b,c):
     return getattr(model,"shift_evening_ssv")[a,b] >= model.x_ssv[a,b,c]
-model.conShiftMorningSSV = Constraint(model.ssv,model.days,
-                               RangeSet(openning_time,openning_time+shift_diff),
-                               rule = con_shift_morning_ssv)
+model.conShiftMorningSSV = Constraint(model.ssv, model.days,
+                                      RangeSet(opening_time, opening_time + shift_diff),
+                                      rule = con_shift_morning_ssv)
 model.conShiftEveningSSV = Constraint(model.ssv,model.days,
                                RangeSet(closing_time-shift_diff,closing_time),
                                rule = con_shift_evening_ssv)
 
 def con_morning_shift_bts(model,a,b,c):
     return model.shift_morning_bts[a,b] >= model.x_bts[a,b,c]
-model.conMorningShiftBts = Constraint(model.bts,model.days,
-                                      RangeSet(openning_time,openning_time+shift_diff),
+model.conMorningShiftBts = Constraint(model.bts, model.days,
+                                      RangeSet(opening_time, opening_time + shift_diff),
                                       rule = con_morning_shift_bts)
 def con_evening_shift_bts(model,a,b,c):
     return model.shift_evening_bts[a,b] >= model.x_bts[a,b,c]
@@ -160,9 +161,9 @@ def con_minimal_server(model,b,c):
            +sum(model.x_bts[a,b,c] for a in model.bts) >= minimal_server
 model.conMinServer = Constraint(model.days,model.hours,rule=con_minimal_server)
 
-for bt in bts:
-    x = sum(model.z_bts[bt,i] for i in model.days)
-    print x
+# for bt in bts:
+#     x = sum(model.z_bts[bt,i] for i in model.days)
+#     print x
 
 def goal(model):
     g = sum(model.x_bts[a,b,c]*bt_salary for a in model.bts for b in model.days for c in model.hours)
@@ -171,6 +172,17 @@ def goal(model):
     #     g = g+ x**2
     return g
 model.obj = Objective(rule = goal, sense = minimize)
+
+
+#### Set up preference
+pref_list = [["x_bts","james",4,15]]
+count=0
+from preference_setting import add_pref
+for pref in pref_list:
+    cmd = add_pref(pref[0],pref[1],pref[2],pref[3],count)
+    count+=1
+    exec(cmd)
+
 
 
 
@@ -193,7 +205,6 @@ instance.solutions.load_from(Soln)
 #print instance.solutions
 
 result = ""
-
 for var in instance.component_data_objects(Var):
      if var.value ==1:
          result += str(var)+";"

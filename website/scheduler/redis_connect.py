@@ -26,6 +26,12 @@ def clean_text(raw_list,key):
     return gen_list
 
 def upload_redis(list):
+    for sublist in list:
+        name = sublist[0]
+        day = sublist[1]
+        key= "week"+str(week_id)+"_day"+str(day)+"_"+name
+        if conn.exists(key)==1:
+            conn.delete(key)
 
     for sublist in list:
         name = sublist[0]
