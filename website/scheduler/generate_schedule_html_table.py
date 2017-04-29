@@ -22,8 +22,13 @@ def import_schedule(name = "james", week_id = 1):
     return gen_list
 
 def generate_html(week_id, employee_name):
-
-    schedule = import_schedule(employee_name,week_id)
+    try:
+        schedule = import_schedule(employee_name,week_id)
+    except redis.ConnectionError:
+        target = open("schedule.html","w+")
+        target.write("<b> Sorry, redis server is currently unreachable, Please try again later </b>")
+        target.close
+        return
     schedule = np.transpose(schedule)
     df = pd.DataFrame(schedule,columns = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"])
     df.index = range(opening_time,closing_time)
@@ -42,7 +47,8 @@ def generate_html(week_id, employee_name):
 
 
 
-# if __name__ == "__main__":
+if __name__ == "__main__":
+    generate_html(1,"james")
 
 
 
