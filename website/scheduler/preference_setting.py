@@ -1,7 +1,6 @@
+from import_pref import getPrefs
 
-
-
-
+preferences = getPrefs()
 
 def add_pref(var,name,day,hour,count):
     string = ""
