@@ -16,7 +16,8 @@ jsonattrs = ["password","address","workinfo","preferences","paymentinfo"]
 def insertEmp(empid,name,pwd,street,city,position,wage,banknum,bankname):
     print("Starting to insert emp")
     if checkIfEmpExists(empid):
-        return "An employee with this empID already exists."
+        print("An employee with this empID already exists. Exiting. \n\n")
+        return 
     print("Emp not exist, now make query to insert emp")
     pwdhash = getPwdHash(pwd)
     print(pwdhash)
@@ -48,6 +49,7 @@ def insertEmp(empid,name,pwd,street,city,position,wage,banknum,bankname):
 
     x = executeEmpQuery(query, empid)
     print(x)
+    print("Employee has been inserted")
 
 
 def executeEmpQuery(query, empid):
@@ -92,15 +94,20 @@ def checkIfEmpExists(empid):
     print(query)
     c, vals = executeEmpQueryCursor(query, empid)
     print("check exists count", c)
-    print(vals)
+    print(vals[0][0])
     print("executed check query")
+    if vals[0][0] > 0:
+        print("employee %d exists" % empid)
+        return True
+    print("employee %d does not exist" % empid)
     return False
 
 
 def updateEmp(empid, pwd, attr, newVal):
     if not checkIfEmpExists(empid):
         return "An employee with this empID does not exist."
-    query = "select password from employees where empid = %d;" % (empid)
+    query = "select password from employees1 where empid = %d;" % (empid)
+    print("updating", query)
     realPwd = executeEmpQuery(query,empid)
     if realPwd !=  getPwdHash(pwd):
         print("Passwords do not match.") 
@@ -118,29 +125,29 @@ def getMonetConvertedVal(val):
 
 
 def getAllEmployees():
-    query = "select * from employees1;"
+    query = "select * from employees;"
     cursor = mc3.cursor()
     print(cursor)
     x = cursor.execute(query)
     y = cursor.fetchall()
-    print(x)
+    print('\n\n\n' + str(x) + '\n\n\n')
     print(y)
     
 
 
 #insertEmp(101,"james","123","1323 magnolia drive","greenfield","manager",14.00,5678765,"PNC")
 #insertEmp(102,"johnny","456","1324 database drive","terre haute","bartender",7.00,4499777,"Chase")
-'''
-insertEmp(103,"jone","789","1355 database drive","btown","bartender",7.00,4499449,"Chase")
-insertEmp(104,"jake","234","5533 database blvd","shanghai","bartender",7.00,1347878,"PNC")
+#insertEmp(103,"jone","789","1355 database drive","btown","bartender",7.00,4499449,"Chase")
+#insertEmp(104,"jake","234","5533 database blvd","shanghai","bartender",7.00,1347878,"PNC")
+#updateEmp(103,"789","name","jone2")
 
-insertEmp(105,"amy","1234","1337 macdonald drive","indianapolis","bartender",7.00,1234567,"BMO")
-insertEmp(106,"emily","4567","1399 wabash drive","terre haute","manager",14.00,1304120,"BMO")
-insertEmp(107,"erica","55555","5544 monet road","terre haute","manager",14.00,1345254,"Chase")
-insertEmp(108,"essabella","345","2345 monet road","shanghai","manager",14.00,5678998,"THSB")
+#insertEmp(105,"amy","1234","1337 macdonald drive","indianapolis","bartender",7.00,1234567,"BMO")
+#insertEmp(106,"emily","4567","1399 wabash drive","terre haute","manager",14.00,1304120,"BMO")
+#insertEmp(107,"erica","55555","5544 monet road","terre haute","manager",14.00,1345254,"Chase")
+#insertEmp(108,"essabella","345","2345 monet road","shanghai","manager",14.00,5678998,"THSB")
 
-mc3.execute('select * from employees;')
-'''
+#mc3.execute('select * from employees;')
+
 getAllEmployees()
 
 #print(pymonetdb.sql.monetize.convert("hello"))
