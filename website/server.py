@@ -58,12 +58,14 @@ def add_employee():
     city = request.form['city']
     bankName = request.form['bankName']
     bankAccountNum = int(request.form['accountNumber'])
-    position = request.form['manager']
-    wage = 14.00
-    if(position == ""):
-        position = "bartender"
-        wage = 7.00
-    result = insertEmp(empid, name, pwd, address, city, position, wage, bankAccountNum, bankName)
+    print("accountum")
+    position = "bartender"
+    wage = 7.00
+    if(request.form.get('manager')):
+        position = "manager"
+        wage = 14.00
+    result = employeefunctions.insertEmp(empid, name, pwd, address, city, position, wage, bankAccountNum, bankName)
+    print("inserted !!!")
     if (result > 0):
         return render_template("admin_settings_page.html", empid=adminID, message ="Added new employee successfully")
     else:
@@ -131,7 +133,7 @@ def schedule_generator():
 def employee_settings():
      return '<html><head></head><body>employee_settings</body></html>'
 
-@app.route('/add_employee_page')
+@app.route('/add_employee_page', methods=["POST"])
 def add_employee_page():
     adminID = request.form['adminID']
     return render_template("add_employee.html", empid=adminID)
