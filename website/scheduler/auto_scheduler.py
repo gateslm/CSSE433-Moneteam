@@ -5,6 +5,7 @@ from pyomo.environ import *
 from pyomo.opt import *
 from parameters import *
 from import_pref import getAllPrefs
+import json
 
 # Initialize
 # opening_time = 8
@@ -176,13 +177,21 @@ model.obj = Objective(rule = goal, sense = minimize)
 
 
 #### Set up preference
-pref_list = [["x_bts","james",4,15]]
-count=0
-from preference_setting import add_pref
-for pref in pref_list:
-    cmd = add_pref(pref[0],pref[1],pref[2],pref[3],count)
-    count+=1
-    exec(cmd)
+
+all_prefs = getAllPrefs()
+for pref in all_prefs:
+    print pref
+    e_id = pref['empid']
+    position = pref['duty']
+
+    # print data['empid']
+# pref_list = [["x_bts","james",4,15]]
+# count=0
+# from preference_setting import add_pref
+# for pref in pref_list:
+#     cmd = add_pref(pref[0],pref[1],pref[2],pref[3],count)
+#     count+=1
+#     exec(cmd)
 
 
 

@@ -11,3 +11,6 @@ minimal_server = 2
 hours_limit_per_week = 45
 hours_min_per_week = 35
 n_days_limit = 5
+
+duty_dict = {"manager":"x_ssv","bartender":"x_bts"}
+
