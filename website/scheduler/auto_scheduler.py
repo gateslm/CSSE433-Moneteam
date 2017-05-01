@@ -4,6 +4,7 @@ import pyomo
 from pyomo.environ import *
 from pyomo.opt import *
 from parameters import *
+from import_pref import getAllPrefs
 
 # Initialize
 # opening_time = 8
