@@ -15,11 +15,16 @@ def getAllPrefs():
     vals = curs3.fetchall()
     preferences = []
     for v in vals:
+        this_pref = []
         y = ast.literal_eval(v[1])
-        y['empid'] = v[0]
-        #print(y)
-        preferences.append(y)
+        for x in y:
+            print(x)
+            x['empid'] = v[0]
+            #print(y)
+            preferences.append(x)
+        #preferences.append(this_pref)
 
+    #print(len(preferences))
     return preferences
 
 
