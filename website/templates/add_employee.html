@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <body>
+      <h1>
+        Add Employee
+      </h1>
+      <form action="/add_employee" method="post">
+        <input type="hidden" name="adminID" value="{{empid}}"/>
+        Employee ID: <input type="number" name="employeeID"/>
+        Password: <input type="text" name="password"/>
+        Name: <input type="text" name="Name"/>
+        Address: <input type="text" name="address"/>
+        City: <input type="text" name="city"/>
+        Bank Name: <input type="text" name="bankName"/>
+        Bank Account Number: <input type="number" name="accountNumber"/>
+        <input type="checkbox" name="manager" value="manager">Manager<br/>
+      </form type="submit" value="Add Employee">
+
+    </body>
+</html>

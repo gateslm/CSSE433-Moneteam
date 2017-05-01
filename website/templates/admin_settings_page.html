@@ -5,5 +5,12 @@
     <body>
       {{ empid }}
 
+      {{ message }}
+
+      <form action="/add_employee_page">
+        <input type="hidden" name="adminID" value="{{empid}}"/>
+        <input type="submit" value="Add Employee"/>
+      </form>
+
     </body>
 </html>

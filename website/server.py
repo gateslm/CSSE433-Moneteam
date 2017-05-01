@@ -48,11 +48,35 @@ def login():
         print("PWD don't match")
         return render_template('login_failed.html')
 
+@app.route('/add_employee', methods=["POST"])
+def add_employee():
+    adminID = int(request.form['adminID'])
+    empid = int(request.form['employeeID'])
+    pwd = request.form['password']
+    name = request.form['Name']
+    address = request.form['address']
+    city = request.form['city']
+    bankName = request.form['bankName']
+    bankAccountNum = int(request.form['accountNumber'])
+    position = request.form['manager']
+    wage = 14.00
+    if(position == ""):
+        position = "bartender"
+        wage = 7.00
+    result = insertEmp(empid, name, pwd, address, city, position, wage, bankAccountNum, bankName)
+    if (result > 0):
+        return render_template("admin_settings_page.html", empid=adminID, message ="Added new employee successfully")
+    else:
+        return render_template("admin_settings_page.html", empid=adminID, message="Unable to add new employee")
+
+
+
+
 @app.route('/admin_login', methods=["POST"])
 def login_admin():
     username = int(request.form['username'])
     pwd = request.form['pwd']
-    
+
     if username % 2 ==1:
         query = "SELECT json.filter(password, \'password\') FROM employees1 WHERE empid = %d;" % username
         result = employeefunctions.executeEmpQueryCursor(query, username)
@@ -73,7 +97,7 @@ def login_admin():
     print(inputPwd)
     if result == inputPwd:
         print("PWD match")
-        return render_template("admin_settings_page.html", empid=username)
+        return render_template("admin_settings_page.html", empid=username, message="")
     else:
         print("PWD don't match")
         return render_template('login_failed_admin.html')
@@ -106,6 +130,11 @@ def schedule_generator():
 @app.route('/employee_settings')
 def employee_settings():
      return '<html><head></head><body>employee_settings</body></html>'
+
+@app.route('/add_employee_page')
+def add_employee_page():
+    adminID = request.form['adminID']
+    return render_template("add_employee.html", empid=adminID)
 
 @app.route('/admin')
 def admin():
