@@ -4,13 +4,16 @@
     </head>
     <body>
       {{ empid }}
-
+      <br/>
       {{ message }}
-
+      <br/>
       <form action="/add_employee_page" method="post">
         <input type="hidden" name="adminID" value="{{empid}}"/>
         <input type="submit" value="Add Employee"/>
       </form>
-
+      <form action="/generate_new_schedules" method="post">
+        <input type="hidden" name="adminID" value="{{empid}}"/>
+        <input type="submit" value="Generate New Schedule"/>
+      </form>
     </body>
 </html>
