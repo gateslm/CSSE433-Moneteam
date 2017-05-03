@@ -85,6 +85,15 @@ def executeEmpQueryCursor(query, empid):
     print("returning from exec query cursor")
     return x, curs.fetchall()
 
+def executeEmpQueryCursorAll(query):
+    print("started to exec query cursor all")
+    print(query)
+    curs = mc3.cursor()
+    x = curs.execute(query)
+    print("Mc3 cursor execute result", x)
+    print("returning from exec query cursor")
+    return x, curs.fetchall()
+
 
 def checkIfEmpExists(empid):
     print("Start to check if emp exists")
@@ -107,15 +116,15 @@ def checkIfEmpExists(empid):
 def updateEmp(empid, pwd, attr, newVal):
     if not checkIfEmpExists(empid):
         return "An employee with this empID does not exist."
-    query = "select password from employees1 where empid = %d;" % (empid)
-    query = changeQueryTable(query, empid)
+    query = "select password from employees where empid = %d;" % (empid)
+    #query = changeQueryTable(query, empid)
     #if empid % 2 == 0:
         #query = "select password from employees2 where empid = %d;" % (empid)
     print("updating\n\n", query)
     c, vals = executeEmpQueryCursor(query,empid)
     realPwd = repr(vals[0][0])[16:-3]
     #print(repr(vals[0][0])[16:-3])
-    print(getPwdHash(pwd))
+    #print(getPwdHash(pwd))
     if realPwd != getPwdHash(pwd):
         print("Passwords do not match.")
         return -1
@@ -142,11 +151,40 @@ def changeQueryTable(query, empid):
 def getAllEmployees():
     query = "select * from employees;"
     cursor = mc3.cursor()
-    print(cursor)
     x = cursor.execute(query)
     y = cursor.fetchall()
     print('\n\n\n' + str(x) + '\n\n\n')
     print(y)
+
+def checkIfPwdsMatch(empid, givenPwd):
+    query = "select password from employees where empid = %d;" % (empid)
+    c, vals = executeEmpQueryCursorAll(query)
+    realPwd = repr(vals[0][0])[16:-3]
+    print(realPwd)
+    print(getPwdHash(givenPwd))
+    if realPwd != getPwdHash(givenPwd):
+        print("Passwords do not match.")
+        return False
+    return True
+    
+def getManagerPwds():
+    query = "SELECT json.filter(password, \'password\') as pwd, "
+    query += "json.filter(workinfo, \'position\') FROM employees "
+    cursor = mc3.cursor()
+    x = cursor.execute(query)
+    cursorResult = cursor.fetchall()
+    pwds = []
+    for y in cursorResult:
+        if y[1] == '["manager"]':
+            #print(y[0][2:-2])
+            pwds.append(y[0][2:-2])
+    return pwds
+
+#checkIfPwdsMatch(101, "123")
+#checkIfPwdsMatch(101, "134")
+
+pw = getManagerPwds()
+print pw
 
 
 
