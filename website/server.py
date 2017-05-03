@@ -1,6 +1,6 @@
 # Python code to be the main server file
 
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for, send_from_directory
 
 import getEmpPWD
 import employeefunctions
@@ -18,6 +18,7 @@ import numpy as np
 import re
 import pandas as pd
 
+# https://flask-pymongo.readthedocs.io/en/latest/
 
 mongoClient = MongoClient('mongodb://localhost:27017/') # TODO: Add the connection info
 mongoDB = mongoClient.moneteam
@@ -27,6 +28,7 @@ monetClient = connections.monetConn1() # TODO: Add the connection info FIXME: Ne
 redisClient = redis.Redis(host='moneteam-1.csse.rose-hulman.edu', port=6379) # TODO: Add the connection info
 app = Flask(__name__)
 
+app.config['ALLOWED_EXTENSIONS'] = set(['pdf', 'jpg', 'jpeg', 'gif', 'png'])
 
 @app.route('/')
 def index():
@@ -43,10 +45,15 @@ def login():
     print(inputPwd)
     if result == inputPwd:
         print("PWD match")
-        return render_template("index.html")
+        return render_template("employee_homepage.html", empid=username)
     else:
         print("PWD don't match")
         return render_template('login_failed.html')
+
+@app.route('/upload_resume_page'):
+def upload_resume_page():
+    empid = request.form['empid']
+    return render_template("resume_upload.html", empid=empid)
 
 @app.route('/add_employee', methods=["POST"])
 def add_employee():
@@ -163,6 +170,20 @@ def admin():
 @app.route('/admin_edit_page')
 def admin_edit_age():
     return render_template('admin_edit.html')
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in app.config['ALLOWED_EXTENSIONS']
+
+
+# http://code.runnable.com/UiPcaBXaxGNYAAAL/how-to-upload-a-file-to-the-server-in-flask-for-python
+@app.route('/upload_resume', methods=["POST"])
+def upload():
+    file = request.files['file']
+    empid = request.form['empid']
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+
 
 
 @app.route('/admin_get_employee_wage/<int:empid>')

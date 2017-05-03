@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+   <head>
+   </head>
+   <body>
+     <h1>
+       Upload a resume for user {{empid}}
+     </h1>
+     <form action="/upload_resume" method="post">
+       <input type="hidden" name="adminID" value="{{empid}}"/>
+       <input type="file" name="file"><br/><br/>
+       <input type="submit" value="Upload"/>
+     </form>
+   </body>
+</html>
