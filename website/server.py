@@ -24,7 +24,7 @@ mongoClient = MongoClient('mongodb://localhost:27017/') # TODO: Add the connecti
 mongoDB = mongoClient.moneteam
 fs = gridfs.GridFS(mongoDB)
 
-monetClient = connections.monetConn1() # TODO: Add the connection info FIXME: Need to fix this
+#monetClient = connections.monetConn1() # TODO: Add the connection info FIXME: Need to fix this
 redisClient = redis.Redis(host='moneteam-1.csse.rose-hulman.edu', port=6379) # TODO: Add the connection info
 app = Flask(__name__)
 
@@ -36,8 +36,17 @@ def index():
 
 @app.route('/login', methods=["POST"])
 def login():
-    username = request.form['username']
+    username = int(request.form['username'])
     pwd = request.form['pwd']
+    result = employeefunctions.checkIfPwdsMatch(username,pwd)
+    if result:
+        print("PWD match")
+        return render_template("employee_homepage.html", empid=username)
+    else:
+        print("PWD don't match")
+        return render_template('login_failed.html')
+    
+    '''
     result = getEmpPWD.getpassword(username, monetClient) # FIXME: Use different query
     result = result.replace("[","").replace("]","").replace("\"","").replace(" ","")
     print(result)
@@ -49,6 +58,7 @@ def login():
     else:
         print("PWD don't match")
         return render_template('login_failed.html')
+    '''
 
 @app.route('/upload_resume_page')
 def upload_resume_page():
@@ -99,7 +109,7 @@ def edit_employee():
 def login_admin():
     username = int(request.form['username'])
     pwd = request.form['pwd']
-
+    '''
     query = "SELECT json.filter(password, \'password\') FROM employees1 WHERE empid = %d;" % username
     query = employeefunctions.changeQueryTable(query,username)
     result = employeefunctions.executeEmpQueryCursor(query, username)
@@ -121,6 +131,19 @@ def login_admin():
     else:
         print("PWD don't match")
         return render_template('login_failed_admin.html')
+    '''
+    managerpwds = employeefunctions.getManagerPwds()
+    givenpwdhashed = employeefunctions.getPwdHash(pwd)
+    print(managerpwds, type(managerpwds[0]))
+    print(givenpwdhashed, type(givenpwdhashed))
+    if givenpwdhashed in managerpwds:
+        print("PWD match")
+        return render_template("admin_settings_page.html", empid=username, message="")
+    else:
+        print("PWD don't match")
+        return render_template('login_failed_admin.html')
+    
+    
 
 @app.route('/employee_settings')
 def employee_settings_login():
