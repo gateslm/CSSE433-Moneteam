@@ -50,7 +50,7 @@ def login():
         print("PWD don't match")
         return render_template('login_failed.html')
 
-@app.route('/upload_resume_page'):
+@app.route('/upload_resume_page')
 def upload_resume_page():
     empid = request.form['empid']
     return render_template("resume_upload.html", empid=empid)
@@ -79,7 +79,7 @@ def add_employee():
         return render_template("admin_settings_page.html", empid=adminID, message="Unable to add new employee.")
 
 @app.route('/edit_employee', methods=["POST"])
-def add_employee():
+def edit_employee():
     # Larry, could this be like the edit book page?
     #  I would like to have a drop down of each json column to change the specific information in that area, then have that saved.
     empid = int(request.form['employeeID'])
