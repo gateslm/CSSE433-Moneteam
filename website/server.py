@@ -67,11 +67,25 @@ def add_employee():
     result = employeefunctions.insertEmp(empid, name, pwd, address, city, position, wage, bankAccountNum, bankName)
     print("inserted !!!")
     if (result > 0):
-        return render_template("admin_settings_page.html", empid=adminID, message ="Added new employee successfully")
+        return render_template("admin_settings_page.html", empid=adminID, message ="Added new employee successfully.")
     else:
-        return render_template("admin_settings_page.html", empid=adminID, message="Unable to add new employee")
+        return render_template("admin_settings_page.html", empid=adminID, message="Unable to add new employee.")
 
-
+@app.route('/edit_employee', methods=["POST"])
+def add_employee():
+    # Larry, could this be like the edit book page?
+    #  I would like to have a drop down of each json column to change the specific information in that area, then have that saved.
+    empid = int(request.form['employeeID'])
+    #pwd = request.form['password']
+    attr = request.form['attribute']
+    newval = int(request.form['newval'])
+    print("accountum")
+    result = employeefunctions.updateEmp(empid, pwd, attr, newVal)
+    print("inserted !!!")
+    if (result > 0):
+        return render_template("admin_settings_page.html", empid=adminID, message ="Edited information successfully.")
+    else:
+        return render_template("admin_settings_page.html", empid=adminID, message="Unable to change information.")
 
 
 @app.route('/admin_login', methods=["POST"])
@@ -79,12 +93,9 @@ def login_admin():
     username = int(request.form['username'])
     pwd = request.form['pwd']
 
-    if username % 2 ==1:
-        query = "SELECT json.filter(password, \'password\') FROM employees1 WHERE empid = %d;" % username
-        result = employeefunctions.executeEmpQueryCursor(query, username)
-    else:
-        query = "SELECT json.filter(password, \'password\') FROM employees2 WHERE empid = %d;" % username
-        result = employeefunctions.executeEmpQueryCursor(query, username)
+    query = "SELECT json.filter(password, \'password\') FROM employees1 WHERE empid = %d;" % username
+    query = employeefunctions.changeQueryTable(query,username)
+    result = employeefunctions.executeEmpQueryCursor(query, username)
     # result = getEmpPWD.getpasswordhashmgr(username, monetClient) # FIXME: Use correct query
     # result = result.replace("[","").replace("]","").replace("\"","").replace(" ","")
     print(result)
@@ -137,6 +148,11 @@ def employee_settings():
 def add_employee_page():
     adminID = request.form['adminID']
     return render_template("add_employee.html", empid=adminID)
+
+@app.route('/edit_employee_page', methods=["POST"])
+def edit_employee_page():
+    empID = request.form['empID']
+    return render_template("edit_employee.html", empid=empID)
 
 @app.route('/admin')
 def admin():
