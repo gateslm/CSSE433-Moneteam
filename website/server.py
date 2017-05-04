@@ -20,8 +20,7 @@ import pandas as pd
 
 # https://flask-pymongo.readthedocs.io/en/latest/
 
-mongoClient = MongoClient('mongodb://localhost:27017/') # TODO: Add the connection info
-mongoDB = mongoClient.moneteam
+mongoDB = connections.mongoConn() # Gives us the collection moneteam
 fs = gridfs.GridFS(mongoDB)
 
 #monetClient = connections.monetConn1() # TODO: Add the connection info FIXME: Need to fix this
@@ -41,11 +40,11 @@ def login():
     result = employeefunctions.checkIfPwdsMatch(username,pwd)
     if result:
         print("PWD match")
-        return render_template("employee_homepage.html", empid=username)
+        return render_template("employee_homepage.html", empid=username, message="")
     else:
         print("PWD don't match")
         return render_template('login_failed.html')
-    
+
     '''
     result = getEmpPWD.getpassword(username, monetClient) # FIXME: Use different query
     result = result.replace("[","").replace("]","").replace("\"","").replace(" ","")
@@ -63,6 +62,7 @@ def login():
 @app.route('/upload_resume_page')
 def upload_resume_page():
     empid = request.form['empid']
+
     return render_template("resume_upload.html", empid=empid)
 
 @app.route('/add_employee', methods=["POST"])
@@ -109,8 +109,10 @@ def edit_employee():
 def login_admin():
     username = int(request.form['username'])
     pwd = request.form['pwd']
+
     '''
-    query = "SELECT json.filter(password, \'password\') FROM employees1 WHERE empid = %d;" % username
+
+    # query = SELECT json.filter(password, password) FROM employees1 WHERE empid = %d;
     query = employeefunctions.changeQueryTable(query,username)
     result = employeefunctions.executeEmpQueryCursor(query, username)
     # result = getEmpPWD.getpasswordhashmgr(username, monetClient) # FIXME: Use correct query
@@ -132,6 +134,7 @@ def login_admin():
         print("PWD don't match")
         return render_template('login_failed_admin.html')
     '''
+
     managerpwds = employeefunctions.getManagerPwds()
     givenpwdhashed = employeefunctions.getPwdHash(pwd)
     print(managerpwds, type(managerpwds[0]))
@@ -142,8 +145,8 @@ def login_admin():
     else:
         print("PWD don't match")
         return render_template('login_failed_admin.html')
-    
-    
+
+
 
 @app.route('/employee_settings')
 def employee_settings_login():
