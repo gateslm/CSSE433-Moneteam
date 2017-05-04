@@ -59,9 +59,10 @@ def login():
         return render_template('login_failed.html')
     '''
 
-@app.route('/upload_resume_page')
+@app.route('/upload_resume_page', methods=["POST"])
 def upload_resume_page():
-    empid = request.form['empid']
+    
+    empid = request.form['empID']
 
     return render_template("resume_upload.html", empid=empid)
 
