@@ -45,10 +45,15 @@ def login():
         print("PWD don't match")
         return render_template('login_failed.html')
 
+@app.route('/employee_homepage', methods=["POST"])
+def go_to_employee_homepage():
+	empid= request.form['empID']
+	return render_template("employee_homepage.html", empid=empid, message="")
+
 
 @app.route('/upload_resume_page', methods=["POST"])
 def upload_resume_page():
-    
+
     empid = request.form['empID']
 
     return render_template("resume_upload.html", empid=empid)
