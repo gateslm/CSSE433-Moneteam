@@ -18,7 +18,7 @@
 	Employee ID: <div id="emp"> {{ empid }} </div>
 	</h1>
 
-	<form action="/employee_homepage">
+	<form action="/employee_homepage" method="post">
 		<input type="hidden" name="empID" value="{{empid}}" />
 		<input type="submit" value="Go to homepage" />
 	</form>

@@ -25,6 +25,6 @@ function checkPreferenceBoxes() {
         });
 }
 
-function submitScheduleRequest() {\\
-    TODO: Do me James!!!
+function submitScheduleRequest() {
+     // TODO: Do me James!!!
 }
