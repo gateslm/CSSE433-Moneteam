@@ -147,8 +147,12 @@ def employee_settings_login():
 
 @app.route('/schedule_generator')
 def schedule_generator():
+     empName = request.form['empName']
      week_id = 1
-     employee_name = "james"
+     if empName == None or empName =="":
+         employee_name = "james"
+     else:
+         employee_name = "empName"
 
     # opening_time = auto_scheduler.openning_time
     # closing_time = auto_scheduler.closing_time
