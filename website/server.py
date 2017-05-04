@@ -218,6 +218,10 @@ def get_document_list(emp):
 	result = mongoDB.files.find({"empid":empid})
 	return jsonify(result)
 
+@app.route('/view_documents', methods=["POST"])
+def view_documents():
+	empid = int(request.form['empid'])
+	return render_template("document.html", empid=empid)
 
 
 
