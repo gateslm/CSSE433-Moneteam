@@ -180,3 +180,15 @@ def getManagerPwds():
             pwds.append(y[0][2:-2])
     return pwds
 
+def getEmpsPrefs(empid):
+    query = "select preferences from employees where empid = %d;" % empid
+    cursor = mc3.cursor()
+    x = cursor.execute(query)
+    cursorResult = cursor.fetchone()
+    pp = json.loads(cursorResult[0])
+    for y in pp:
+        print(y)
+    return pp
+    
+
+#getEmpsPrefs(101)

@@ -45,19 +45,6 @@ def login():
         print("PWD don't match")
         return render_template('login_failed.html')
 
-    '''
-    result = getEmpPWD.getpassword(username, monetClient) # FIXME: Use different query
-    result = result.replace("[","").replace("]","").replace("\"","").replace(" ","")
-    print(result)
-    inputPwd = getEmpPWD.getpasswordhash(pwd)
-    print(inputPwd)
-    if result == inputPwd:
-        print("PWD match")
-        return render_template("employee_homepage.html", empid=username)
-    else:
-        print("PWD don't match")
-        return render_template('login_failed.html')
-    '''
 
 @app.route('/upload_resume_page', methods=["POST"])
 def upload_resume_page():
@@ -220,7 +207,19 @@ def upload():
         return render_template("employee_homepage.html", empid=empid, message="ID returned")
     return render_template("employee_homepage.html", empid=empid, message="Did not upload file")
 
-        
+
+
+
+
+
+@app.route('/change_preferences', methods=["POST"])
+def make_change_preference_page():
+    print("here")
+    empid = int(request.form['empid'])
+    prefs = getEmpsPrefs(empid)
+    return prefs
+
+
 
 
 
