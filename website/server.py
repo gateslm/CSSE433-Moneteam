@@ -47,8 +47,8 @@ def login():
 
 @app.route('/employee_homepage', methods=["POST"])
 def go_to_employee_homepage():
-	empid= request.form['empID']
-	return render_template("employee_homepage.html", empid=empid, message="")
+    empid= request.form['empID']
+    return render_template("employee_homepage.html", empid=empid, message="")
 
 
 @app.route('/upload_resume_page', methods=["POST"])
@@ -208,20 +208,26 @@ def upload():
         print("IN if statement")
         result = fs.put(ff)
         mongoDB.fs.files.update({"_id":ObjectId(result)},{'$set':{'empid':int(empid)}})
+        mongoDB.fs.files.update({"_id":ObjectId(result)},{'$set':{'filename':ff.filename}})
         print(result)
         return render_template("employee_homepage.html", empid=empid, message="ID returned")
     return render_template("employee_homepage.html", empid=empid, message="Did not upload file")
 
 @app.route('/get_document_list/<string:emp>')
 def get_document_list(emp):
-	empid = int(emp)
-	result = mongoDB.files.find({"empid":empid})
-	return jsonify(result)
+    empid = int(emp)
+    result = mongoDB.fs.files.find({"empid":empid})
+    print(result)
+    ls = []
+    for r in result:
+        print(r)
+        ls.append([r['empid'], str(r['_id']), r['filename']])
+    return json.dumps({"res":ls})
 
 @app.route('/view_documents', methods=["POST"])
 def view_documents():
-	empid = int(request.form['empid'])
-	return render_template("document.html", empid=empid)
+    empid = int(request.form['empID'])
+    return render_template("document.html", empid=empid)
 
 
 

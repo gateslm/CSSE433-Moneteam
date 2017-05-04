@@ -12,7 +12,7 @@ function loadDocuments() {
     var docDiv = document.getElementById("documentViewer");
     $.getJSON(
         'http://moneteam-1.csse.rose-hulman.edu:5000/get_document_list/' +
-        empid, {}.function(data) {
+        empid, {}, function(data) {
             console.log(data);
 
         });
