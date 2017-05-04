@@ -212,7 +212,11 @@ def upload():
         return render_template("employee_homepage.html", empid=empid, message="ID returned")
     return render_template("employee_homepage.html", empid=empid, message="Did not upload file")
 
-
+@app.route('/get_document_list/<string:emp>')
+def get_document_list(emp):
+	empid = int(emp)
+	result = mongoDB.files.find({"empid":empid})
+	return jsonify(result)
 
 
 
