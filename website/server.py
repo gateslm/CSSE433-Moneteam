@@ -239,7 +239,7 @@ def get_a_document():
     f = fs.get(ObjectId(objId))
     resp = make_response(f.read())
     resp.headers['Content-Type'] = 'application/pdf'
-    resp.headers['Content-Disposition'] = "attachment; filename={}.pdf".format(fInfo['filename'])
+    resp.headers['Content-Disposition'] = "attachment; filename={}".format(fInfo['filename'])
     print("Got file")
     return resp
 
