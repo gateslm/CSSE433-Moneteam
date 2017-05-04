@@ -140,13 +140,13 @@ def login_admin():
         return render_template('login_failed_admin.html')
 
 
-
 @app.route('/employee_settings')
 def employee_settings_login():
     return render_template('login.html')
 
-@app.route('/schedule_generator')
+@app.route('/schedule_generator', methods=["POST"])
 def schedule_generator():
+     print("In schedule generator")
      empName = request.form['empName']
      week_id = 1
      if empName == None or empName =="":
@@ -157,6 +157,7 @@ def schedule_generator():
     # opening_time = auto_scheduler.openning_time
     # closing_time = auto_scheduler.closing_time
 
+     print("After selecting name: " + employee_name)
      opening_time =8
      closing_time = 22
 
@@ -168,7 +169,7 @@ def schedule_generator():
      html_table = df.to_html()
      html_table = re.sub("False","",html_table)
      html_table = re.sub("True","&#10004",html_table)
-     return html_table
+     return render_template("schedule_shell.html", html=html_table, empName=employee_name)
 
 @app.route('/employee_settings')
 def employee_settings():
