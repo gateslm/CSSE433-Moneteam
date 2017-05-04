@@ -247,9 +247,9 @@ def get_a_document():
 def delete_document():
     objId = request.form['ObjectID']
     empid = request.form['empid']
-    result = fs.delete(ObjectId(objId))
-    print(result)
-    return render_template("document.html", empid=empid, message="Result: " + result)
+    fs.delete(ObjectId(objId))
+    exists = fs.exist(ObjectId(objId))
+    return render_template("document.html", empid=empid, message="File Exists Still: " + exists )
 
 
 @app.route('/change_preferences/<string:emp>')
