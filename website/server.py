@@ -246,9 +246,10 @@ def get_a_document():
 @app.route('/delete_document', methods=["POST"])
 def delete_document():
     objId = request.form['ObjectID']
+    empid = request.form['empid']
     result = fs.delete(ObjectId(objId))
     print(result)
-    return
+    return render_template("document.html", empid=empid, message="Result: " + result)
 
 
 @app.route('/change_preferences/<string:emp>')
