@@ -19,8 +19,8 @@ function loadDocuments() {
             for (var y = 0; y < res.length; y++) {
                 var current = res[y];
                 var elementDiv = document.createElement("div");
-                elementDiv.innerHTML = current[2];
-                elementDiv.style="display:inline;border-style:solid;border-width:medium;padding:2px";
+                elementDiv.innerHTML = current[2] + "       " ;
+                elementDiv.style="display:block;border-style:solid;border-width:medium;padding:5px;margin:5px;";
 
                 var form = document.createElement("form");
                 form.target = "_blank";
@@ -40,6 +40,7 @@ function loadDocuments() {
                 form.action = "/get_a_document";
 
                 var form_delete = document.createElement("form");
+                form_delete.style = "display:inline; padding:2px;";
                 form_delete.method = "post";
                 form.style="display:inline;";
 

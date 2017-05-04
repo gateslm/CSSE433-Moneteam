@@ -248,8 +248,8 @@ def delete_document():
     objId = request.form['ObjectID']
     empid = request.form['empid']
     fs.delete(ObjectId(objId))
-    exists = fs.exist(ObjectId(objId))
-    return render_template("document.html", empid=empid, message="File Exists Still: " + exists )
+    exists = fs.exists(ObjectId(objId))
+    return render_template("document.html", empid=empid, message="File Deleted: " + str(not exists) )
 
 
 @app.route('/change_preferences/<string:emp>')
