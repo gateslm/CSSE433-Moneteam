@@ -3,6 +3,7 @@ import pymonetdb
 import connections
 import json
 import ast
+from parameters import duty_dict
 
 mc3 = connections.monetConn3()
 curs3 = mc3.cursor()
@@ -27,8 +28,9 @@ def getAllPrefs():
             preferences.append(x)
         #preferences.append(this_pref)
 
-    #print(len(preferences))
-    return preferences
+    return (preferences)
+
+# getAllPrefs()
 
 
 # x = getAllPrefs()

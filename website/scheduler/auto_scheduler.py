@@ -5,6 +5,7 @@ from pyomo.environ import *
 from pyomo.opt import *
 from parameters import *
 from import_pref import getAllPrefs
+from preference_setting import add_pref
 import json
 
 # Initialize
@@ -27,12 +28,15 @@ model.name="scheduler"
 
 model.days = RangeSet(1,7)
 model.hours = RangeSet(opening_time, closing_time)
+
+
 model.bts = Set(initialize=bts)
 model.ssv = Set(initialize = ssv)
 
 
 model.x_bts = Var(model.bts,model.days,model.hours, within=Binary)
 model.x_ssv = Var(model.ssv,model.days,model.hours,within = Binary)
+
 
 model.y_bts = Var(model.bts,model.days,within=Binary)
 model.y_ssv = Var(model.ssv,model.days,within= Binary)
@@ -179,10 +183,21 @@ model.obj = Objective(rule = goal, sense = minimize)
 #### Set up preference
 
 all_prefs = getAllPrefs()
+count = 0
+print all_prefs
 for pref in all_prefs:
     print pref
     e_id = pref['empid']
     position = pref['duty']
+    duty = duty_dict[position]
+    week_number = pref['week_id']
+    if not week_number == week_id:
+        continue
+    day = pref['day']
+    hour = pref['hour']
+    cmd = add_pref(duty,e_id,day,hour,count)
+    exec cmd
+    count+=1
 
     # print data['empid']
 # pref_list = [["x_bts","james",4,15]]

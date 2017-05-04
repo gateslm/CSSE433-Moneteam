@@ -5,6 +5,7 @@ from pyomo.environ import *
 from pyomo.opt import *
 import re
 import pandas as pd
+from parameters import week_id
 
 def generate():
     raw = schedule.result
@@ -42,6 +43,5 @@ def upload_redis(list):
 
 if __name__ == "__main__":
     conn = redis.Redis(host='moneteam-1.csse.rose-hulman.edu', port=6379);
-    week_id = 1
     generate()
 
