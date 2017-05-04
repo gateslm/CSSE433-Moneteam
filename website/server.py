@@ -1,6 +1,6 @@
 # Python code to be the main server file
 
-from flask import Flask, render_template, request, jsonify, redirect, url_for, send_from_directory
+from flask import Flask, render_template, request, jsonify, redirect, url_for, send_from_directory, make_response
 
 import getEmpPWD
 import employeefunctions
@@ -231,10 +231,17 @@ def view_documents():
 
 @app.route('/get_a_document', methods=["POST"])
 def get_a_document():
-	objId = request.form['ObjectID']
-	f = mongoDB.fs.files.find({"_id": ObjectId(objId)})
-	return f
-
+    print("Getting a document")
+    objId = request.form['ObjectID']
+    print(objId)
+    fInfo = mongoDB.fs.files.find_one({"_id": ObjectId(objId)})
+    print(fInfo['filename'])
+    f = fs.get(ObjectId(objId))
+    resp = make_response(f.read())
+    resp.headers['Content-Type'] = 'application/pdf'
+    resp.headers['Content-Disposition'] = "attachment; filename={}.pdf".format(fInfo['filename'])
+    print("Got file")
+    return resp
 
 
 @app.route('/change_preferences/<string:emp>')
