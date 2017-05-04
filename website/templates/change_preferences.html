@@ -1,3 +1,6 @@
+<h1>
+Employee ID = <div id="emp"> {{ empid }} </div>
+</h1>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -157,5 +160,8 @@
 <script
     src="http://code.jquery.com/jquery-3.2.1.min.js"
     integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-    crossorigin="anonymous"></script>
-<script src="static/change_preferences.js"> </script>
+    crossorigin="anonymous">
+    
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe}};   
+</script>
+<script src="../static/change_preferences.js"> </script>

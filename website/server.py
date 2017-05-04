@@ -212,17 +212,20 @@ def upload():
 
 
 
-@app.route('/change_preferences', methods=["GET"])
-def make_change_preference_page():
-    print("here")
-    empid = int(request.form['empID'])
+@app.route('/change_preferences/<string:emp>')
+def make_change_preference_page(emp):
+    print("here make change pref page")
+    empid = int(emp)
     prefs = employeefunctions.getEmpsPrefs(empid)
-    return prefs
+    print("return from get prefs call")
+    print(prefs)
+    return jsonify(prefs)
 
 
 
-@app.route('/change_preferences', methods=["POST"])
+@app.route('/change_preferences_page', methods=["POST"])
 def change_preferences_page():
+    print("here change pref page")
     empid = int(request.form['empID'])
     return render_template("change_preferences.html", empid=empid, message="Hope this works")
 
