@@ -206,10 +206,21 @@ def allowed_file(filename):
 # http://code.runnable.com/UiPcaBXaxGNYAAAL/how-to-upload-a-file-to-the-server-in-flask-for-python
 @app.route('/upload_resume', methods=["POST"])
 def upload():
-    file = request.files['file']
+    print("IN FUNCTION")
+    if 'file' not in request.files:
+        print("No file part")
+    ff = request.files['file']
     empid = request.form['empid']
-    if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
+    print("After empid")
+    if ff and allowed_file(ff.filename):
+        print("IN if statement")
+        result = fs.put(ff)
+        mongoDB.fs.files.update({"_id":ObjectId(result)},{'$set':{'empid':int(empid)}})
+        print(result)
+        return render_template("employee_homepage.html", empid=empid, message="ID returned")
+    return render_template("employee_homepage.html", empid=empid, message="Did not upload file")
+
+        
 
 
 
