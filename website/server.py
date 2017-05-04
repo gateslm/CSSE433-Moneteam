@@ -229,6 +229,12 @@ def view_documents():
     empid = int(request.form['empID'])
     return render_template("document.html", empid=empid)
 
+@app.route('/get_a_document', methods=["POST"])
+def get_a_document():
+	objId = request.form['ObjectID']
+	f = mongoDB.fs.files.find({"_id": ObjectId(objId)})
+	return f
+
 
 
 @app.route('/change_preferences/<string:emp>')
