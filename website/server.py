@@ -227,7 +227,7 @@ def get_document_list(emp):
 @app.route('/view_documents', methods=["POST"])
 def view_documents():
     empid = int(request.form['empID'])
-    return render_template("document.html", empid=empid)
+    return render_template("document.html", empid=empid, message="")
 
 @app.route('/get_a_document', methods=["POST"])
 def get_a_document():
@@ -242,6 +242,13 @@ def get_a_document():
     resp.headers['Content-Disposition'] = "attachment; filename={}".format(fInfo['filename'])
     print("Got file")
     return resp
+
+@app.route('/delete_document', methods=["POST"])
+def delete_document():
+    objId = request.form['ObjectID']
+    result = fs.delete(ObjectId(objId))
+    print(result)
+    return
 
 
 @app.route('/change_preferences/<string:emp>')
