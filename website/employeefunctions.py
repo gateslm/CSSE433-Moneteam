@@ -194,6 +194,23 @@ def getEmpsPrefs(empid):
     for y in pp:
         print(y)
     return pp
-    
+
+def changeEmpInfo(empid,name,addr,city,bank_name,bank_acct_num):
+    nameconvert = getMonetConvertedVal(name)
+    addressjson = getMonetConvertedVal(json.dumps({"city":city,"street":addr}))
+    bankjson = getMonetConvertedVal(json.dumps({"bankname":bank_name,"banknum":bank_acct_num}))
+    query1 = "update employees1 set name = %s where empid = %d" % empid
+    query2 = "update employees1 set address = %s where empid = %d" % empid
+    query3 = "update employees1 set paymentinfo = %s where empid = %d" % empid
+    query1 = changeQueryTable(query1)
+    query2 = changeQueryTable(query2)
+    query3 = changeQueryTable(query3)
+    r1 = executeEmpQuery(query1,empid)
+    r2 = executeEmpQuery(query2,empid)
+    r3 = executeEmpQuery(query3,empid)
+    print(r1)
+    print(r2)
+    print(r3)
+    return "edit successful"
 
 #getEmpsPrefs(101)

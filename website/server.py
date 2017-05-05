@@ -14,7 +14,7 @@ import json
 from bson.objectid import ObjectId
 import ast
 from scheduler import generate_schedule_html_table as GenSched
-#from scheduler import redis_connect
+from scheduler import redis_connect
 import numpy as np
 import re
 import pandas as pd
@@ -84,16 +84,19 @@ def add_employee():
 
 @app.route('/edit_employee_submit', methods=["POST"])
 def edit_employee_info():
-    empID = request.form['empID']
+    empID = int(request.form['empID'])
     name = request.form['Name']
     addr = request.form['address']
     city = request.form['city']
     bank_name = request.form['bankName']
-    bane_acct_num = request.form['accountNumber']
+    bank_acct_num = request.form['accountNumber']
 
     # TODO:Update infomation
+    res = employeefunctions.changeEmpInfo(empid,name,addr,city,bank_name,bank_acct_num)
 
-    return render_template("employee_homepage.html", empid=empID, message="")
+    print(res)
+
+    return render_template("employee_homepage.html", empid=empID, message=res)
 
 @app.route('/load_change_password_page', methods=["POST"])
 def load_change_password_page():
@@ -281,8 +284,8 @@ def make_change_preference_page(emp):
 @app.route('/generate_new_schedules', methods=["POST"])
 def generate_new_schedules():
     adminID = request.form['adminID']
-    #res = redis_connect.generate()
-    res = "hey"
+    res = redis_connect.generate()
+    #res = "hey"
     return render_template("admin_settings_page.html", empid=adminID, message=res)
 
 
