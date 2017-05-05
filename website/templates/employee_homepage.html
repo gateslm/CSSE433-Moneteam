@@ -8,6 +8,9 @@
     {{ empid }}
     <br/> {{ message }}
     <br/>
+    <form action="/">
+      <input type="submit" value="Mainpage"/>
+    </form>
     <form action="/upload_resume_page" method="post">
         <input type="hidden" name="empID" value="{{empid}}" />
         <input type="submit" value="Upload Resume" />
