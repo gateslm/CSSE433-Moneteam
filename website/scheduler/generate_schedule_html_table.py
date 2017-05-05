@@ -5,7 +5,7 @@ import re
 from parameters import opening_time, closing_time
 
 
-def import_schedule(name = "james", week_id = 1, conn):
+def import_schedule(name , week_id , conn):
     # conn = redis.Redis(host='moneteam-1.csse.rose-hulman.edu', port=6379);
     gen_list = []
 
