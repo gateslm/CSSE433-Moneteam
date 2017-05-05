@@ -311,11 +311,18 @@ def save_preferences(empid,prefs):
     return "here save prefs"
 
 
-@app.route('/admin_get_employee_wage/<int:empid>')
-def getEmpWage(empid):
-    query = "SELECT json.filter(workinfo, \'wage\') FROM employees "
-    query += "WHERE empid = %d;" % int(empid)
-    return employeefunctions.executeEmpQueryCursor(query, empid)
+@app.route('/edit_wages_page',methods=["POST"])
+def getEmpWage():
+    adminID = request.form['adminID']
+    return render_template("edit_wages.html", adminID=adminID)
+
+@app.route('/edit_wage_submit',methods=["POST"])
+def setEmpWage():
+    adminid = int(request.form['adminID'])
+    empid = int(request.form['empid'])
+    wage = float(request.form['wage'])
+    res = employeefunctions.updateWage(empid,wage)
+    return render_template("admin_settings_page.html", empid=adminid, message=res)
 
 @app.route('/user_get_employee_preferences/<int:empid>')
 def getemployeepreferences(empid):

@@ -215,4 +215,21 @@ def changeEmpInfo(empid,name,addr,city,bank_name,bank_acct_num):
     print(r3)
     return "edit successful"
 
+def updateWage(empid,newWage):
+    query1 = "select json.filter(workinfo,\'position\') from employees where empid = %d" % empid
+    c, vals = executeEmpQueryCursorAll(query1)
+
+    print(c)
+    print(vals[0][0][2:-2])
+    job = vals[0][0][2:-2]
+    
+    workconvert = getMonetConvertedVal(json.dumps({"position":job,"wage":newWage}))
+    query2 = "update employees1 set workinfo = %s where empid = %d" % (workconvert, empid)
+    query2 = changeQueryTable(query2, empid)
+
+    res = executeEmpQuery(query2,empid)
+    print(res)
+
+
+
 #getEmpsPrefs(101)
