@@ -10,11 +10,11 @@
       </h1>
     <form action="/edit_employee_submit" method="post">
         <input type="hidden" name="empID" value="{{empid}}" />
-        <br/> Name: <input type="text" name="Name" value="{{emp_name}}" />
-        <br/> Address: <input type="text" name="address" value="{{emp_addr}}" />
-        <br/> City: <input type="text" name="city" value="{{emp_city}}" />
-        <br/> Bank Name: <input type="text" name="bankName" value="{{emp_bank_name}}" />
-        <br/> Bank Account Number: <input type="number" name="accountNumber" value="{{emp_bank_num}}" /><br/>
+        <br/> Name: <input type="text" name="Name" value="{{emp_name}}" required />
+        <br/> Address: <input type="text" name="address" value="{{emp_addr}}" required />
+        <br/> City: <input type="text" name="city" value="{{emp_city}}" required />
+        <br/> Bank Name: <input type="text" name="bankName" value="{{emp_bank_name}}" required />
+        <br/> Bank Account Number: <input type="number" name="accountNumber" value="{{emp_bank_num}}" required /><br/>
         <input type="submit" value="Edit Info" /><br/>
     </form>
 

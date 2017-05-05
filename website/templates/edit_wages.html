@@ -10,8 +10,8 @@
       </h1>
     <form action="/edit_wage_submit" method="post">
         <input type="hidden" name="adminID" value="{{adminID}}" />
-        <br/> EMPID: <input type="number" name="empid" />
-        <br/> Wage: <input type="number" name="wage"  />
+        <br/> EMPID: <input type="number" name="empid" required/>
+        <br/> Wage: <input type="number" name="wage"  required/>
         <input type="submit" value="Submit new wage" /><br/>
     </form>
 
