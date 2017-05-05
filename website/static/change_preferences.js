@@ -17,7 +17,8 @@ function checkPreferenceBoxes() {
                 var x = preference['day'] + "." + preference[
                     'hour'];
                 var element = document.getElementById(x.toString());
-                element.innerHTML = '<input type="checkbox">';
+                //element.innerHTML = '<input type="checkbox">';
+                element.checked = true;
                 element.onchange = function() {
                     console.log("On Change" + x);
                 }
