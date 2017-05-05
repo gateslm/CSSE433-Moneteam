@@ -24,12 +24,15 @@ def import_schedule(name , week_id , conn):
 def generate_html(week_id, employee_name):
     try:
         conn = redis.Redis(host='moneteam-1.csse.rose-hulman.edu', port=6379);
+        print "connected to monteam-1"
     except redis.ConnectionError:
         try:
             conn = redis.Redis(host='moneteam-2.csse.rose-hulman.edu', port=6379);
+            print "connected to monteam-2"
         except redis.ConnectionError:
             try:
                 conn = redis.Redis(host='moneteam-3.csse.rose-hulman.edu', port=6379);
+                print "connected to monteam-3"
             except redis.ConnectionError:
                 target = open("schedule.html","w+")
                 target.write("<b> Sorry, redis server is currently unreachable, Please try again later </b>")
