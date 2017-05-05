@@ -81,6 +81,38 @@ def add_employee():
     else:
         return render_template("admin_settings_page.html", empid=adminID, message="Unable to add new employee.")
 
+@app.route('/edit_employee_submit', methods=["POST"])
+def edit_employee_info():
+    empID = request.form['empid']
+    name = request.form['Name']
+    addr = request.form['address']
+    city = request.form['city']
+    bank_name = request.form['bankName']
+    bane_acct_num = request.form['accountNumber']
+
+    # TODO:Update infomation
+
+    return render_template("employee_homepage.html", empid=empID, message="")
+
+@app.route('/load_change_password_page', methods=["POST"])
+def load_change_password_page():
+    empID = request.form['empID']
+
+    return render_template()
+
+@app.route('/load_employee_edit_page', methods=["POST"])
+def load_employee_edit_page():
+    empid = request.form['empid']
+
+    # TODO:Run Query
+    empName = "JOHN SMITH"
+    empAddr = "WHERE AM I"
+    empCity = "NOT REAL"
+    empBankName = "FIXME"
+    empBankNum = "-1"
+    return render_template("edit_employee.html", empid=empid, emp_name=empName, emp_addr=empAddr, emp_city=empCity, emp_bank_name=empBankName, emp_bank_num=empBankNum)
+
+
 @app.route('/edit_employee', methods=["POST"])
 def edit_employee():
     # Larry, could this be like the edit book page?
