@@ -92,7 +92,7 @@ def edit_employee_info():
     bank_acct_num = request.form['accountNumber']
 
     # TODO:Update infomation
-    res = employeefunctions.changeEmpInfo(empid,name,addr,city,bank_name,bank_acct_num)
+    res = employeefunctions.changeEmpInfo(empID,name,addr,city,bank_name,bank_acct_num)
 
     print(res)
 
@@ -129,7 +129,7 @@ def load_employee_edit_page():
     empAddr = res[1][2:-2]
     empCity = res[2][2:-2]
     empBankName = res[3][2:-2]
-    empBankNum = int(res[4][1:-1])
+    empBankNum = int(res[4][2:-2])
     return render_template("edit_employee.html", empid=empid, emp_name=empName, emp_addr=empAddr, emp_city=empCity, emp_bank_name=empBankName, emp_bank_num=empBankNum)
 
 
