@@ -28,7 +28,7 @@ def generate_html(week_id, employee_name):
         target = open("schedule.html","w+")
         target.write("<b> Sorry, redis server is currently unreachable, Please try again later </b>")
         target.close
-        return
+        return "<b> Sorry, redis server is currently unreachable, Please try again later </b>"
     schedule = np.transpose(schedule)
     df = pd.DataFrame(schedule,columns = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"])
 
