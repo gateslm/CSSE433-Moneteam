@@ -7,11 +7,14 @@ import re
 import pandas as pd
 from parameters import week_id
 
+employees_involved = []
+
 def generate():
     raw = schedule.result
     raw_list = raw.split(";")
     ssv_clean = clean_text(raw_list,"x_ssv")
     bts_clean = clean_text(raw_list,"x_bts")
+    delete_old()
     upload_redis(bts_clean)
     upload_redis(ssv_clean)
 
@@ -23,17 +26,38 @@ def clean_text(raw_list,key):
             s=re.sub("\[","",s)
             s=re.sub("\]","",s)
             info_list = s.split(",")
+            if info_list[0] not in employees_involved:
+                employees_involved.append(info_list[0])
             gen_list.append(info_list)
     return gen_list
 
-def upload_redis(list):
-    for sublist in list:
-        name = sublist[0]
-        day = sublist[1]
-        key= "week"+str(week_id)+"_day"+str(day)+"_"+name
-        if conn.exists(key)==1:
-            conn.delete(key)
+def delete_old():
+    for name in employees_involved:
+        for day in range(1,8):
+            key= "week"+str(week_id)+"_day"+str(day)+"_"+name
+            if conn.exists(key)==1:
+             conn.delete(key)
 
+
+
+def upload_redis(list):
+    pass
+    # print "get run"
+    # print employees_involved
+
+    # delete_old()
+
+    # for sublist in list:
+    #     name = sublist[0]
+    #     day = sublist[1]
+    #     key= "week"+str(week_id)+"_day"+str(day)+"_"+name
+    #     if conn.exists(key)==1:
+    #         conn.delete(key)
+    #         if conn.exists(key):
+    #             print "key delete not sucess"
+    #         # else:
+    #         #     print "key delete succeed"
+    #
     for sublist in list:
         name = sublist[0]
         day = sublist[1]

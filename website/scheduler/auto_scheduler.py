@@ -184,7 +184,7 @@ model.obj = Objective(rule = goal, sense = minimize)
 
 all_prefs = getAllPrefs()
 count = 0
-print all_prefs
+# print all_prefs
 for pref in all_prefs:
     print pref
     e_id = pref['empid']
