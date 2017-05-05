@@ -14,9 +14,15 @@ def generate():
     raw_list = raw.split(";")
     ssv_clean = clean_text(raw_list,"x_ssv")
     bts_clean = clean_text(raw_list,"x_bts")
-    delete_old()
-    upload_redis(bts_clean)
-    upload_redis(ssv_clean)
+    try:
+        conn = redis.Redis(host='moneteam-1.csse.rose-hulman.edu', port=6379);
+        delete_old(conn)
+        upload_redis(bts_clean,conn)
+        upload_redis(ssv_clean,conn)
+    except redis.ConnectionError:
+        print "redis cannot be connected"
+        return "Sorry, redis server is currently unreachable, Please try again later"
+    return "schedule has been generated successfully"
 
 def clean_text(raw_list,key):
     gen_list = []
@@ -31,7 +37,8 @@ def clean_text(raw_list,key):
             gen_list.append(info_list)
     return gen_list
 
-def delete_old():
+def delete_old(conn):
+
     for name in employees_involved:
         for day in range(1,8):
             key= "week"+str(week_id)+"_day"+str(day)+"_"+name
@@ -40,8 +47,7 @@ def delete_old():
 
 
 
-def upload_redis(list):
-    pass
+def upload_redis(list,conn):
     # print "get run"
     # print employees_involved
 
@@ -58,6 +64,7 @@ def upload_redis(list):
     #         # else:
     #         #     print "key delete succeed"
     #
+
     for sublist in list:
         name = sublist[0]
         day = sublist[1]
@@ -66,6 +73,6 @@ def upload_redis(list):
         conn.rpush(key,hour)
 
 if __name__ == "__main__":
-    conn = redis.Redis(host='moneteam-1.csse.rose-hulman.edu', port=6379);
+    # conn = redis.Redis(host='moneteam-1.csse.rose-hulman.edu', port=6379);
     generate()
 
