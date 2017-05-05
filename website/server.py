@@ -98,7 +98,7 @@ def edit_employee_info():
 def load_change_password_page():
     empID = request.form['empID']
 
-    return render_template()
+    return render_template("edit_password.html", empid=empID)
 
 @app.route('/load_employee_edit_page', methods=["POST"])
 def load_employee_edit_page():
