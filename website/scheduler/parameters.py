@@ -1,6 +1,5 @@
 import connections
 import json
-import ast
 mc3 = connections.monetConn3()
 curs3 = mc3.cursor()
 

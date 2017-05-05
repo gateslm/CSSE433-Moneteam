@@ -186,7 +186,7 @@ all_prefs = getAllPrefs()
 count = 0
 # print all_prefs
 for pref in all_prefs:
-    print pref
+    # print pref
     e_id = pref['empid']
     position = pref['duty']
     duty = duty_dict[position]
@@ -211,7 +211,7 @@ for pref in all_prefs:
 
 
 
-print("this is monet auto sceduler")
+print("this is monet auto scheduler")
 
 
 instance = model
@@ -233,6 +233,8 @@ result = ""
 for var in instance.component_data_objects(Var):
      if var.value ==1:
          result += str(var)+";"
+
+print "auto scheduler is ready"
 
 
 
