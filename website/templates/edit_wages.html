@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+</head>
+
+<body>
+    <h1>
+        Edit Employee Wage
+      </h1>
+    <form action="/edit_wage_submit" method="post">
+        <input type="hidden" name="adminID" value="{{adminID}}" />
+        <br/> EMPID: <input type="number" name="empid" />
+        <br/> Wage: <input type="number" name="wage"  />
+        <input type="submit" value="Submit new wage" /><br/>
+    </form>
+
+</body>
+
+</html>
