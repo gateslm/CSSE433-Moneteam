@@ -5,8 +5,8 @@ import re
 from parameters import opening_time, closing_time
 
 
-def import_schedule(name = "james", week_id = 1):
-    conn = redis.Redis(host='moneteam-1.csse.rose-hulman.edu', port=6379);
+def import_schedule(name = "james", week_id = 1, conn):
+    # conn = redis.Redis(host='moneteam-1.csse.rose-hulman.edu', port=6379);
     gen_list = []
 
     for day in range(1,8):
@@ -23,12 +23,19 @@ def import_schedule(name = "james", week_id = 1):
 
 def generate_html(week_id, employee_name):
     try:
-        schedule = import_schedule(employee_name,week_id)
+        conn = redis.Redis(host='moneteam-1.csse.rose-hulman.edu', port=6379);
     except redis.ConnectionError:
-        target = open("schedule.html","w+")
-        target.write("<b> Sorry, redis server is currently unreachable, Please try again later </b>")
-        target.close
-        return "<b> Sorry, redis server is currently unreachable, Please try again later </b>"
+        try:
+            conn = redis.Redis(host='moneteam-2.csse.rose-hulman.edu', port=6379);
+        except redis.ConnectionError:
+            try:
+                conn = redis.Redis(host='moneteam-3.csse.rose-hulman.edu', port=6379);
+            except redis.ConnectionError:
+                target = open("schedule.html","w+")
+                target.write("<b> Sorry, redis server is currently unreachable, Please try again later </b>")
+                target.close
+                return "<b> Sorry, redis server is currently unreachable, Please try again later </b>"
+    schedule = import_schedule(employee_name,week_id,conn)
     schedule = np.transpose(schedule)
     df = pd.DataFrame(schedule,columns = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"])
 
