@@ -38,9 +38,9 @@ def generate_html(week_id, employee_name):
                 schedule = import_schedule(employee_name,week_id,conn)
                 print "connected to monteam-3"
             except redis.ConnectionError:
-                target = open("schedule.html","w+")
-                target.write("<b> Sorry, redis server is currently unreachable, Please try again later </b>")
-                target.close
+                # target = open("schedule.html","w+")
+                # target.write("<b> Sorry, redis server is currently unreachable, Please try again later </b>")
+                # target.close
                 return "<b> Sorry, redis server is currently unreachable, Please try again later </b>"
 
     schedule = np.transpose(schedule)
