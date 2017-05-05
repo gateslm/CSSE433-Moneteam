@@ -31,7 +31,7 @@ function submitScheduleRequest() {
 	var jsonPrefs = makeJSONfromIDs(checkedBoxes);
 	console.log(jsonPrefs);
         $.getJSON(
-            'http://moneteam-1.csse.rose-hulman.edu:5000/save_preferences/' +
+            'http://moneteam-1.csse.rose-hulman.edu:5000/save_preferences/' + empid.innerHTML +'/' +
             JSON.stringify(jsonPrefs), {},
             function(data) {
 		    console.log("array sent as string");

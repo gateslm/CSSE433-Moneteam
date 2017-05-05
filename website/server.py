@@ -14,6 +14,7 @@ import json
 from bson.objectid import ObjectId
 import ast
 from scheduler import generate_schedule_html_table as GenSched
+#from scheduler import redis_connect
 import numpy as np
 import re
 import pandas as pd
@@ -264,8 +265,9 @@ def make_change_preference_page(emp):
 @app.route('/generate_new_schedules', methods=["POST"])
 def generate_new_schedules():
     adminID = request.form['adminID']
-
-    return render_template("admin_settings_page.html", empid=adminID, message="FIXME")
+    #res = redis_connect.generate()
+    res = "hey"
+    return render_template("admin_settings_page.html", empid=adminID, message=res)
 
 
 @app.route('/change_preferences_page', methods=["POST"])
@@ -275,12 +277,18 @@ def change_preferences_page():
     return render_template("change_preferences.html", empid=empid, message="Hope this works")
 
 
-@app.route('/save_preferences/<string:prefs>')
-def save_preferences(prefs):
+@app.route('/save_preferences/<int:empid>/<string:prefs>')
+def save_preferences(empid,prefs):
     vv = json.loads(prefs)
     for x in vv:
         print(x)
-    
+    #vv2 = str(vv).encode('ascii','ignore')
+    vv2 = employeefunctions.getMonetConvertedVal(json.dumps(vv))
+    query = "update employees1 set preferences = %s where empid = %d" % (vv2,empid)
+    query = employeefunctions.changeQueryTable(query,empid)
+    print(query)
+    res = employeefunctions.executeEmpQuery(query,empid)
+    print(res)
     return "here save prefs"
 
 
