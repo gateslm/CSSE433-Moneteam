@@ -24,21 +24,25 @@ def import_schedule(name , week_id , conn):
 def generate_html(week_id, employee_name):
     try:
         conn = redis.Redis(host='moneteam-1.csse.rose-hulman.edu', port=6379);
+        schedule = import_schedule(employee_name,week_id,conn)
         print "connected to monteam-1"
     except redis.ConnectionError:
+        # print "connection to moneteam-1 failed, trying moneteam-2 now"
         try:
             conn = redis.Redis(host='moneteam-2.csse.rose-hulman.edu', port=6379);
+            schedule = import_schedule(employee_name,week_id,conn)
             print "connected to monteam-2"
         except redis.ConnectionError:
             try:
                 conn = redis.Redis(host='moneteam-3.csse.rose-hulman.edu', port=6379);
+                schedule = import_schedule(employee_name,week_id,conn)
                 print "connected to monteam-3"
             except redis.ConnectionError:
                 target = open("schedule.html","w+")
                 target.write("<b> Sorry, redis server is currently unreachable, Please try again later </b>")
                 target.close
                 return "<b> Sorry, redis server is currently unreachable, Please try again later </b>"
-    schedule = import_schedule(employee_name,week_id,conn)
+
     schedule = np.transpose(schedule)
     df = pd.DataFrame(schedule,columns = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"])
 
