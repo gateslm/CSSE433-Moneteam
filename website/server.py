@@ -103,14 +103,30 @@ def load_change_password_page():
 
 @app.route('/load_employee_edit_page', methods=["POST"])
 def load_employee_edit_page():
-    empid = request.form['empID']
+    empid = int(request.form['empID'])
 
     # TODO:Run Query
-    empName = "JOHN SMITH"
-    empAddr = "WHERE AM I"
-    empCity = "NOT REAL"
-    empBankName = "FIXME"
-    empBankNum = "-1"
+    query = "select name, json.filter(address, \'street\') as street, " 
+    query += "json.filter(address, \'city\') as city, "
+    query += "json.filter(paymentinfo, \'bankname\') as bankname, "
+    query += "json.filter(paymentinfo, \'banknum\') as banknum from employees "
+    query += "where empid = %d;" % empid
+
+    res = employeefunctions.executeEmpQueryCursorAll(query)
+    print(res)
+    print(type(res[1][0]))
+    res = res[1][0]
+
+    #empName = "JOHN SMITH"
+    #empAddr = "WHERE AM I"
+    #empCity = "NOT REAL"
+    #empBankName = "FIXME"
+    #empBankNum = "-1"
+    empName = res[0]
+    empAddr = res[1][2:-2]
+    empCity = res[2][2:-2]
+    empBankName = res[3][2:-2]
+    empBankNum = int(res[4][1:-1])
     return render_template("edit_employee.html", empid=empid, emp_name=empName, emp_addr=empAddr, emp_city=empCity, emp_bank_name=empBankName, emp_bank_num=empBankNum)
 
 

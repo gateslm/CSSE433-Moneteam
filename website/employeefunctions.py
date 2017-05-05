@@ -92,9 +92,11 @@ def executeEmpQueryCursorAll(query):
     print(query)
     curs = mc3.cursor()
     x = curs.execute(query)
+    y = curs.fetchall()
+    curs.close()
     print("Mc3 cursor execute result", x)
     print("returning from exec query cursor")
-    return x, curs.fetchall()
+    return x, y
 
 
 def checkIfEmpExists(empid):
