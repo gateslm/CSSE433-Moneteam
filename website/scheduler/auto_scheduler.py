@@ -27,7 +27,7 @@ model = ConcreteModel()
 model.name="scheduler"
 
 model.days = RangeSet(1,7)
-model.hours = RangeSet(opening_time, closing_time)
+model.hours = RangeSet(opening_time, closing_time+1)
 
 
 model.bts = Set(initialize=bts)

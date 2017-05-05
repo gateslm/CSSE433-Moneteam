@@ -13,7 +13,8 @@ def import_schedule(name = "james", week_id = 1):
         key= "week"+str(week_id)+"_day"+str(day)+"_"+name
         info = conn.lrange(key,0,-1)
         tem_list=[]
-        for i in range(opening_time,closing_time):
+        for i in range(opening_time,closing_time+1):
+            print i
             if str(i) in info:
                 tem_list.append(True)
             else:
@@ -31,7 +32,8 @@ def generate_html(week_id, employee_name):
         return
     schedule = np.transpose(schedule)
     df = pd.DataFrame(schedule,columns = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"])
-    df.index = range(opening_time,closing_time)
+    print df.index
+    df.index = range(opening_time,closing_time+1)
 
     print df
 
@@ -48,7 +50,7 @@ def generate_html(week_id, employee_name):
 
 
 if __name__ == "__main__":
-    generate_html(1,"james")
+    generate_html(1,"101")
 
 
 
