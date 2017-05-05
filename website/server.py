@@ -51,6 +51,12 @@ def go_to_employee_homepage():
     empid= request.form['empID']
     return render_template("employee_homepage.html", empid=empid, message="")
 
+@app.route('/admin_homepage', methods=["POST"])
+def go_to_admin_homepage():
+    empid=request.form['adminID']
+
+    return render_template("admin_settings_page.html", empid=empid, message="")
+
 
 @app.route('/upload_resume_page', methods=["POST"])
 def upload_resume_page():
@@ -109,7 +115,7 @@ def load_employee_edit_page():
     empid = int(request.form['empID'])
 
     # TODO:Run Query
-    query = "select name, json.filter(address, \'street\') as street, " 
+    query = "select name, json.filter(address, \'street\') as street, "
     query += "json.filter(address, \'city\') as city, "
     query += "json.filter(paymentinfo, \'bankname\') as bankname, "
     query += "json.filter(paymentinfo, \'banknum\') as banknum from employees "

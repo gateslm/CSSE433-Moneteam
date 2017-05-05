@@ -8,6 +8,11 @@
     <h1>
         Edit Employee Wage
       </h1>
+    <form action="/admin_homepage" method="post">
+      <input type="hidden" name="adminID" value="{{adminID}}" />
+      <input type="submit" value="Return to Admin Homepage"/>
+    </form>
+
     <form action="/edit_wage_submit" method="post">
         <input type="hidden" name="adminID" value="{{adminID}}" />
         <br/> EMPID: <input type="number" name="empid" required/>

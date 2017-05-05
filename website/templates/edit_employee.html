@@ -7,7 +7,11 @@
 <body>
     <h1>
         Edit Employee
-      </h1>
+    </h1>
+    <form action="/employee_homepage" method="post">
+  		<input type="hidden" name="empID" value="{{empid}}" />
+  		<input type="submit" value="Go to homepage" />
+  	</form>
     <form action="/edit_employee_submit" method="post">
         <input type="hidden" name="empID" value="{{empid}}" />
         <br/> Name: <input type="text" name="Name" value="{{emp_name}}" required />

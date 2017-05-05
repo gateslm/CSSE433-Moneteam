@@ -6,6 +6,10 @@
       <h1>
         Add Employee
       </h1>
+      <form action="/admin_homepage" method="post">
+        <input type="hidden" name="adminID" value="{{empid}}" />
+        <input type="submit" value="Return to Admin Homepage"/>
+      </form>
       <form action="/add_employee" method="post">
         <input type="hidden" name="adminID" value="{{empid}}"/>
         Employee ID: <input type="number" name="employeeID" required/><br/>
