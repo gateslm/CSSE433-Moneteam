@@ -1,6 +1,6 @@
 # Python code to be the main server file
 
-from flask import Flask, render_template, request, jsonify, redirect, url_for, send_from_directory
+from flask import Flask, render_template, request, jsonify, redirect, url_for, send_from_directory, make_response
 
 import getEmpPWD
 import employeefunctions
@@ -47,8 +47,8 @@ def login():
 
 @app.route('/employee_homepage', methods=["POST"])
 def go_to_employee_homepage():
-	empid= request.form['empID']
-	return render_template("employee_homepage.html", empid=empid, message="")
+    empid= request.form['empID']
+    return render_template("employee_homepage.html", empid=empid, message="")
 
 
 @app.route('/upload_resume_page', methods=["POST"])
@@ -80,6 +80,38 @@ def add_employee():
         return render_template("admin_settings_page.html", empid=adminID, message ="Added new employee successfully.")
     else:
         return render_template("admin_settings_page.html", empid=adminID, message="Unable to add new employee.")
+
+@app.route('/edit_employee_submit', methods=["POST"])
+def edit_employee_info():
+    empID = request.form['empid']
+    name = request.form['Name']
+    addr = request.form['address']
+    city = request.form['city']
+    bank_name = request.form['bankName']
+    bane_acct_num = request.form['accountNumber']
+
+    # TODO:Update infomation
+
+    return render_template("employee_homepage.html", empid=empID, message="")
+
+@app.route('/load_change_password_page', methods=["POST"])
+def load_change_password_page():
+    empID = request.form['empID']
+
+    return render_template("edit_password.html", empid=empID)
+
+@app.route('/load_employee_edit_page', methods=["POST"])
+def load_employee_edit_page():
+    empid = request.form['empid']
+
+    # TODO:Run Query
+    empName = "JOHN SMITH"
+    empAddr = "WHERE AM I"
+    empCity = "NOT REAL"
+    empBankName = "FIXME"
+    empBankNum = "-1"
+    return render_template("edit_employee.html", empid=empid, emp_name=empName, emp_addr=empAddr, emp_city=empCity, emp_bank_name=empBankName, emp_bank_num=empBankNum)
+
 
 @app.route('/edit_employee', methods=["POST"])
 def edit_employee():
@@ -140,19 +172,24 @@ def login_admin():
         return render_template('login_failed_admin.html')
 
 
-
 @app.route('/employee_settings')
 def employee_settings_login():
     return render_template('login.html')
 
-@app.route('/schedule_generator')
+@app.route('/schedule_generator', methods=["POST"])
 def schedule_generator():
+     print("In schedule generator")
+     empName = request.form['empName']
      week_id = 1
-     employee_name = "james"
+     if empName == None or empName =="":
+         employee_name = "james"
+     else:
+         employee_name = "empName"
 
     # opening_time = auto_scheduler.openning_time
     # closing_time = auto_scheduler.closing_time
 
+     print("After selecting name: " + employee_name)
      opening_time =8
      closing_time = 22
 
@@ -164,7 +201,7 @@ def schedule_generator():
      html_table = df.to_html()
      html_table = re.sub("False","",html_table)
      html_table = re.sub("True","&#10004",html_table)
-     return html_table
+     return render_template("schedule_shell.html", html=html_table, empName=employee_name)
 
 @app.route('/employee_settings')
 def employee_settings():
@@ -208,13 +245,48 @@ def upload():
         print("IN if statement")
         result = fs.put(ff)
         mongoDB.fs.files.update({"_id":ObjectId(result)},{'$set':{'empid':int(empid)}})
+        mongoDB.fs.files.update({"_id":ObjectId(result)},{'$set':{'filename':ff.filename}})
         print(result)
         return render_template("employee_homepage.html", empid=empid, message="ID returned")
     return render_template("employee_homepage.html", empid=empid, message="Did not upload file")
 
+@app.route('/get_document_list/<string:emp>')
+def get_document_list(emp):
+    empid = int(emp)
+    result = mongoDB.fs.files.find({"empid":empid})
+    print(result)
+    ls = []
+    for r in result:
+        print(r)
+        ls.append([r['empid'], str(r['_id']), r['filename']])
+    return json.dumps({"res":ls})
 
+@app.route('/view_documents', methods=["POST"])
+def view_documents():
+    empid = int(request.form['empID'])
+    return render_template("document.html", empid=empid, message="")
 
+@app.route('/get_a_document', methods=["POST"])
+def get_a_document():
+    print("Getting a document")
+    objId = request.form['ObjectID']
+    print(objId)
+    fInfo = mongoDB.fs.files.find_one({"_id": ObjectId(objId)})
+    print(fInfo['filename'])
+    f = fs.get(ObjectId(objId))
+    resp = make_response(f.read())
+    resp.headers['Content-Type'] = 'application/pdf'
+    resp.headers['Content-Disposition'] = "attachment; filename={}".format(fInfo['filename'])
+    print("Got file")
+    return resp
 
+@app.route('/delete_document', methods=["POST"])
+def delete_document():
+    objId = request.form['ObjectID']
+    empid = request.form['empid']
+    fs.delete(ObjectId(objId))
+    exists = fs.exists(ObjectId(objId))
+    return render_template("document.html", empid=empid, message="File Deleted: " + str(not exists) )
 
 
 @app.route('/change_preferences/<string:emp>')

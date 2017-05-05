@@ -1,23 +1,37 @@
 <!DOCTYPE html>
 <html>
-    <head>
-    </head>
-    <body>
-      {{ empid }}
-      <br/>
-      {{ message }}
-      <br/>
-      <form action="/upload_resume_page" method="post">
-        <input type="hidden" name="empID" value="{{empid}}"/>
-        <input type="submit" value="Upload Resume"/>
-      </form>
-      <form action="/generate_new_schedules" method="post">
-        <input type="hidden" name="empID" value="{{empid}}"/>
-        <input type="submit" value="Do Something later. Don't Click"/>
-      </form>
-      <form action="/change_preferences_page" method="post">
-        <input type="hidden" name="empID" value="{{empid}}"/>
-        <input type="submit" value="Change Preferences"/>
-      </form>
-    </body>
+
+<head>
+</head>
+
+<body>
+    {{ empid }}
+    <br/> {{ message }}
+    <br/>
+    <form action="/upload_resume_page" method="post">
+        <input type="hidden" name="empID" value="{{empid}}" />
+        <input type="submit" value="Upload Resume" />
+    </form>
+    <form action="/generate_new_schedules" method="post">
+        <input type="hidden" name="empID" value="{{empid}}" />
+        <input type="submit" value="Do Something later. Don't Click" />
+    </form>
+    <form action="/view_documents" method="post">
+        <input type="hidden" name="empID" value="{{empid}}" />
+        <input type="submit" value="View Documents" />
+    </form>
+    <form action="/change_preferences_page" method="post">
+        <input type="hidden" name="empID" value="{{empid}}" />
+        <input type="submit" value="Change Preferences" />
+    </form>
+    <form action="/load_employee_edit_page" method="post">
+        <input type="hidden" name="empID" value="{{empid}}" />
+        <input type="submit" value="Edit Employee Info" />
+    </form>
+    <form action="/load_change_password_page" method="post">
+        <input type="hidden" name="empID" value="{{empid}}" />
+        <input type="submit" value="Change Password" />
+    </form>
+</body>
+
 </html>
