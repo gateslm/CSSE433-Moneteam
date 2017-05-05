@@ -1,5 +1,5 @@
 import redis
-import auto_scheduler as schedule
+
 import pyomo
 from pyomo.environ import *
 from pyomo.opt import *
@@ -10,6 +10,7 @@ from parameters import week_id
 employees_involved = []
 
 def generate():
+    import auto_scheduler as schedule
     raw = schedule.result
     raw_list = raw.split(";")
     ssv_clean = clean_text(raw_list,"x_ssv")
