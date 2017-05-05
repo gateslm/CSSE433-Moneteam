@@ -12,7 +12,7 @@ def getAllPrefs():
     query = "Select empid, preferences, workinfo from employees;"
     c = curs3.execute(query)
     # print(c)
-    print("\n\n")
+    # print("\n\n")
     vals = curs3.fetchall()
     preferences = []
     for v in vals:
