@@ -13,7 +13,7 @@ import redis
 import json
 from bson.objectid import ObjectId
 import ast
-import generate_schedule_html_table as GenSched
+from scheduler import generate_schedule_html_table as GenSched
 import numpy as np
 import re
 import pandas as pd
@@ -27,7 +27,7 @@ fs = gridfs.GridFS(mongoDB)
 redisClient = redis.Redis(host='moneteam-1.csse.rose-hulman.edu', port=6379) # TODO: Add the connection info
 app = Flask(__name__)
 
-app.config['ALLOWED_EXTENSIONS'] = set(['pdf', 'jpg', 'jpeg', 'gif', 'png'])
+app.config['ALLOWED_EXTENSIONS'] = set(['pdf'])
 
 @app.route('/')
 def index():
@@ -83,7 +83,7 @@ def add_employee():
 
 @app.route('/edit_employee_submit', methods=["POST"])
 def edit_employee_info():
-    empID = request.form['empid']
+    empID = request.form['empID']
     name = request.form['Name']
     addr = request.form['address']
     city = request.form['city']
@@ -102,7 +102,7 @@ def load_change_password_page():
 
 @app.route('/load_employee_edit_page', methods=["POST"])
 def load_employee_edit_page():
-    empid = request.form['empid']
+    empid = request.form['empID']
 
     # TODO:Run Query
     empName = "JOHN SMITH"
@@ -134,32 +134,6 @@ def edit_employee():
 def login_admin():
     username = int(request.form['username'])
     pwd = request.form['pwd']
-
-    '''
-
-    # query = SELECT json.filter(password, password) FROM employees1 WHERE empid = %d;
-    query = employeefunctions.changeQueryTable(query,username)
-    result = employeefunctions.executeEmpQueryCursor(query, username)
-    # result = getEmpPWD.getpasswordhashmgr(username, monetClient) # FIXME: Use correct query
-    # result = result.replace("[","").replace("]","").replace("\"","").replace(" ","")
-    print(result)
-    print(result[1])
-    if len(result[1]) == 0:
-        return render_template("login_failed_admin.html")
-    print(type(result[1][0]))
-    print(type(result[1][0][0]))
-    result = result[1][0][0]
-    result = result.replace("[","").replace("]","").replace("\"","").replace(" ","")
-    inputPwd = getEmpPWD.getpasswordhash(pwd)
-    print(inputPwd)
-    if result == inputPwd:
-        print("PWD match")
-        return render_template("admin_settings_page.html", empid=username, message="")
-    else:
-        print("PWD don't match")
-        return render_template('login_failed_admin.html')
-    '''
-
     managerpwds = employeefunctions.getManagerPwds()
     givenpwdhashed = employeefunctions.getPwdHash(pwd)
     print(managerpwds, type(managerpwds[0]))
@@ -180,28 +154,17 @@ def employee_settings_login():
 def schedule_generator():
      print("In schedule generator")
      empName = request.form['empName']
-     week_id = 1
+     week_id = int(request.form['weekID'])
      if empName == None or empName =="":
-         employee_name = "james"
+         employee_name = "Invalid_EMPID"
      else:
-         employee_name = "empName"
-
-    # opening_time = auto_scheduler.openning_time
-    # closing_time = auto_scheduler.closing_time
+         employee_name = empName
 
      print("After selecting name: " + employee_name)
-     opening_time =8
-     closing_time = 22
 
-     schedule = GenSched.import_schedule(redisClient, employee_name,week_id, opening_time, closing_time)
-     schedule = np.transpose(schedule)
-     df = pd.DataFrame(schedule,columns = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"])
-     df.index = range(opening_time,closing_time)
+     schedule = GenSched.generate_html(week_id, employee_name)
 
-     html_table = df.to_html()
-     html_table = re.sub("False","",html_table)
-     html_table = re.sub("True","&#10004",html_table)
-     return render_template("schedule_shell.html", html=html_table, empName=employee_name)
+     return render_template("schedule_shell.html", html=schedule, empName=employee_name)
 
 @app.route('/employee_settings')
 def employee_settings():
@@ -298,15 +261,27 @@ def make_change_preference_page(emp):
     print(prefs)
     return jsonify(prefs)
 
+@app.route('/generate_new_schedules', methods=["POST"])
+def generate_new_schedules():
+    adminID = request.form['adminID']
+
+    return render_template("admin_settings_page.html", empid=adminID, message="FIXME")
 
 
 @app.route('/change_preferences_page', methods=["POST"])
 def change_preferences_page():
-    print("here change pref page")
+    #print("here change pref page")
     empid = int(request.form['empID'])
     return render_template("change_preferences.html", empid=empid, message="Hope this works")
 
 
+@app.route('/save_preferences/<string:prefs>')
+def save_preferences(prefs):
+    vv = json.loads(prefs)
+    for x in vv:
+        print(x)
+    
+    return "here save prefs"
 
 
 @app.route('/admin_get_employee_wage/<int:empid>')

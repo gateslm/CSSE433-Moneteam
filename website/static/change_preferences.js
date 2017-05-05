@@ -14,8 +14,7 @@ function checkPreferenceBoxes() {
         function(preferences) {
             console.log(preferences);
             preferences.forEach(function(preference) {
-                var x = preference['day'] + "." + preference[
-                    'hour'];
+                var x = preference['day'] + "." + preference['hour'];
                 var element = document.getElementById(x.toString());
                 element.checked = true;
                 element.onchange = function() {
@@ -27,17 +26,41 @@ function checkPreferenceBoxes() {
 
 function submitScheduleRequest() {
      // TODO: Do me James!!!
-        var days = [1,2,3,4,5,6,7];
-	var hours = [8,9,10,11,12,13,14,15,16,17,18,19,20,21];
+	var checkedBoxes = getCheckedSpots();
+	console.log(checkedBoxes);
+	var jsonPrefs = makeJSONfromIDs(checkedBoxes);
+	console.log(jsonPrefs);
+        $.getJSON(
+            'http://moneteam-1.csse.rose-hulman.edu:5000/save_preferences/' +
+            JSON.stringify(jsonPrefs), {},
+            function(data) {
+		    console.log("array sent as string");
+	    });
+}
+
+function getCheckedSpots() {
 	var checkedArray = [];
-	for (d = 1; d <= 7; d++) {
-		for (h = 8; h <= 21; h++) {
+	for (var d = 1; d <= 7; d++) {
+		for (var h = 8; h <= 21; h++) {
 			var x = d + "." + h;
 			var elem = document.getElementById(x);
 			console.log(elem.checked);
-			checkedArray.push(elem);
+			if (elem.checked) {
+				checkedArray.push(elem);
+			}
 		}
 	}
+	return checkedArray;
+}
 
-
+function makeJSONfromIDs(checkedBoxes) {
+	var result = [];
+	for (var i = 0; i < checkedBoxes.length; i++) {
+		var current = {"week_id": 1};
+		current["day"] = parseInt(checkedBoxes[i].id.toString()[0]);
+		current["hour"] = parseInt(checkedBoxes[i].id.toString().substring(2));
+		//console.log(i,day,hour)
+		result.push(current); 
+	}
+	return result;
 }

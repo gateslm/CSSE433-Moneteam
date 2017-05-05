@@ -76,12 +76,14 @@ def executeEmpQueryCursor(query, empid):
         print(curs)
         x = curs.execute(query)
         print("Mc1 cursor execute result", x)
+        curs.close()
     else:
         # Even empIDs go to node 2
         curs = mc2.cursor()
         print(curs)
         x = curs.execute(query)
         print("Mc2 cursor execute result", x)
+        curs.close()
     print("returning from exec query cursor")
     return x, curs.fetchall()
 
@@ -186,6 +188,7 @@ def getEmpsPrefs(empid):
     x = cursor.execute(query)
     cursorResult = cursor.fetchone()
     pp = json.loads(cursorResult[0])
+    cursor.close()
     for y in pp:
         print(y)
     return pp
