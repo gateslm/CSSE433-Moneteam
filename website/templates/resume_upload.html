@@ -6,8 +6,8 @@
      <h1>
        Upload a resume for user {{empid}}
      </h1>
-     <form action="/upload_resume" method="post">
-       <input type="hidden" name="adminID" value="{{empid}}"/>
+     <form action="/upload_resume" method="post" enctype=multipart/form-data>
+       <input type="hidden" name="empid" value="{{empid}}"/>
        <input type="file" name="file"><br/><br/>
        <input type="submit" value="Upload"/>
      </form>

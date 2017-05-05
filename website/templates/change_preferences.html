@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<script src="http://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous">
+		$SCRIPT_ROOT = {
+			{
+				request.script_root | tojson | safe
+			}
+		};
+	</script>
+	<script src="../static/change_preferences.js">
+	</script>
+</head>
+
+<body>
+	<h1>
+	Employee ID: <div id="emp"> {{ empid }} </div>
+	</h1>
+
+	<form action="/employee_homepage" method="post">
+		<input type="hidden" name="empID" value="{{empid}}" />
+		<input type="submit" value="Go to homepage" />
+	</form>
+
+	</form>
+	<table border="1" class="dataframe">
+		<thead>
+			<tr style="text-align: right;">
+				<th></th>
+				<th>Monday</th>
+				<th>Tuesday</th>
+				<th>Wednesday</th>
+				<th>Thursday</th>
+				<th>Friday</th>
+				<th>Saturday</th>
+				<th>Sunday</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th>8</th>
+				<td><input type="checkbox" id="1.8"></td>
+				<td><input type="checkbox" id="2.8"></td>
+				<td><input type="checkbox" id="3.8"></td>
+				<td><input type="checkbox" id="4.8"></td>
+				<td><input type="checkbox" id="5.8"></td>
+				<td><input type="checkbox" id="6.8"></td>
+				<td><input type="checkbox" id="7.8"></td>
+			</tr>
+			<tr>
+				<th>9</th>
+				<td><input type="checkbox" id="1.9"></td>
+				<td><input type="checkbox" id="2.9"></td>
+				<td><input type="checkbox" id="3.9"></td>
+				<td><input type="checkbox" id="4.9"></td>
+				<td><input type="checkbox" id="5.9"></td>
+				<td><input type="checkbox" id="6.9"></td>
+				<td><input type="checkbox" id="7.9"></td>
+			</tr>
+			<tr>
+				<th>10</th>
+				<td><input type="checkbox" id="1.10"></td>
+				<td><input type="checkbox" id="2.10"></td>
+				<td><input type="checkbox" id="3.10"></td>
+				<td><input type="checkbox" id="4.10"></td>
+				<td><input type="checkbox" id="5.10"></td>
+				<td><input type="checkbox" id="6.10"></td>
+				<td><input type="checkbox" id="7.10"></td>
+			</tr>
+			<tr>
+				<th>11</th>
+				<td><input type="checkbox" id="1.11"></td>
+				<td><input type="checkbox" id="2.11"></td>
+				<td><input type="checkbox" id="3.11"></td>
+				<td><input type="checkbox" id="4.11"></td>
+				<td><input type="checkbox" id="5.11"></td>
+				<td><input type="checkbox" id="6.11"></td>
+				<td><input type="checkbox" id="7.11"></td>
+			</tr>
+			<tr>
+				<th>12</th>
+				<td><input type="checkbox" id="1.12"></td>
+				<td><input type="checkbox" id="2.12"></td>
+				<td><input type="checkbox" id="3.12"></td>
+				<td><input type="checkbox" id="4.12"></td>
+				<td><input type="checkbox" id="5.12"></td>
+				<td><input type="checkbox" id="6.12"></td>
+				<td><input type="checkbox" id="7.12"></td>
+			</tr>
+			<tr>
+				<th>13</th>
+				<td><input type="checkbox" id="1.13"></td>
+				<td><input type="checkbox" id="2.13"></td>
+				<td><input type="checkbox" id="3.13"></td>
+				<td><input type="checkbox" id="4.13"></td>
+				<td><input type="checkbox" id="5.13"></td>
+				<td><input type="checkbox" id="6.13"></td>
+				<td><input type="checkbox" id="7.13"></td>
+			</tr>
+			<tr>
+				<th>14</th>
+				<td><input type="checkbox" id="1.14"></td>
+				<td><input type="checkbox" id="2.14"></td>
+				<td><input type="checkbox" id="3.14"></td>
+				<td><input type="checkbox" id="4.14"></td>
+				<td><input type="checkbox" id="5.14"></td>
+				<td><input type="checkbox" id="6.14"></td>
+				<td><input type="checkbox" id="7.14"></td>
+			</tr>
+			<tr>
+				<th>15</th>
+				<td><input type="checkbox" id="1.15"></td>
+				<td><input type="checkbox" id="2.15"></td>
+				<td><input type="checkbox" id="3.15"></td>
+				<td><input type="checkbox" id="4.15"></td>
+				<td><input type="checkbox" id="5.15"></td>
+				<td><input type="checkbox" id="6.15"></td>
+				<td><input type="checkbox" id="7.15"></td>
+			</tr>
+			<tr>
+				<th>16</th>
+				<td><input type="checkbox" id="1.16"></td>
+				<td><input type="checkbox" id="2.16"></td>
+				<td><input type="checkbox" id="3.16"></td>
+				<td><input type="checkbox" id="4.16"></td>
+				<td><input type="checkbox" id="5.16"></td>
+				<td><input type="checkbox" id="6.16"></td>
+				<td><input type="checkbox" id="7.16"></td>
+			</tr>
+			<tr>
+				<th>17</th>
+				<td><input type="checkbox" id="1.17"></td>
+				<td><input type="checkbox" id="2.17"></td>
+				<td><input type="checkbox" id="3.17"></td>
+				<td><input type="checkbox" id="4.17"></td>
+				<td><input type="checkbox" id="5.17"></td>
+				<td><input type="checkbox" id="6.17"></td>
+				<td><input type="checkbox" id="7.17"></td>
+			</tr>
+			<tr>
+				<th>18</th>
+				<td><input type="checkbox" id="1.18"></td>
+				<td><input type="checkbox" id="2.18"></td>
+				<td><input type="checkbox" id="3.18"></td>
+				<td><input type="checkbox" id="4.18"></td>
+				<td><input type="checkbox" id="5.18"></td>
+				<td><input type="checkbox" id="6.18"></td>
+				<td><input type="checkbox" id="7.18"></td>
+			</tr>
+			<tr>
+				<th>19</th>
+				<td><input type="checkbox" id="1.19"></td>
+				<td><input type="checkbox" id="2.19"></td>
+				<td><input type="checkbox" id="3.19"></td>
+				<td><input type="checkbox" id="4.19"></td>
+				<td><input type="checkbox" id="5.19"></td>
+				<td><input type="checkbox" id="6.19"></td>
+				<td><input type="checkbox" id="7.19"></td>
+			</tr>
+			<tr>
+				<th>20</th>
+				<td><input type="checkbox" id="1.20"></td>
+				<td><input type="checkbox" id="2.20"></td>
+				<td><input type="checkbox" id="3.20"></td>
+				<td><input type="checkbox" id="4.20"></td>
+				<td><input type="checkbox" id="5.20"></td>
+				<td><input type="checkbox" id="6.20"></td>
+				<td><input type="checkbox" id="7.20"></td>
+			</tr>
+			<tr>
+				<th>21</th>
+				<td><input type="checkbox" id="1.21"></td>
+				<td><input type="checkbox" id="2.21"></td>
+				<td><input type="checkbox" id="3.21"></td>
+				<td><input type="checkbox" id="4.21"></td>
+				<td><input type="checkbox" id="5.21"></td>
+				<td><input type="checkbox" id="6.21"></td>
+				<td><input type="checkbox" id="7.21"></td>
+			</tr>
+		</tbody>
+	</table>
+	<button type="button" onmousedown="submitScheduleRequest()">Submit Schedule Request</button>
+</body>
+
+</html>
