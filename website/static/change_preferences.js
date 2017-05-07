@@ -1,11 +1,10 @@
 'use strict';
 
 var empid;
-var week_num;
 
 window.onload = function() {
     empid = document.getElementById("emp");
-    week_num = document.getElementById("week_num");
+    //week_num = document.getElementById("week_num");
     checkPreferenceBoxes();
 }
 
@@ -29,11 +28,19 @@ function checkPreferenceBoxes() {
 function submitScheduleRequest() {
      // TODO: Do me James!!!
 	var checkedBoxes = getCheckedSpots();
+	var weeknum = document.getElementById("weekid").value;
+	if (weeknum == "" || weeknum == null) {
+		alert("please provide a week number");
+		return;
+	}
 	console.log(checkedBoxes);
-	var jsonPrefs = makeJSONfromIDs(checkedBoxes);
+	console.log(weeknum);
+	var jsonPrefs = makeJSONfromIDs(checkedBoxes,weeknum);
+
 	console.log(jsonPrefs);
         $.getJSON(
-            'http://moneteam-1.csse.rose-hulman.edu:5000/save_preferences/' + empid.innerHTML +'/' +
+            'http://moneteam-1.csse.rose-hulman.edu:5000/save_preferences/'+empid.innerHTML+'/'+
+	    weeknum+'/'+ 
             JSON.stringify(jsonPrefs), {},
             function(data) {
 		    console.log("array sent as string");
@@ -55,10 +62,10 @@ function getCheckedSpots() {
 	return checkedArray;
 }
 
-function makeJSONfromIDs(checkedBoxes) {
+function makeJSONfromIDs(checkedBoxes,weeknum) {
 	var result = [];
 	for (var i = 0; i < checkedBoxes.length; i++) {
-		var current = {"week_id": week_num};
+		var current = {"week_id": weeknum};
 		current["day"] = parseInt(checkedBoxes[i].id.toString()[0]);
 		current["hour"] = parseInt(checkedBoxes[i].id.toString().substring(2));
 		//console.log(i,day,hour)

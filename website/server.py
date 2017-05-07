@@ -313,8 +313,8 @@ def change_preferences_page():
     return render_template("change_preferences.html", empid=empid, message="Hope this works")
 
 
-@app.route('/save_preferences/<int:empid>/<string:prefs>')
-def save_preferences(empid,prefs):
+@app.route('/save_preferences/<int:empid>/<int:weeknum>/<string:prefs>')
+def save_preferences(empid,weeknum,prefs):
     vv = json.loads(prefs)
     for x in vv:
         print(x)
@@ -345,6 +345,7 @@ def setEmpWage():
 def getemployeepreferences(empid):
     query = "SELECT preferences FROM employees "
     query += "WHERE empid = %d;" % int(empid)
+    print("in GETemployeepreferences")
     return employeefunctions.executeEmpQueryCursor(query, empid)
 
 @app.route('/view_work_history/<int:empid>')
