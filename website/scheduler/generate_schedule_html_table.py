@@ -2,7 +2,7 @@ import redis
 import pandas as pd
 import numpy as np
 import re
-from parameters import opening_time, closing_time
+from parameters import opening_time, closing_time, check_employee_consistent
 
 
 def import_schedule(name , week_id , conn):
@@ -22,6 +22,12 @@ def import_schedule(name , week_id , conn):
     return gen_list
 
 def generate_html(week_id, employee_name):
+
+    if not check_employee_consistent(week_id):
+        print "schedule is inconsistent, generating new schedule now"
+        from redis_connect import generate
+        generate()
+
     try:
         conn = redis.Redis(host='moneteam-1.csse.rose-hulman.edu', port=6379);
         schedule = import_schedule(employee_name,week_id,conn)

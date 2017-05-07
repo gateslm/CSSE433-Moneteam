@@ -1,5 +1,6 @@
 import pymonetdb
 import monetdb.sql
+import argparse
 
 def add_book(title,author, isbn, pages):
     if has_book("ISBN",isbn):
@@ -113,6 +114,46 @@ def get_borrower_checked_books(username):
     cursor.execute(select_borrowed_book_query)
     print "books checked by "+str(username)+": "+str(cursor.fetchall())
 
+def check_requirement(list):
+    checked = True
+    if ("title" in list and args.title == None):
+        print "     Please specific -title"
+        checked = False
+    if ("isbn" in list and args.isbn == None):
+        print "     Please specific -isbn"
+        checked = False
+    if ("author" in list and args.author == None):
+        print "     Please specific -author"
+        checked = False
+    if ("author" in list and args.pages == None):
+        print "     Please specific -pages"
+        checked = False
+    if ("property" in list and args.property == None):
+        print "     Please specific -property"
+        checked = False
+    if ("author" in list and args.pages == None):
+        print "     Please specific -pages"
+        checked = False
+    if ("newValue" in list and args.newValue == None):
+        print "     Please specific -newValue"
+        checked = False
+    if ("searchValue" in list and args.searchValue == None):
+        print "     Please specific -searchValue"
+        checked = False
+    if ("bname" in list and args.bname == None):
+        print "     Please specific -bname"
+        checked = False
+    if ("busername" in list and args.busername == None):
+        print "     Please specific -busername"
+        checked = False
+    if ("bphone" in list and args.bphone == None):
+        print "     Please specific -bphone"
+        checked = False
+    if ("attr" in list and args.attr == None):
+        print "     Please specific -attr"
+        checked = False
+    return checked
+
 
 
 
@@ -149,6 +190,67 @@ if __name__ == '__main__':
     # borrower_return_book("jkr",1244)
 
     # get_borrower_checked_books("jkr")
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-fn", help="specify called function")
+    parser.add_argument("-isbn", help = "specify ISBN")
+    parser.add_argument("-author", help = " specify author of the book", type = str, nargs = "+")
+    parser.add_argument('-pages',help = "specify number of pages")
+    parser.add_argument("-title",help = "specify book title")
+    parser.add_argument("-property", help = "specify property for search or edit")
+    parser.add_argument("-newValue", help = "specify new value")
+    parser.add_argument("-searchValue",help="specify search value")
+    parser.add_argument("-bname",help="specify borrower name")
+    parser.add_argument("-bphone",help="specify borrower phone number")
+    parser.add_argument("-busername",help="specify borrower username")
+    parser.add_argument("-attr",help="specify attribute in a document")
+
+    args = parser.parse_args()
+
+    if args.fn == "add_book":
+        if check_requirement(["title",'isbn','author','pages']):
+            globals()[args.fn](args.title,args.isbn,args.author,args.pages)
+    elif args.fn == "delete_book":
+        if (check_requirement(["isbn"])):
+            globals()[args.fn](args.isbn)
+    elif args.fn =="edit_book":
+        if (check_requirement(['isbn','property','newValue'])):
+            globals()[args.fn](args.isbn,args.property,args.newValue)
+    elif args.fn =="search_book":
+        if (check_requirement(['property','searchValue'])):
+            globals()[args.fn](args.property,args.searchValue)
+    elif args.fn == "sort_book_property":
+        if check_requirement(['property']):
+            globals()[args.fn](args.property)
+    elif args.fn == "add_borrower":
+        if check_requirement(['bname','busername','bphone']):
+            globals()[args.fn](args.bname,args.busername,args.bphone)
+    elif args.fn == "delete_borrower":
+        if check_requirement(['busername']):
+            globals()[args.fn](args.busername)
+    elif args.fn == "edit_borrower":
+        if check_requirement(["busername","property","newValue"]):
+            globals()[args.fn](args.busername,args.property,args.newValue)
+    elif args.fn == "search_borrower":
+        if check_requirement(["property",'searchValue']):
+            globals()[args.fn](args.property,args.searchValue)
+    elif args.fn == "borrower_checkout_book":
+        if check_requirement(['busername','isbn']):
+            globals()[args.fn](args.busername,args.isbn)
+    elif args.fn == "get_borrower_checked_books":
+        if check_requirement(["busername"]):
+            globals()[args.fn](args.busername)
+    elif args.fn == "borrower_return_book":
+        if check_requirement(['busername','isbn']):
+            globals()[args.fn](args.busername,args.isbn)
+    elif args.fn == "get_book_checked_users":
+        if check_requirement(['isbn']):
+            globals()[args.fn](args.isbn)
+    elif args.fn == "delete_attr":
+        if check_requirement(['property','searchValue',"attr"]):
+            globals()[args.fn](args.property,args.searchValue,args.attr)
+    else:
+        print "     Invalid Function"
 
 
 

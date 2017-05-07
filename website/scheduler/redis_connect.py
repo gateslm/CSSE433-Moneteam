@@ -5,9 +5,23 @@ from pyomo.environ import *
 from pyomo.opt import *
 import re
 import pandas as pd
-from parameters import week_id
+from parameters import week_id,bts,ssv
+
 
 employees_involved = []
+
+def save_employees(conn):
+    key1 = "week"+str(week_id)+"_bts"
+    key2 = "week"+str(week_id)+"_ssv"
+    if conn.exists(key1):
+        conn.delete(key1)
+    if conn.exists(key2):
+        conn.delete(key2)
+    for bt in bts:
+        conn.rpush(key1,bt)
+    for s in ssv:
+        conn.rpush(key2,s)
+
 
 def generate():
     import auto_scheduler as schedule
@@ -15,11 +29,13 @@ def generate():
     raw_list = raw.split(";")
     ssv_clean = clean_text(raw_list,"x_ssv")
     bts_clean = clean_text(raw_list,"x_bts")
+
     try:
-        conn = redis.Redis(host='moneteam-1.csse.rose-hulman.edu', port=6379);
+        conn = redis.Redis(host='moneteam-1.csse.rose-hulman.edu', port=6379)
         delete_old(conn)
         upload_redis(bts_clean,conn)
         upload_redis(ssv_clean,conn)
+        save_employees(conn)
     except redis.ConnectionError:
         print "redis cannot be connected"
         return "Sorry, redis server is currently unreachable, Please try again later"

@@ -1,5 +1,6 @@
 import connections
 import json
+import redis
 mc3 = connections.monetConn3()
 curs3 = mc3.cursor()
 
@@ -9,11 +10,9 @@ closing_time = 22
 closing_time = 22
 opening_hours = closing_time-opening_time
 shift_diff = opening_hours/2-1
-# bts = ["james","jone","jake","johnny"]
 bts=[]
 bt_salary = 7
 ssv_salary = 14
-# ssv = ["amy","emily",'erica','essabella']
 ssv = []
 minimal_server = 2
 hours_limit_per_week = 45
@@ -22,6 +21,8 @@ n_days_limit = 5
 
 duty_dict = {"manager":"x_ssv","bartender":"x_bts"}
 
+def set_weekID(input):
+    week_id = input
 
 def getAllemployee():
     query = "select empid, workinfo from employees;"
@@ -38,6 +39,38 @@ def getAllemployee():
         else:
             print "unrecognized position"
 
-
 getAllemployee()
+
+def get_current_employees(week_number):
+    key1 = "week"+str(week_number)+"_bts"
+    key2 = "week"+str(week_number)+"_ssv"
+    try:
+        conn = redis.Redis(host='moneteam-1.csse.rose-hulman.edu', port=6379);
+        tem_bts = conn.lrange(key1,0,-1)
+        tem_ssv = conn.lrange(key2,0,-1)
+        employees = []
+        employees+=(tem_bts)
+        employees+=(tem_ssv)
+        return employees
+    except redis.ConnectionError:
+        print "redis is not connected"
+
+def check_employee_consistent(week_number):
+    current_employees = get_current_employees(week_number)
+    # print current_employees
+    # print bts
+    # print ssv
+    for b in bts:
+        if b not in current_employees:
+            return False
+        current_employees.remove(b)
+    for s in ssv:
+        if s not in current_employees:
+            return False
+        current_employees.remove(s)
+    return len(current_employees)==0
+
+
+
+# print check_employee_consistent(1)
 
