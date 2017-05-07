@@ -32,13 +32,16 @@ function submitScheduleRequest() {
 	console.log(checkedBoxes);
 	var jsonPrefs = makeJSONfromIDs(checkedBoxes);
 	console.log(jsonPrefs);
-        $.getJSON(
+        $(function() {
+		$.getJSON(
             'http://moneteam-1.csse.rose-hulman.edu:5000/save_preferences/' + empid.innerHTML +'/' +
             JSON.stringify(jsonPrefs), {},
             function(data) {
 		    console.log("array sent as string");
 		    alert("Preferences submitted to server");
 	    });
+	    alert("Preferences submitted to server");
+	});
 }
 
 function getCheckedSpots() {
