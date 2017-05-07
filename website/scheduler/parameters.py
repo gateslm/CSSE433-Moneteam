@@ -4,7 +4,7 @@ import redis
 mc3 = connections.monetConn3()
 curs3 = mc3.cursor()
 
-week_id = 1
+# week_id = 1
 opening_time = 8
 closing_time = 22
 closing_time = 22
