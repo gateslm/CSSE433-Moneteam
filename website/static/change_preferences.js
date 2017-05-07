@@ -1,9 +1,11 @@
 'use strict';
 
 var empid;
+var week_num;
 
 window.onload = function() {
     empid = document.getElementById("emp");
+    week_num = document.getElementById("week_num");
     checkPreferenceBoxes();
 }
 
@@ -56,7 +58,7 @@ function getCheckedSpots() {
 function makeJSONfromIDs(checkedBoxes) {
 	var result = [];
 	for (var i = 0; i < checkedBoxes.length; i++) {
-		var current = {"week_id": 1};
+		var current = {"week_id": week_num};
 		current["day"] = parseInt(checkedBoxes[i].id.toString()[0]);
 		current["hour"] = parseInt(checkedBoxes[i].id.toString().substring(2));
 		//console.log(i,day,hour)

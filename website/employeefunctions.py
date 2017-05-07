@@ -75,6 +75,7 @@ def executeEmpQueryCursor(query, empid):
         curs = mc1.cursor()
         print(curs)
         x = curs.execute(query)
+        y = curs.fetchall()
         print("Mc1 cursor execute result", x)
         curs.close()
     else:
@@ -82,10 +83,11 @@ def executeEmpQueryCursor(query, empid):
         curs = mc2.cursor()
         print(curs)
         x = curs.execute(query)
+        y = curs.fetchall()
         print("Mc2 cursor execute result", x)
         curs.close()
     print("returning from exec query cursor")
-    return x, curs.fetchall()
+    return x, y
 
 def executeEmpQueryCursorAll(query):
     print("started to exec query cursor all")
@@ -93,6 +95,8 @@ def executeEmpQueryCursorAll(query):
     curs = mc3.cursor()
     x = curs.execute(query)
     y = curs.fetchall()
+    for z in y:
+        print(z)
     curs.close()
     print("Mc3 cursor execute result", x)
     print("returning from exec query cursor")
