@@ -30,8 +30,8 @@ try:
 except redis.ConnectionError:
     print "redis is unreachable"
 
-set_weekID(1)
 week_id = conn.get("currentWeekID")
+print "In parameter, week id is "+str(week_id)
 
 def getAllemployee():
     query = "select empid, workinfo from employees;"

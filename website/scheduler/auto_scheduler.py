@@ -6,7 +6,7 @@ from pyomo.opt import *
 from parameters import *
 from import_pref import getAllPrefs
 from preference_setting import add_pref
-# import redis
+
 
 import json
 
