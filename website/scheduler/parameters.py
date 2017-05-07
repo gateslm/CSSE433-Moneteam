@@ -23,7 +23,7 @@ duty_dict = {"manager":"x_ssv","bartender":"x_bts"}
 
 def set_weekID(input):
     conn.set("currentWeekID",input)
-    print "week_ID is set to "+str(week_id)
+    print "week_ID is set to "+str(input)
 
 try:
     conn = redis.Redis(host='moneteam-1.csse.rose-hulman.edu', port=6379)
