@@ -15,6 +15,7 @@ from bson.objectid import ObjectId
 import ast
 from scheduler import generate_schedule_html_table as GenSched
 from scheduler import redis_connect
+from scheduler import parameters
 import numpy as np
 import re
 import pandas as pd
@@ -107,8 +108,16 @@ def edit_employee_info():
 @app.route('/load_change_password_page', methods=["POST"])
 def load_change_password_page():
     empID = request.form['empID']
-
     return render_template("edit_password.html", empid=empID)
+
+@app.route('/change_password', methods=["POST"])
+def change_password():
+    empID = request.form['empID']
+    oldpass = request.form['orgPassword']
+    newpass = request.form['newPassword']
+    newpass2 = request.form['newPasswordCheck']
+    res = employeefunctions.changePassword(empID,oldpass,newpass)
+    return render_template("employee_homepage.html", empid=empID, message=res)
 
 @app.route('/load_employee_edit_page', methods=["POST"])
 def load_employee_edit_page():
@@ -290,6 +299,8 @@ def make_change_preference_page(emp):
 @app.route('/generate_new_schedules', methods=["POST"])
 def generate_new_schedules():
     adminID = request.form['adminID']
+    weekID = request.form['weekID']
+    parameters.set_weekID(weekID)
     res = redis_connect.generate()
     #res = "hey"
     return render_template("admin_settings_page.html", empid=adminID, message=res)

@@ -8,6 +8,9 @@ mc1 = connections.monetConn1()
 mc2 = connections.monetConn2()
 mc3 = connections.monetConn3()
 
+mcurs3 = mc3.default_cursor
+
+
 jsonattrs = ["password","address","workinfo","preferences","paymentinfo"]
 
 #cursor = mc.cursor()
@@ -57,12 +60,12 @@ def executeEmpQuery(query, empid):
     if empid % 2 == 1:
         # Odd empIDs go to node 1
         x = mc1.execute(query)
-        #print("Mc1 execute result", x)
+        print("Mc1 execute result", x)
         mc1.commit()
     else:
         # Even empIDs go to node 2
         x = mc2.execute(query)
-        #print("Mc2 execute result", x)
+        print("Mc2 execute result", x)
         mc2.commit()
     print("returning from exec query")
     return x
@@ -90,16 +93,16 @@ def executeEmpQueryCursor(query, empid):
     return x, y
 
 def executeEmpQueryCursorAll(query):
-    print("started to exec query cursor all")
+    print("started to exec query /cursor/ all")
     print(query)
-    curs = mc3.cursor()
-    x = curs.execute(query)
-    y = curs.fetchall()
+    c = mc3.cursor()
+    x = c.execute(query)
+    y = c.fetchall()
     for z in y:
         print(z)
-    curs.close()
-    print("Mc3 cursor execute result", x)
+    print("Mc3 execute result", x)
     print("returning from exec query cursor")
+    c.close()
     return x, y
 
 
@@ -167,7 +170,9 @@ def getAllEmployees():
 def checkIfPwdsMatch(empid, givenPwd):
     query = "select password from employees where empid = %d;" % (empid)
     c, vals = executeEmpQueryCursorAll(query)
-    realPwd = repr(vals[0][0])[16:-3]
+    for v in vals:
+        print(v)
+    realPwd = repr(vals[0])[17:-5]
     print(realPwd)
     print(getPwdHash(givenPwd))
     if realPwd != getPwdHash(givenPwd):
@@ -190,11 +195,10 @@ def getManagerPwds():
 
 def getEmpsPrefs(empid):
     query = "select preferences from employees where empid = %d;" % empid
-    cursor = mc3.cursor()
-    x = cursor.execute(query)
-    cursorResult = cursor.fetchone()
-    pp = json.loads(cursorResult[0])
-    cursor.close()
+    c, vals = executeEmpQueryCursorAll(query)
+    print(c)
+    print(vals)
+    pp = json.loads(vals[0][0])
     for y in pp:
         print(y)
     return pp
@@ -234,6 +238,23 @@ def updateWage(empid,newWage):
     res = executeEmpQuery(query2,empid)
     print(res)
 
+def changePassword(empid,orgpass,newpass):
+    if not checkIfEmpExists(empid):
+        print("This empid is not valid.")
+        return "EmpID is not valid."
+    if not checkIfPwdsMatch(empid,orgpass):
+        print("Old password is not valid.")
+        return "Old password is not valid."
+
+    print("making new pwd hash")
+    newPwdHash = getPwdHash(newpass)
+    pwdJSONconvert = getMonetConvertedVal(json.dumps({"password":newPwdHash}))
+    q = "update employees1 set password = %s where empid = %d;" % (pwdJSONconvert, empid) 
+    q = changeQueryTable(q,empid)
+    print(q)
+    x = executeEmpQuery(q,empid)
+    print(x)
+    return "Password change successfully."
 
 
 #getEmpsPrefs(101)
