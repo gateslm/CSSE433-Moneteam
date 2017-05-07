@@ -4,7 +4,7 @@ import redis
 mc3 = connections.monetConn3()
 curs3 = mc3.cursor()
 
-# week_id = 1
+week_id = 1
 opening_time = 8
 closing_time = 22
 closing_time = 22
@@ -24,6 +24,9 @@ duty_dict = {"manager":"x_ssv","bartender":"x_bts"}
 def set_weekID(input):
     week_id = input
     print "week_ID is set to "+str(week_id)
+
+def get_week_id():
+    return week_id
 
 def getAllemployee():
     query = "select empid, workinfo from employees;"
