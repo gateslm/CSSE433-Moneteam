@@ -14,6 +14,8 @@ def store_work_history(week_id):
         return "redis is unavailable now"
     key1 = "week"+str(week_id)+"_bts"
     key2 = "week"+str(week_id)+"_ssv"
+    bts = conn.lrange(key1,0,-1)
+
 
 
 

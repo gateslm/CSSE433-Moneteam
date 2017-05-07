@@ -23,6 +23,7 @@ duty_dict = {"manager":"x_ssv","bartender":"x_bts"}
 
 def set_weekID(input):
     week_id = input
+    print "week_ID is set to "+str(week_id)
 
 def getAllemployee():
     query = "select empid, workinfo from employees;"
