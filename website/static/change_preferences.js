@@ -37,6 +37,7 @@ function submitScheduleRequest() {
             JSON.stringify(jsonPrefs), {},
             function(data) {
 		    console.log("array sent as string");
+		    alert("Preferences submitted to server");
 	    });
 }
 

@@ -112,7 +112,7 @@ def load_change_password_page():
 
 @app.route('/change_password', methods=["POST"])
 def change_password():
-    empID = request.form['empID']
+    empID = int(request.form['empID'])
     oldpass = request.form['orgPassword']
     newpass = request.form['newPassword']
     newpass2 = request.form['newPasswordCheck']
