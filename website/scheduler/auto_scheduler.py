@@ -6,9 +6,8 @@ from pyomo.opt import *
 from parameters import *
 from import_pref import getAllPrefs
 from preference_setting import add_pref
-week_id = get_week_id()
 
-print "this is week: "+str(week_id)
+
 import json
 
 # Initialize

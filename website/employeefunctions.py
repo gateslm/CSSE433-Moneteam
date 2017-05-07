@@ -108,6 +108,7 @@ def executeEmpQueryCursorAll(query):
 
 def checkIfEmpExists(empid):
     print("Start to check if emp exists")
+    empid = int(empid)
     query = "Select count(*) from employees1 where empid = %d;" % empid
     query = changeQueryTable(query,empid)
     #if empid % 2 == 0:
