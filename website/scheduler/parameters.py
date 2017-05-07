@@ -4,7 +4,7 @@ import redis
 mc3 = connections.monetConn3()
 curs3 = mc3.cursor()
 
-week_id = 1
+# week_id = 1
 opening_time = 8
 closing_time = 22
 closing_time = 22
@@ -22,11 +22,16 @@ n_days_limit = 5
 duty_dict = {"manager":"x_ssv","bartender":"x_bts"}
 
 def set_weekID(input):
-    week_id = input
+    conn.set("currentWeekID",input)
     print "week_ID is set to "+str(week_id)
 
-def get_week_id():
-    return week_id
+try:
+    conn = redis.Redis(host='moneteam-1.csse.rose-hulman.edu', port=6379)
+except redis.ConnectionError:
+    print "redis is unreachable"
+
+set_weekID(1)
+week_id = conn.get("currentWeekID")
 
 def getAllemployee():
     query = "select empid, workinfo from employees;"
