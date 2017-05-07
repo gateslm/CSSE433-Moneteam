@@ -67,6 +67,7 @@ function getCheckedSpots() {
 }
 
 function makeJSONfromIDs(checkedBoxes,weeknum) {
+	weeknum = parseInt(weeknum);
 	var result = [];
 	for (var i = 0; i < checkedBoxes.length; i++) {
 		var current = {"week_id": weeknum};
