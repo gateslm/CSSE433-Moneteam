@@ -11,14 +11,14 @@ window.onload = function() {
 function loadDocuments() {
     var docDiv = document.getElementById("documentViewer");
     $.getJSON(
-        'http://moneteam-1.csse.rose-hulman.edu:5000/get_all_document_list/' , {},
+        'http://moneteam-1.csse.rose-hulman.edu:5000/get_all_document_list' , {},
         function(data) {
             console.log(data);
             var res = data.res;
             for (var y = 0; y < res.length; y++) {
                 var current = res[y];
                 var elementDiv = document.createElement("div");
-                elementDiv.innerHTML = current[1] + ": " + current[2] + "       " ;
+                elementDiv.innerHTML = current[0] + ": " + current[2] + "       " ;
                 elementDiv.style="display:block;border-style:solid;border-width:medium;padding:5px;margin:5px;";
 
                 var form = document.createElement("form");

@@ -280,7 +280,7 @@ def admin_view_documents():
 
 @app.route('/get_all_document_list')
 def get_all_document_list():
-    empid = int(emp)
+    # empid = int(emp)
     result = mongoDB.fs.files.find()
     print(result)
     ls = []
