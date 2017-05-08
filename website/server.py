@@ -261,8 +261,12 @@ def get_document_list(emp):
 
 @app.route('/view_documents', methods=["POST"])
 def view_documents():
-    empid = int(request.form['empID'])
-    return render_template("document.html", empid=empid, message="")
+    try:
+        print(mongoDB.server_info())
+        empid = int(request.form['empID'])
+        return render_template("document.html", empid=empid, message="")
+    except pymongo.errors.ConnectionFailure:
+        return render_template("database_down.html", message="Cannot view documents, Mongo is unavailable currently. ")
 
 @app.route('/get_a_document', methods=["POST"])
 def get_a_document():
