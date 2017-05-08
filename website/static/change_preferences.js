@@ -34,7 +34,9 @@ function submitScheduleRequest() {
 		return;
 	}
 	console.log(checkedBoxes);
+	weeknum = parseInt(weeknum);
 	console.log(weeknum);
+	console.log(typeof(weeknum));
 	var jsonPrefs = makeJSONfromIDs(checkedBoxes,weeknum);
 
 	console.log(jsonPrefs);
