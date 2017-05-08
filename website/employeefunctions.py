@@ -8,7 +8,7 @@ mc1 = connections.monetConn1()
 mc2 = connections.monetConn2()
 mc3 = connections.monetConn3()
 
-mcurs3 = mc3.default_cursor
+mcurs3 = mc3.cursor()
 
 
 jsonattrs = ["password","address","workinfo","preferences","paymentinfo"]
@@ -95,7 +95,8 @@ def executeEmpQueryCursor(query, empid):
 def executeEmpQueryCursorAll(query):
     print("started to exec query /cursor/ all")
     print(query)
-    c = mc3.cursor()
+    #c = mc3.cursor()
+    c = mcurs3
     x = c.execute(query)
     y = c.fetchall()
     for z in y:
@@ -162,7 +163,8 @@ def changeQueryTable(query, empid):
 
 def getAllEmployees():
     query = "select * from employees;"
-    cursor = mc3.cursor()
+    #cursor = mc3.cursor()
+    cursor = mcurs3
     x = cursor.execute(query)
     y = cursor.fetchall()
     print('\n\n\n' + str(x) + '\n\n\n')
@@ -184,7 +186,8 @@ def checkIfPwdsMatch(empid, givenPwd):
 def getManagerPwds():
     query = "SELECT json.filter(password, \'password\') as pwd, "
     query += "json.filter(workinfo, \'position\') FROM employees "
-    cursor = mc3.cursor()
+    #cursor = mc3.cursor()
+    cursor = mcurs3
     x = cursor.execute(query)
     cursorResult = cursor.fetchall()
     pwds = []
@@ -257,5 +260,7 @@ def changePassword(empid,orgpass,newpass):
     print(x)
     return "Password change successfully."
 
+def getMC3():
+    return mc3
 
 #getEmpsPrefs(101)
