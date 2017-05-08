@@ -23,7 +23,7 @@ duty_dict = {"manager":"x_ssv","bartender":"x_bts"}
 
 def set_weekID(input):
     conn.set("currentWeekID",input)
-    print "week_ID is set to "+str(input)
+    # print "week_ID is set to "+str(input)
 
 try:
     conn = redis.Redis(host='moneteam-1.csse.rose-hulman.edu', port=6379)
@@ -31,7 +31,7 @@ except redis.ConnectionError:
     print "redis is unreachable"
 
 week_id = conn.get("currentWeekID")
-print "In parameter, week id is "+str(week_id)
+# print "In parameter, week id is "+str(week_id)
 
 def getAllemployee():
     query = "select empid, workinfo from employees;"
