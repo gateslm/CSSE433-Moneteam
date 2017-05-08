@@ -6,7 +6,7 @@ import getEmpPWD
 import employeefunctions
 import connections
 import hashlib
-from pymongo import MongoClient
+from pymongo import MongoClient, errors
 import gridfs
 import pymonetdb
 import redis
@@ -61,10 +61,16 @@ def go_to_admin_homepage():
 
 @app.route('/upload_resume_page', methods=["POST"])
 def upload_resume_page():
+    try:
+        result = mongoDB.fs.files.find()
+        for r in result:
+            t =r
 
-    empid = request.form['empID']
+        empid = request.form['empID']
 
-    return render_template("resume_upload.html", empid=empid)
+        return render_template("resume_upload.html", empid=empid)
+    except errors.ServerSelectionTimeoutError as err:
+        return render_template("database_down.html", message="Cannot upload documents, Mongo is currently unavailable.")
 
 @app.route('/add_employee', methods=["POST"])
 def add_employee():
@@ -262,11 +268,15 @@ def get_document_list(emp):
 @app.route('/view_documents', methods=["POST"])
 def view_documents():
     try:
-        print(mongoDB.server_info())
+        result = mongoDB.fs.files.find()
+        for r in result:
+            t = r
         empid = int(request.form['empID'])
         return render_template("document.html", empid=empid, message="")
-    except pymongo.errors.ConnectionFailure:
-        return render_template("database_down.html", message="Cannot view documents, Mongo is unavailable currently. ")
+    except errors.ServerSelectionTimeoutError as err:
+        print("Unable to connect to Mongo")
+        print(err)
+        return render_template("database_down.html", message="Cannot view documents, Mongo is currently unavailable. ")
 
 @app.route('/get_a_document', methods=["POST"])
 def get_a_document():
