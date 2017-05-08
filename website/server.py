@@ -265,6 +265,30 @@ def get_document_list(emp):
         ls.append([r['empid'], str(r['_id']), r['filename']])
     return json.dumps({"res":ls})
 
+@app.route('/admin_view_documents', methods=["POST"])
+def admin_view_documents():
+    try:
+        result = mongoDB.fs.files.find()
+        for r in result:
+            t = r
+        empid = int(request.form['adminID'])
+        return render_template("admin_document_viewer.html", empid=empid, message="")
+    except errors.ServerSelectionTimeoutError as err:
+        print("Unable to connect to Mongo")
+        print(err)
+        return render_template("database_down.html", message="Cannot view documents, Mongo is currently unavailable. ")
+
+@app.route('/get_all_document_list')
+def get_all_document_list():
+    empid = int(emp)
+    result = mongoDB.fs.files.find()
+    print(result)
+    ls = []
+    for r in result:
+        print(r)
+        ls.append([r['empid'], str(r['_id']), r['filename']])
+    return json.dumps({"res":ls})
+
 @app.route('/view_documents', methods=["POST"])
 def view_documents():
     try:
