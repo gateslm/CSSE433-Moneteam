@@ -7,6 +7,7 @@ from scheduler import parameters
 from scheduler import redis_connect
 import numpy as np
 import pandas as pd
+import json
 
 def get_redis_history(week_id,employee):
     conn = redis_conn.redisConn()
@@ -32,9 +33,15 @@ def import_history(week_id):
         key = str(e)+"_"+str(week_id)
         doc = {"key":key,"schedule":df.to_json()}
         db.insert_one(doc)
+
+
+    print "import work history done"
     return "all employees' working history for week "+str(week_id)+" should have been saved to mongo at this point"
 
+
     # print doc
+
+import_history(1)
 
 
 
