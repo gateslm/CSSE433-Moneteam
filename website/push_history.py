@@ -26,16 +26,14 @@ def import_history(week_id):
     db = mongoClient['employee_history']
 
 
-    e = employees[0]
-    df= get_redis_history(week_id,e,)
-
-    key = str(e)+"_"+str(week_id)
-    doc = {"key":key,"schedule":df.to_json()}
-
-    db.insert_one(doc)
+    for e in employees:
+        e = employees[0]
+        df= get_redis_history(week_id,e,)
+        key = str(e)+"_"+str(week_id)
+        doc = {"key":key,"schedule":df.to_json()}
+        db.insert_one(doc)
     # print doc
 
-import_history(1)
 
 
 
@@ -68,4 +66,4 @@ def get_weeknums_from_monet():
 
 
 
-print(employeefunctions.getMonetConvertedVal({'vals':[1,2,3]}))
+# print(employeefunctions.getMonetConvertedVal({'vals':[1,2,3]}))

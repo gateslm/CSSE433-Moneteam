@@ -10,26 +10,26 @@ def mongoConn():
     cc = mongoConn.moneteam
     return cc
 
-def store_work_history(week_id):
-    conn = mongoConn()
-    try:
-        conn = redis.Redis(host='moneteam-1.csse.rose-hulman.edu', port=6379)
-    except redis.ConnectionError:
-        return "redis is unavailable now"
-    key1 = "week"+str(week_id)+"_bts"
-    key2 = "week"+str(week_id)+"_ssv"
-    bts = conn.lrange(key1,0,-1)
-    ssv = conn.lrange(key2,0,-1)
-    
-    b = bts[0]
-    schedule = import_schedule(b,week_id,conn)
-    schedule = np.transpose(schedule)
-    df = pd.DataFrame(schedule,columns = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"])
+# def store_work_history(week_id):
+#     conn = mongoConn()
+#     try:
+#         conn = redis.Redis(host='moneteam-1.csse.rose-hulman.edu', port=6379)
+#     except redis.ConnectionError:
+#         return "redis is unavailable now"
+#     key1 = "week"+str(week_id)+"_bts"
+#     key2 = "week"+str(week_id)+"_ssv"
+#     bts = conn.lrange(key1,0,-1)
+#     ssv = conn.lrange(key2,0,-1)
+#
+#     b = bts[0]
+#     schedule = import_schedule(b,week_id,conn)
+#     schedule = np.transpose(schedule)
+#     df = pd.DataFrame(schedule,columns = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"])
+#
+#     df.index = range(opening_time,closing_time+1)
+#     print df.to_json()
 
-    df.index = range(opening_time,closing_time+1)
-    print df.to_json()
-
-store_work_history(2)
+# store_work_history(2)
     
     
 
