@@ -28,10 +28,12 @@ def import_history(week_id):
 
     for e in employees:
         e = employees[0]
-        df= get_redis_history(week_id,e,)
+        df= get_redis_history(week_id,e)
         key = str(e)+"_"+str(week_id)
         doc = {"key":key,"schedule":df.to_json()}
         db.insert_one(doc)
+    return "all employees' working history for week "+str(week_id)+" should have been saved to mongo at this point"
+
     # print doc
 
 
