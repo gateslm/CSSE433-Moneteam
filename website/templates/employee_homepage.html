@@ -35,6 +35,11 @@
         <input type="hidden" name="empID" value="{{empid}}" />
         <input type="submit" value="Change Password" />
     </form>
+    <form action="/view_work_history_action" method="post">
+        <input type="hidden" name="empID" value="{{empid}}" />
+        WeekID: <input type="number" name="weekID" required/>
+        <input type="submit" value="View work history" />
+    </form>
 </body>
 
 </html>

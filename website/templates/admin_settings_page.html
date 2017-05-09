@@ -27,5 +27,10 @@
         <input type="hidden" name="adminID" value="{{empid}}"/>
         <input type="submit" value="View all documents"/>
       </form>
+      <form action="/push_history" method="post">
+        <input type="hidden" name="adminID" value="{{empid}}"/>
+        	WeekID: <input type="number" name="weekID" required/>
+        <input type="submit" value="Push Work History"/>
+      </form>
     </body>
 </html>

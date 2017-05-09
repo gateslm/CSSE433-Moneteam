@@ -16,6 +16,8 @@ import ast
 from scheduler import generate_schedule_html_table as GenSched
 from scheduler import redis_connect
 from scheduler import parameters
+import push_history
+import view_history
 import numpy as np
 import re
 import pandas as pd
@@ -390,6 +392,38 @@ def getemployeepreferences(empid):
 def view_work_history(empid):
     result = mongoDB.pastWork.find()
     return jsonify(result)
+
+@app.route('/view_work_history_action', methods=["POST"])
+def view_work_history_action():
+    try:
+        result = mongoDB.fs.files.find()
+        for r in result:
+            t = r
+        empid = int(request.form['empUD'])
+        week_id = int(request.form['weekID'])
+
+        resultHTML = view_history.view_history(empid, week_id)
+
+        return render_template("view_history.html", empid=adminid, html=resultHTML)
+    except errors.ServerSelectionTimeoutError as err:
+        print(err)
+        return render_template("database_down.html", message="Cannot push schedule, Mongo is currently unavailable. ")
+
+@app.route('/push_history', methods=["POST"])
+def push_history_action():
+    try:
+        result = mongoDB.fs.files.find()
+        for r in result:
+            t = r
+        adminid = int(request.form['adminID'])
+        week_id = int(request.form['weekID'])
+
+        result = push_history.import_history(week_id)
+
+        return render_template("admin_settings_page.html", empid=adminid, message=result)
+    except errors.ServerSelectionTimeoutError as err:
+        print(err)
+        return render_template("database_down.html", message="Cannot push schedule, Mongo is currently unavailable. ")
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

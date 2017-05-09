@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+</head>
+
+<body>
+
+    <div>
+        Employee Name: {{ empid }}
+    </div>
+    <form action="/employee_homepage" method="post">
+  		<input type="hidden" name="empID" value="{{empid}}" />
+  		<input type="submit" value="Go to homepage" />
+  	</form>
+    <div>
+	{% autoescape off %}
+	{{ html }}
+	{% endautoescape %}
+    </div>
+</body>
+
+</html>
