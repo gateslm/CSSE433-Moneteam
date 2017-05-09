@@ -399,12 +399,12 @@ def view_work_history_action():
         result = mongoDB.fs.files.find()
         for r in result:
             t = r
-        empid = int(request.form['empUD'])
+        empid = int(request.form['empID'])
         week_id = int(request.form['weekID'])
 
         resultHTML = view_history.view_history(empid, week_id)
 
-        return render_template("view_history.html", empid=adminid, html=resultHTML)
+        return render_template("view_history.html", empid=empid, html=resultHTML)
     except errors.ServerSelectionTimeoutError as err:
         print(err)
         return render_template("database_down.html", message="Cannot push schedule, Mongo is currently unavailable. ")
