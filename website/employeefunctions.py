@@ -80,7 +80,7 @@ def executeEmpQueryCursor(query, empid):
         x = curs.execute(query)
         y = curs.fetchall()
         print("Mc1 cursor execute result", x)
-        curs.close()
+        #curs.close()
     else:
         # Even empIDs go to node 2
         curs = mc2.cursor()
@@ -88,7 +88,7 @@ def executeEmpQueryCursor(query, empid):
         x = curs.execute(query)
         y = curs.fetchall()
         print("Mc2 cursor execute result", x)
-        curs.close()
+        #curs.close()
     print("returning from exec query cursor")
     return x, y
 
@@ -103,7 +103,7 @@ def executeEmpQueryCursorAll(query):
         print(z)
     print("Mc3 execute result", x)
     print("returning from exec query cursor")
-    c.close()
+    #c.close()
     return x, y
 
 

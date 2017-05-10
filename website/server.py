@@ -356,11 +356,21 @@ def change_preferences_page():
 @app.route('/save_preferences/<int:empid>/<int:weeknum>/<string:prefs>')
 def save_preferences(empid,weeknum,prefs):
     vv = json.loads(prefs)
+    print("in save_prefs")
     for x in vv:
         print(x)
     #vv2 = str(vv).encode('ascii','ignore')
-    vv2 = employeefunctions.getMonetConvertedVal(json.dumps(vv))
-    query = "update employees1 set preferences = %s where empid = %d" % (vv2,empid)
+    q0  =  "select preferences from employees where empid = %d;" % empid
+    c, vals = employeefunctions.executeEmpQueryCursorAll(q0)
+    print(vals)
+    #prefs = json.loads(prefs)
+    prefs = json.loads(vals[1,-1].split(","))
+    pp = {k: v for (k, v) in (vv.items() + prefs.items())}
+    print("new, hopefully merged prefs are: ")
+    print(pp)
+
+    vv2 = employeefunctions.getMonetConvertedVal(json.dumps(pp))
+    query = "update employees1 set preferences = %s where empid = %d;" % (vv2,empid)
     query = employeefunctions.changeQueryTable(query,empid)
     print(query)
     res = employeefunctions.executeEmpQuery(query,empid)
