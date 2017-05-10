@@ -74,7 +74,18 @@ def get_weeknums_from_monet():
     # print("returning", res[0])
     return res[0]
 
+def delete_weeknums_in_monet():
+    data = {"vals": []}
+    converted = employeefunctions.getMonetConvertedVal(json.dumps(data))
+    q1  = "update weeknumtable set weeknums = %s" % converted
+    conn3 = employeefunctions.getMC3()
+    c1 = conn3.execute(q1)
+    #print(c1)
+    print(get_weeknums_from_monet())
+    conn3.commit()
+
 
 
 
 # print(employeefunctions.getMonetConvertedVal({'vals':[1,2,3]}))
+delete_weeknums_in_monet()

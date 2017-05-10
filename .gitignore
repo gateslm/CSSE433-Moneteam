@@ -4,3 +4,4 @@ connections.py
 .monetdb
 website/*.pyc
 *.pyc
+*.swp
