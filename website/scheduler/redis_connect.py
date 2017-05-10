@@ -19,8 +19,10 @@ def save_employees(conn):
         conn.delete(key2)
     for bt in bts:
         conn.rpush(key1,bt)
+        print "store week bts"
     for s in ssv:
         conn.rpush(key2,s)
+        print "store week ssv"
 
 
 def generate():
@@ -36,6 +38,7 @@ def generate():
         upload_redis(bts_clean,conn)
         upload_redis(ssv_clean,conn)
         save_employees(conn)
+
     except redis.ConnectionError:
         print "redis cannot be connected"
         return "Sorry, redis server is currently unreachable, Please try again later"

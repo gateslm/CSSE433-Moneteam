@@ -2,7 +2,6 @@ add_book -title random_book2 -isbn 3344 -author prof5 -pages lskjdf
 
 delete_book -isbn 123
 
-
 edit_book -isbn 0824543 -property Author -newValue prof7 
 
 sort_book_property -property Author

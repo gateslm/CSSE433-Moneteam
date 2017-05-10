@@ -23,8 +23,9 @@ def get_redis_history(week_id,employee):
 
 
 def import_history(week_id):
+    # print "trying to import week: "+str(week_id)
     employees = parameters.get_current_employees(week_id)
-
+    # print employees
     mongoClient = mongoConn()
 
     db = mongoClient['employee_history']
@@ -34,6 +35,7 @@ def import_history(week_id):
         key = str(e)+"_"+str(week_id)
         # print key
         doc = {"key":key,"schedule":df.to_json()}
+        # print doc
         try:
             db.insert_one(doc)
         except errors.ServerSelectionTimeoutError :
@@ -46,7 +48,7 @@ def import_history(week_id):
 
     # print doc
 
-# import_history(1)
+import_history(3)
 
 
 def put_weeknum_into_monet(weeknum):
