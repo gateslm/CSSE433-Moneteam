@@ -2,7 +2,7 @@
 from scheduler import mongo_connect
 import pandas as pd
 import re
-from push_history import import_history,get_weeknums_from_monet
+from push_history import import_history,get_weeknums_from_monet,delete_weeknums_in_monet
 
 
 def view_history(employee_name,week_id):
@@ -16,6 +16,8 @@ def view_history(employee_name,week_id):
         for week in weeks:
             print "process week: "+week+" now."
             import_history(int(week))
+        delete_weeknums_in_monet()
+        print "finished processing un_processed weeks"
 
     key = str(employee_name)+"_"+str(week_id)
     mongoClient = mongo_connect.mongoConn()
