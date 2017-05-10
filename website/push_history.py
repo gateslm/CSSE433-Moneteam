@@ -8,6 +8,7 @@ from scheduler import redis_connect
 import numpy as np
 import pandas as pd
 import json
+from pymongo import errors
 
 def get_redis_history(week_id,employee):
     conn = redis_conn.redisConn()
@@ -22,18 +23,21 @@ def get_redis_history(week_id,employee):
 
 def import_history(week_id):
     employees = parameters.get_current_employees(week_id)
+
     mongoClient = mongo_connect.mongoConn()
 
     db = mongoClient['employee_history']
 
-
     for e in employees:
         df= get_redis_history(week_id,e)
         key = str(e)+"_"+str(week_id)
-        print key
+        # print key
         doc = {"key":key,"schedule":df.to_json()}
-        db.insert_one(doc)
-
+        try:
+            db.insert_one(doc)
+        except errors.ServerSelectionTimeoutError :
+            put_weeknum_into_monet(week_id)
+            return "Mongo is not availble right now, but the commands are stored to be executed later"
 
     # print "import work history done"
     return "all employees' working history for week "+str(week_id)+" should have been saved to mongo at this point"
@@ -42,8 +46,6 @@ def import_history(week_id):
     # print doc
 
 # import_history(1)
-
-
 
 
 

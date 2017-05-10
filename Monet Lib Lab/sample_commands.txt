@@ -2,11 +2,8 @@ add_book -title random_book2 -isbn 3344 -author prof5 -pages lskjdf
 
 delete_book -isbn 123
 
-delete_attr -property ISBN -searchValue 3333 -attr Author
 
 edit_book -isbn 0824543 -property Author -newValue prof7 
-
-search_book -property ISBN -searchValue 3333
 
 sort_book_property -property Author
 

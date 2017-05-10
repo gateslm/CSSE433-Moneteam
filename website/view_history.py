@@ -11,12 +11,11 @@ def view_history(employee_name,week_id):
     # print unprocessed_weeks
     # print unprocessed_weeks[0]
     raw_weeks = str(unprocessed_weeks[0]).replace("[","").replace("]","")
-    weeks = raw_weeks.split(",")
-    for week in weeks:
-         import_history(int(week))
-
-    # print weeks
-
+    if not len(raw_weeks)<=0:
+        weeks = raw_weeks.split(",")
+        for week in weeks:
+            print "process week: "+week+" now."
+            import_history(int(week))
 
     key = str(employee_name)+"_"+str(week_id)
     mongoClient = mongo_connect.mongoConn()
