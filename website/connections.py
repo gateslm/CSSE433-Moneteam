@@ -5,7 +5,7 @@ import pymongo
 #redisConn = redis.Redis()
 
 def mongoConn():
-    mongoConn = pymongo.MongoClient(['moneteam-1.csse.rose-hulman.edu:40001', 'moneteam-2.csse.rose-hulman.edu:40002', 'moneteam-3.csse.rose-hulman.edu:40003'], serverSelectionTimeoutMS=10000)
+    mongoConn = pymongo.MongoClient(['Amoneteam-1.csse.rose-hulman.edu:40001', 'Amoneteam-2.csse.rose-hulman.edu:40002', 'Amoneteam-3.csse.rose-hulman.edu:40003'], serverSelectionTimeoutMS=10000)
     cc = mongoConn.moneteam
     return cc
 

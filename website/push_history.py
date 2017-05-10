@@ -30,6 +30,8 @@ def import_history(week_id):
 
     db = mongoClient['employee_history']
 
+    print("This is all employees: " + str(employees))
+    
     for e in employees:
         df= get_redis_history(week_id,e)
         key = str(e)+"_"+str(week_id)
@@ -37,7 +39,8 @@ def import_history(week_id):
         doc = {"key":key,"schedule":df.to_json()}
         # print doc
         try:
-            db.insert_one(doc)
+            result = db.insert_one(doc)
+            print("Import history insert_one result: " + str(result))
         except errors.ServerSelectionTimeoutError :
             put_weeknum_into_monet(week_id)
             return "Mongo is not availble right now, but the commands are stored to be executed later"

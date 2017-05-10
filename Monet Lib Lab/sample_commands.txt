@@ -2,17 +2,17 @@ add_book -title random_book2 -isbn 3344 -author prof5 -pages lskjdf
 
 delete_book -isbn 123
 
-edit_book -isbn 0824543 -property Author -newValue prof7 
 
-sort_book_property -property Author
+edit_book -isbn 0824543 -property Authors -newValue prof7 
+
+sort_book_property -property Authors
+
 
 add_borrower -bname james -busername lbj -bphone 777
 
 delete_borrower -busername victorZ
 
 edit_borrower -busername lbj -property Name -newValue victor
-
-search_borrower -property Username -searchValue lbj
 
 borrower_checkout_book -busername victorZ -isbn 2222
 
