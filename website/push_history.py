@@ -1,6 +1,7 @@
 import employeefunctions
 
-from scheduler import mongo_connect
+# from scheduler import mongo_connect
+from connections import mongoConn
 from scheduler import generate_schedule_html_table
 from scheduler import redis_conn
 from scheduler import parameters
@@ -24,7 +25,7 @@ def get_redis_history(week_id,employee):
 def import_history(week_id):
     employees = parameters.get_current_employees(week_id)
 
-    mongoClient = mongo_connect.mongoConn()
+    mongoClient = mongoConn()
 
     db = mongoClient['employee_history']
 
@@ -46,8 +47,6 @@ def import_history(week_id):
     # print doc
 
 # import_history(1)
-
-
 
 
 def put_weeknum_into_monet(weeknum):

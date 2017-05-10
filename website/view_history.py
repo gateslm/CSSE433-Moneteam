@@ -1,5 +1,6 @@
 
-from scheduler import mongo_connect
+# from scheduler import mongo_connect
+from connections import mongoConn
 import pandas as pd
 import re
 from push_history import import_history,get_weeknums_from_monet,delete_weeknums_in_monet
@@ -20,7 +21,7 @@ def view_history(employee_name,week_id):
         print "finished processing un_processed weeks"
 
     key = str(employee_name)+"_"+str(week_id)
-    mongoClient = mongo_connect.mongoConn()
+    mongoClient = mongoConn()
     db = mongoClient['employee_history']
 
     cursor = db.find_one({"key":key})
