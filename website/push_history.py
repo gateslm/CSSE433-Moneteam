@@ -88,4 +88,4 @@ def delete_weeknums_in_monet():
 
 
 # print(employeefunctions.getMonetConvertedVal({'vals':[1,2,3]}))
-delete_weeknums_in_monet()
+# delete_weeknums_in_monet()

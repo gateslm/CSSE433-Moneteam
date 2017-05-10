@@ -417,23 +417,23 @@ def view_work_history_action():
         return render_template("view_history.html", empid=empid, html=resultHTML)
     except errors.ServerSelectionTimeoutError as err:
         print(err)
-        return render_template("database_down.html", message="Cannot push schedule, Mongo is currently unavailable. ")
+        return render_template("database_down.html", message="Cannot view schedule, Mongo is currently unavailable. ")
 
 @app.route('/push_history', methods=["POST"])
 def push_history_action():
-    try:
-        result = mongoDB.fs.files.find()
-        for r in result:
-            t = r
-        adminid = int(request.form['adminID'])
-        week_id = int(request.form['weekID'])
+#    try:
+#        result = mongoDB.fs.files.find()
+#        for r in result:
+#            t = r
+    adminid = int(request.form['adminID'])
+    week_id = int(request.form['weekID'])
 
-        result = push_history.import_history(week_id)
+    result = push_history.import_history(week_id)
 
-        return render_template("admin_settings_page.html", empid=adminid, message=result)
-    except errors.ServerSelectionTimeoutError as err:
-        print(err)
-        return render_template("database_down.html", message="Cannot push schedule, Mongo is currently unavailable. ")
+    return render_template("admin_settings_page.html", empid=adminid, message=result)
+#    except errors.ServerSelectionTimeoutError as err:
+#        print(err)
+#        return render_template("database_down.html", message="Cannot push schedule, Mongo is currently unavailable. ")
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
