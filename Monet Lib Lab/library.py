@@ -1,5 +1,5 @@
 import pymonetdb
-import monetdb.sql
+# import monetdb.sql
 import argparse
 
 def add_book(title, isbn, author, pages):
