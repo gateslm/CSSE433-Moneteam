@@ -37,4 +37,4 @@ def view_history(employee_name,week_id):
     return html_table
 
 
-view_history(101,1)
+# view_history(101,1)
