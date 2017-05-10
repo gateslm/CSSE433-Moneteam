@@ -171,7 +171,8 @@ if __name__ == '__main__':
     # conn = pymonetdb.connect(database="library",username="monetdb", password="monetdb",hostname="moneteam-1.csse.rose-hulman.edu")
     # cursor = conn.cursor()
 
-    conn = monetdb.sql.connect(database="library",username="monetdb", password="monetdb",hostname="moneteam-1.csse.rose-hulman.edu")
+    conn = pymonetdb.connect(database="library",username="monetdb", password="monetdb",hostname="moneteam-1.csse.rose-hulman.edu")
+    # conn = monetdb.sql.connect(database="library",username="monetdb", password="monetdb",hostname="moneteam-1.csse.rose-hulman.edu")
 
     # init()
     # add_book("book title1","prof2",1233,46)

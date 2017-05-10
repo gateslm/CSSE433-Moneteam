@@ -1,0 +1,27 @@
+add_book -title random_book2 -isbn 3344 -author prof5 -pages lskjdf
+
+delete_book -isbn 123
+
+delete_attr -property ISBN -searchValue 3333 -attr Author
+
+edit_book -isbn 0824543 -property Author -newValue prof7 
+
+search_book -property ISBN -searchValue 3333
+
+sort_book_property -property Author
+
+add_borrower -bname james -busername lbj -bphone 777
+
+delete_borrower -busername victorZ
+
+edit_borrower -busername lbj -property Name -newValue victor
+
+search_borrower -property Username -searchValue lbj
+
+borrower_checkout_book -busername victorZ -isbn 2222
+
+borrower_return_book -busername lbj -isbn 3344
+
+get_book_checked_users -isbn 1234
+
+get_borrower_checked_books -busername lbj
