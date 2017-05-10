@@ -7,8 +7,16 @@ from push_history import import_history,get_weeknums_from_monet
 
 def view_history(employee_name,week_id):
     unprocessed_weeks = get_weeknums_from_monet()
-    print "those are unprocessed weeks: "
-    print unprocessed_weeks
+    # print "those are unprocessed weeks: "
+    # print unprocessed_weeks
+    # print unprocessed_weeks[0]
+    raw_weeks = str(unprocessed_weeks[0]).replace("[","").replace("]","")
+    weeks = raw_weeks.split(",")
+    for week in weeks:
+         import_history(int(week))
+
+    # print weeks
+
 
     key = str(employee_name)+"_"+str(week_id)
     mongoClient = mongo_connect.mongoConn()

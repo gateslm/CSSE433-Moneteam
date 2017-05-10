@@ -2,7 +2,7 @@ import pymonetdb
 import monetdb.sql
 import argparse
 
-def add_book(title,author, isbn, pages):
+def add_book(title, isbn, author, pages):
     if has_book("ISBN",isbn):
         print "Book with ISBN-"+str(isbn)+" has already existed in the library"
         return
@@ -194,7 +194,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("-fn", help="specify called function")
     parser.add_argument("-isbn", help = "specify ISBN")
-    parser.add_argument("-author", help = " specify author of the book", type = str, nargs = "+")
+    parser.add_argument("-author", help = " specify author of the book", type = str)
     parser.add_argument('-pages',help = "specify number of pages")
     parser.add_argument("-title",help = "specify book title")
     parser.add_argument("-property", help = "specify property for search or edit")
