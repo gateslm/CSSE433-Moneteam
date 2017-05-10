@@ -2,9 +2,14 @@
 from scheduler import mongo_connect
 import pandas as pd
 import re
+from push_history import import_history,get_weeknums_from_monet
 
 
 def view_history(employee_name,week_id):
+    unprocessed_weeks = get_weeknums_from_monet()
+    print "those are unprocessed weeks: "
+    print unprocessed_weeks
+
     key = str(employee_name)+"_"+str(week_id)
     mongoClient = mongo_connect.mongoConn()
     db = mongoClient['employee_history']
@@ -18,7 +23,8 @@ def view_history(employee_name,week_id):
     html_table = re.sub("False","",html_table)
     html_table = re.sub("True","&#10004",html_table)
 
+    # print df
     return html_table
 
 
-view_history(103,1)
+view_history(101,1)
