@@ -52,7 +52,7 @@ def delete_book(isbn):
     conn.commit()
 
 def delete_borrower(username):
-    if not has_borrower("Username".username):
+    if not has_borrower("Username",username):
         print "username trying to delete is not in the system"
         return
     delete_query = "DELETE FROM borrowers WHERE Username = \'%s\';" %(username);
