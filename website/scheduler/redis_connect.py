@@ -5,7 +5,9 @@ from pyomo.environ import *
 from pyomo.opt import *
 import re
 import pandas as pd
-from parameters import week_id,bts,ssv
+from parameters import bts,ssv,get_current_weekID
+
+week_id = get_current_weekID()
 
 
 employees_involved = []
@@ -26,6 +28,7 @@ def save_employees(conn):
 
 
 def generate():
+
     import auto_scheduler as schedule
     raw = schedule.result
     raw_list = raw.split(";")

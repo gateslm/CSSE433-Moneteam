@@ -12,6 +12,7 @@ import json
 import ast
 from pymongo import errors
 
+
 def get_redis_history(week_id,employee):
     conn = redis_conn.redisConn()
     schedule_raw = generate_schedule_html_table.import_schedule(employee,week_id,conn)

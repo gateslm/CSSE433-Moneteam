@@ -33,6 +33,10 @@ except redis.ConnectionError:
 week_id = conn.get("currentWeekID")
 # print "In parameter, week id is "+str(week_id)
 
+def get_current_weekID():
+    week_id = conn.get("currentWeekID")
+    return week_id
+
 def getAllemployee():
     query = "select empid, workinfo from employees;"
     c = curs3.execute(query)
