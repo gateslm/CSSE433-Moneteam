@@ -25,6 +25,9 @@ def view_history(employee_name,week_id):
     db = mongoClient['employee_history']
 
     cursor = db.find_one({"key":key})
+    print "this is cursor size"
+    print cursor.count()
+
     json_schedule = cursor['schedule']
 
     df = pd.read_json(json_schedule)
