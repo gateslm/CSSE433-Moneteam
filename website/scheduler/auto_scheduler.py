@@ -211,8 +211,6 @@ for pref in all_prefs:
 #     exec(cmd)
 
 
-
-
 print("this is monet auto scheduler")
 
 

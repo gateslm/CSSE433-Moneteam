@@ -5,10 +5,10 @@ from pyomo.environ import *
 from pyomo.opt import *
 import re
 import pandas as pd
-from parameters import bts,ssv,get_current_weekID
+from parameters import bts,ssv,get_current_weekID,week_id
+print "try to generate week: "+str(week_id)
 
-week_id = get_current_weekID()
-
+# week_id = get_current_weekID()
 
 employees_involved = []
 
@@ -21,10 +21,10 @@ def save_employees(conn):
         conn.delete(key2)
     for bt in bts:
         conn.rpush(key1,bt)
-        print "store week bts"
+        # print "store week bts"
     for s in ssv:
         conn.rpush(key2,s)
-        print "store week ssv"
+        # print "store week ssv"
 
 
 def generate():
@@ -61,7 +61,6 @@ def clean_text(raw_list,key):
     return gen_list
 
 def delete_old(conn):
-
     for name in employees_involved:
         for day in range(1,8):
             key= "week"+str(week_id)+"_day"+str(day)+"_"+name
