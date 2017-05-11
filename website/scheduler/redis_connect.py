@@ -38,9 +38,9 @@ def generate():
 
     try:
         conn = redis.Redis(host='moneteam-1.csse.rose-hulman.edu', port=6379)
-        delete_old(conn)
-        upload_redis(bts_clean,conn)
-        upload_redis(ssv_clean,conn)
+        delete_old(conn,week_id)
+        upload_redis(bts_clean,conn,week_id)
+        upload_redis(ssv_clean,conn,week_id)
         save_employees(conn,week_id)
 
     except redis.ConnectionError:
@@ -61,7 +61,7 @@ def clean_text(raw_list,key):
             gen_list.append(info_list)
     return gen_list
 
-def delete_old(conn):
+def delete_old(conn,week_id):
     for name in employees_involved:
         for day in range(1,8):
             key= "week"+str(week_id)+"_day"+str(day)+"_"+name
@@ -70,7 +70,7 @@ def delete_old(conn):
 
 
 
-def upload_redis(list,conn):
+def upload_redis(list,conn,week_id):
     # print "get run"
     # print employees_involved
 
