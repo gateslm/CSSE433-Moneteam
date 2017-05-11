@@ -47,6 +47,9 @@ def delete_book(isbn):
     if not has_book("ISBN",isbn):
         print "book trying to delete does not exist"
         return
+    if get_checkedout_users(isbn):
+        print "cannot delete book because it has been checked out by some suers"
+        return
     delete_query = "DELETE FROM books WHERE ISBN = \'%s\';" %(isbn);
     conn.execute(delete_query)
     conn.commit()
@@ -54,6 +57,9 @@ def delete_book(isbn):
 def delete_borrower(username):
     if not has_borrower("Username",username):
         print "username trying to delete is not in the system"
+        return
+    if has_checkedout_books(username):
+        print "you have unreturned book, cannot delete user"
         return
     delete_query = "DELETE FROM borrowers WHERE Username = \'%s\';" %(username);
     conn.execute(delete_query)
@@ -91,6 +97,22 @@ def borrower_has_book(username,isbn):
     cursor.execute(has_query)
     return len(cursor.fetchall()) >0
 
+def get_checkedout_users(isbn):
+    cursor = conn.cursor()
+    query = "SELECT * FROM borrow_list WHERE ISBN = \'%s\';" %(isbn)
+    cursor.execute(query)
+    count = len(str(cursor.fetchall()))
+    # print "book "+str(isbn)+" has been checked by "+str(count)+" users"
+    return int(count) > 0
+
+def has_checkedout_books(username):
+    cursor = conn.cursor()
+    query = "SELECT * FROM borrow_list WHERE Username = \'%s\';" %(username)
+    cursor.execute(query)
+    count = len(str(cursor.fetchall()))
+    # print "book "+str(isbn)+" has been checked by "+str(count)+" users"
+    return int(count) > 0
+
 
 def borrower_return_book(username,isbn):
     if not has_borrower("Username",username):
@@ -112,7 +134,10 @@ def get_borrower_checked_books(username):
     select_borrowed_book_query = "SELECT ISBN FROM borrow_list WHERE Username = \'%s\'; " %(username)
     cursor = conn.cursor()
     cursor.execute(select_borrowed_book_query)
-    print "books checked by "+str(username)+": "+str(cursor.fetchall())
+    results = str(cursor.fetchall())
+    print "books checked by "+str(username)+": "+results
+    return len(results) > 0
+
 
 def check_requirement(list):
     checked = True
