@@ -51,7 +51,7 @@ def import_history(week_id):
 
     # print doc
 
-import_history(3)
+# import_history(3)
 
 
 def put_weeknum_into_monet(weeknum):
