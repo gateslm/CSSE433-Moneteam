@@ -29,7 +29,7 @@ def view_history(employee_name,week_id):
 
     cursor = db.find_one({"key":key})
 
-    
+
     # print "this is cursor size"
     # print cursor.count()
 
