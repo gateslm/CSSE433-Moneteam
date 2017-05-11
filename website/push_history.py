@@ -28,14 +28,20 @@ def import_history(week_id):
     # print "trying to import week: "+str(week_id)
     employees = parameters.get_current_employees(week_id)
     # print employees
+
+    if len(employees) <1:
+        return "the schedule for week "+str(week_id)+" is not generated yet, cannot be push to history"
+
     mongoClient = mongoConn()
 
     db = mongoClient['employee_history']
 
-    print("This is all employees: " + str(employees))
+    # print("This is all employees: " + str(employees))
     
     for e in employees:
         df= get_redis_history(week_id,e)
+
+        print df.empty
         key = str(e)+"_"+str(week_id)
         # print key
         doc = {"key":key,"schedule":df.to_json()}
@@ -52,8 +58,6 @@ def import_history(week_id):
 
 
     # print doc
-
-# import_history(3)
 
 
 def put_weeknum_into_monet(weeknum):
