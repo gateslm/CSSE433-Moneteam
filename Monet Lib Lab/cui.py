@@ -8,6 +8,6 @@ if __name__ == "__main__":
         if (myinput == "exit"):
             break
         myinput = "python library.py -fn "+myinput
-        print myinput
+        # print myinput
         os.system(myinput)
     print " Library system has shut down"

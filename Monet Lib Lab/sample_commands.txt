@@ -14,7 +14,7 @@ delete_borrower -busername victorZ
 
 edit_borrower -busername lbj -property Name -newValue victor
 
-borrower_checkout_book -busername victorZ -isbn 2222
+borrower_checkout_book -busername lbj -isbn 3344
 
 borrower_return_book -busername lbj -isbn 3344
 

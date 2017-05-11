@@ -33,6 +33,7 @@ def add_borrower(name, username, phone):
     insert_borrower_query = "INSERT INTO borrowers (Name, Username, PhoneNumber) VALUES (\'%s\', \'%s\', \'%s\');" %(name,username,phone)
     conn.execute(insert_borrower_query)
     conn.commit()
+    print "add borrower successfully"
 
 def edit_borrower(username, Property, newValue):
     if not has_borrower("Username",username):
@@ -41,6 +42,7 @@ def edit_borrower(username, Property, newValue):
     update_query = "UPDATE borrowers SET %s = \'%s\' WHERE Username = \'%s\';" %(Property, newValue, username)
     conn.execute(update_query)
     conn.commit()
+    print "edit borrower successfully"
 
 
 def delete_book(isbn):
@@ -53,6 +55,7 @@ def delete_book(isbn):
     delete_query = "DELETE FROM books WHERE ISBN = \'%s\';" %(isbn);
     conn.execute(delete_query)
     conn.commit()
+    print "delete book successfully"
 
 def delete_borrower(username):
     if not has_borrower("Username",username):
@@ -64,6 +67,7 @@ def delete_borrower(username):
     delete_query = "DELETE FROM borrowers WHERE Username = \'%s\';" %(username);
     conn.execute(delete_query)
     conn.commit()
+    print "delete borrower successfully"
 
 def sort_book_property(property):
     sort_query = "SELECT * FROM books ORDER BY %s;" %(property)
@@ -84,6 +88,9 @@ def borrower_checkout_book(username,isbn):
         return
     if not has_book("ISBN",isbn):
         print "book does not exist"
+        return
+    if borrower_has_book(username,isbn):
+        print "you already have the book"
         return
     borrow_query = "INSERT INTO borrow_list (Username,ISBN) VALUES (\'%s\', \'%s\');" %(username,isbn)
     conn.execute(borrow_query)
@@ -121,9 +128,13 @@ def borrower_return_book(username,isbn):
     if not has_book("ISBN",isbn):
         print "book does not exist"
         return
+    if not borrower_has_book(username,isbn):
+        print "you don't have the book yet"
+        return
     return_query = "DELETE FROM borrow_list WHERE Username = \'%s\' AND ISBN = \'%s\';" %(username,isbn)
     conn.execute(return_query)
     conn.commit()
+    print "return book successfully"
 
 
 def get_borrower_checked_books(username):
@@ -137,6 +148,15 @@ def get_borrower_checked_books(username):
     results = str(cursor.fetchall())
     print "books checked by "+str(username)+": "+results
     return len(results) > 0
+
+def get_book_checked_users(isbn):
+    if not has_book("ISBN",isbn):
+        print "book does not exist"
+        return
+    cursor = conn.cursor()
+    query = "SELECT * FROM borrow_list WHERE ISBN = %s;" %(isbn)
+    cursor.execute(query)
+    print cursor.fetchall()
 
 
 def check_requirement(list):
