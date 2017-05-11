@@ -24,9 +24,14 @@ def view_history(employee_name,week_id):
     mongoClient = mongoConn()
     db = mongoClient['employee_history']
 
+    if db.find({"key":key}).count() <1:
+        return "<b> week history not generated yet </b>"
+
     cursor = db.find_one({"key":key})
-    print "this is cursor size"
-    print cursor.count()
+
+    
+    # print "this is cursor size"
+    # print cursor.count()
 
     json_schedule = cursor['schedule']
 
