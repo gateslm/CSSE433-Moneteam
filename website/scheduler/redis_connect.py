@@ -5,14 +5,13 @@ from pyomo.environ import *
 from pyomo.opt import *
 import re
 import pandas as pd
-from parameters import bts,ssv,get_current_weekID,week_id
-print "try to generate week: "+str(week_id)
+from parameters import bts,ssv,get_current_weekID
 
 # week_id = get_current_weekID()
 
 employees_involved = []
 
-def save_employees(conn):
+def save_employees(conn,week_id):
     key1 = "week"+str(week_id)+"_bts"
     key2 = "week"+str(week_id)+"_ssv"
     if conn.exists(key1):
@@ -28,6 +27,8 @@ def save_employees(conn):
 
 
 def generate():
+    week_id = get_current_weekID()
+    print "try to generate week: "+str(week_id)
 
     import auto_scheduler as schedule
     raw = schedule.result
@@ -40,7 +41,7 @@ def generate():
         delete_old(conn)
         upload_redis(bts_clean,conn)
         upload_redis(ssv_clean,conn)
-        save_employees(conn)
+        save_employees(conn,week_id)
 
     except redis.ConnectionError:
         print "redis cannot be connected"
