@@ -108,9 +108,10 @@ def get_checkedout_users(isbn):
     cursor = conn.cursor()
     query = "SELECT * FROM borrow_list WHERE ISBN = \'%s\';" %(isbn)
     cursor.execute(query)
-    count = len(str(cursor.fetchall()))
+    result = (cursor.fetchall())
+    count = len(str(result))
     # print "book "+str(isbn)+" has been checked by "+str(count)+" users"
-    return int(count) > 0
+    return int(count) > 2
 
 def has_checkedout_books(username):
     cursor = conn.cursor()
@@ -118,7 +119,7 @@ def has_checkedout_books(username):
     cursor.execute(query)
     count = len(str(cursor.fetchall()))
     # print "book "+str(isbn)+" has been checked by "+str(count)+" users"
-    return int(count) > 0
+    return int(count) > 2
 
 
 def borrower_return_book(username,isbn):
