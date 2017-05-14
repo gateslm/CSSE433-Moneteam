@@ -41,7 +41,8 @@ def set_weekID(input):
 # except redis.ConnectionError:
 #     print "redis is unreachable"
 
-week_id = conn.get("currentWeekID")
+if not redisConn()==None:
+    week_id = conn.get("currentWeekID")
 # print "In parameter, week id is "+str(week_id)
 
 def get_current_weekID():
