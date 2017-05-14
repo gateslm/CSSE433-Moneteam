@@ -2,6 +2,7 @@
 # from scheduler import mongo_connect
 from connections import mongoConn
 import pandas as pd
+import numpy as np
 import re
 from push_history import import_history,get_weeknums_from_monet,delete_weeknums_in_monet
 
@@ -36,13 +37,20 @@ def view_history(employee_name,week_id):
     json_schedule = cursor['schedule']
 
     df = pd.read_json(json_schedule)
+
+    hours = np.sum(np.sum(df))
+    wages = 7
+    total_wages = hours*wages
+
     html_table = df.to_html()
 
     html_table = re.sub("False","",html_table)
     html_table = re.sub("True","&#10004",html_table)
 
+    html_table += "<b> You have earned "+str*total_wages+" in this week </b>"
+
     # print df
     return html_table
 
 
-# view_history(101,1)
+view_history(101,1)
