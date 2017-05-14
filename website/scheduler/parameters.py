@@ -30,8 +30,10 @@ def set_weekID(input):
     if conn == None:
         redis_put_weeknum_into_monet(input)
         print "redis is not connected for now, week_id is stored into monet"
+        return False
     else:
         conn.set("currentWeekID",input)
+        return True
     # print "week_ID is set to "+str(input)
 
 # try:
