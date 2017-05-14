@@ -21,7 +21,7 @@ def get_connnect(hosts=["localhost"],ports=[6379]):
 
 def redisConn():
 
-    hosts = ['moneteam-1.csse.rose-hulman.edu','moneteam-2.csse.rose-hulman.edu','moneteam-3.csse.rose-hulman.edu']
+    hosts = ['Amoneteam-1.csse.rose-hulman.edu','Amoneteam-2.csse.rose-hulman.edu','Amoneteam-3.csse.rose-hulman.edu']
     ports = [6379,6379,6379]
 
     con = get_connnect(hosts,ports)

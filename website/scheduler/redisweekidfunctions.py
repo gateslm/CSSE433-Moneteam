@@ -1,5 +1,6 @@
-import connections
 import employeefunctions
+import ast
+import json
 
 def redis_put_weeknum_into_monet(weeknum):
     q1  = "select json.filter(weekids, \'vals\') from redisweekids; "

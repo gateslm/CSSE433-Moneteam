@@ -1,4 +1,5 @@
 import redis
+from redis_conn import redisConn
 
 import pyomo
 from pyomo.environ import *
