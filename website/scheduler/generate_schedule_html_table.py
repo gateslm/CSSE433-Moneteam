@@ -27,6 +27,8 @@ def import_schedule(name , week_id , conn):
 
 def generate_html(week_id, employee_name):
 
+    if redisConn() == None:
+        return "<b> Sorry, redis server is currently unreachable, Please try again later </b>"
     ### check week_id in MonetDB
 
     ## Todo: generate new schedule if there is weekID in monetDB
