@@ -340,9 +340,10 @@ def make_change_preference_page(emp):
 def generate_new_schedules():
     adminID = request.form['adminID']
     weekID = request.form['weekID']
-    parameters.set_weekID(weekID)
-    res = redis_connect.generate()
-    #res = "hey"
+    if parameters.set_weekID(weekID):
+        res = redis_connect.generate()
+    else:
+        res = "redis is not connected now, but the week ID is stored"
     return render_template("admin_settings_page.html", empid=adminID, message=res)
 
 
