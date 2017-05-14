@@ -3,6 +3,10 @@ import pandas as pd
 import numpy as np
 import re
 from parameters import opening_time, closing_time, check_employee_consistent
+from redis_conn import redisConn
+from redisweekidfunctions import redis_get_weeknums_from_monet
+from parameters import set_weekID
+from redis_connect import generate
 
 
 def import_schedule(name , week_id , conn):
@@ -26,6 +30,11 @@ def generate_html(week_id, employee_name):
     ### check week_id in MonetDB
 
     ## Todo: generate new schedule if there is weekID in monetDB
+    unprocessed = redis_get_weeknums_from_monet()
+    if not unprocessed:
+        print "there is unprocessed week id in monet"
+        for week in unprocessed:
+            print week
 
     if not check_employee_consistent(week_id):
         print "schedule is inconsistent, generating new schedule now"
