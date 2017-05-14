@@ -69,7 +69,8 @@ def get_current_employees(week_number):
     key1 = "week"+str(week_number)+"_bts"
     key2 = "week"+str(week_number)+"_ssv"
     try:
-        conn = redis.Redis(host='moneteam-1.csse.rose-hulman.edu', port=6379);
+        conn = redisConn()
+        #conn = redis.Redis(host='moneteam-1.csse.rose-hulman.edu', port=6379);
         tem_bts = conn.lrange(key1,0,-1)
         tem_ssv = conn.lrange(key2,0,-1)
         employees = []

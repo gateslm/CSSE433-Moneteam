@@ -22,6 +22,8 @@ def redis_put_weeknum_into_monet(weeknum):
 def redis_get_weeknums_from_monet():
     q1  = "select json.filter(weekids, \'vals\') from redisweekids; "
     count, res = employeefunctions.executeEmpQueryCursorAll(q1)
+    print(res)
+    print(count)
     # print("select filter weeknums count", count)
     print("redis get weeknums returning", res[0], type(res[0]))
     return res[0]
