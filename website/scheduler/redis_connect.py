@@ -38,7 +38,10 @@ def generate():
     bts_clean = clean_text(raw_list,"x_bts")
 
     try:
-        conn = redis.Redis(host='moneteam-1.csse.rose-hulman.edu', port=6379)
+        conn = redisConn()
+        if conn == None:
+            return "redis not connected"
+        # conn = redis.Redis(host='moneteam-1.csse.rose-hulman.edu', port=6379)
         delete_old(conn,week_id)
         upload_redis(bts_clean,conn,week_id)
         upload_redis(ssv_clean,conn,week_id)

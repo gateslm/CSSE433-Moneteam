@@ -42,7 +42,10 @@ def generate_html(week_id, employee_name):
         generate()
 
     try:
-        conn = redis.Redis(host='moneteam-1.csse.rose-hulman.edu', port=6379);
+        conn = redisConn()
+        if conn == None:
+            return "<b> Sorry, redis server is currently unreachable, Please try again later </b>"
+        # conn = redis.Redis(host='moneteam-1.csse.rose-hulman.edu', port=6379);
         schedule = import_schedule(employee_name,week_id,conn)
         print "connected to monteam-1"
     except redis.ConnectionError:
