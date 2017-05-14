@@ -23,6 +23,10 @@ def import_schedule(name , week_id , conn):
 
 def generate_html(week_id, employee_name):
 
+    ### check week_id in MonetDB
+
+    ## Todo: generate new schedule if there is weekID in monetDB
+
     if not check_employee_consistent(week_id):
         print "schedule is inconsistent, generating new schedule now"
         from redis_connect import generate
@@ -54,7 +58,7 @@ def generate_html(week_id, employee_name):
 
     df.index = range(opening_time,closing_time+1)
 
-    print df
+    # print df
 
     html_table = df.to_html()
     html_table = re.sub("False","",html_table)
