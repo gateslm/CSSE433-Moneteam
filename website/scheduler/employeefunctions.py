@@ -56,53 +56,51 @@ def insertEmp(empid,name,pwd,street,city,position,wage,banknum,bankname):
 
 
 def executeEmpQuery(query, empid):
-    print("started to exec query")
+    #print("started to exec query")
     if empid % 2 == 1:
         # Odd empIDs go to node 1
         x = mc1.execute(query)
-        print("Mc1 execute result", x)
+        #print("Mc1 execute result", x)
         mc1.commit()
     else:
         # Even empIDs go to node 2
         x = mc2.execute(query)
-        print("Mc2 execute result", x)
+        #print("Mc2 execute result", x)
         mc2.commit()
-    print("returning from exec query")
+    #print("returning from exec query")
     return x
 
 def executeEmpQueryCursor(query, empid):
-    print("started to exec query cursor")
-    print(query)
+    #print("started to exec query cursor")
+    #print(query)
     if empid % 2 == 1:
         # Odd empIDs go to node 1
         curs = mc1.cursor()
-        print(curs)
+        #print(curs)
         x = curs.execute(query)
         y = curs.fetchall()
-        print("Mc1 cursor execute result", x)
+        #print("Mc1 cursor execute result", x)
         #curs.close()
     else:
         # Even empIDs go to node 2
         curs = mc2.cursor()
-        print(curs)
+        #print(curs)
         x = curs.execute(query)
         y = curs.fetchall()
-        print("Mc2 cursor execute result", x)
+        #print("Mc2 cursor execute result", x)
         #curs.close()
-    print("returning from exec query cursor")
+    #print("returning from exec query cursor")
     return x, y
 
 def executeEmpQueryCursorAll(query):
-    print("started to exec query /cursor/ all")
+    #print("started to exec query /cursor/ all")
     print(query)
     #c = mc3.cursor()
     c = mcurs3
     x = c.execute(query)
     y = c.fetchall()
-    for z in y:
-        print(z)
-    print("Mc3 execute result", x)
-    print("returning from exec query cursor")
+    #print("Mc3 execute result", x)
+    #print("returning from exec query cursor")
     #c.close()
     return x, y
 
@@ -116,9 +114,9 @@ def checkIfEmpExists(empid):
         #query = "Select count(*) from employees2 where empid = %d;" % empid
     print(query)
     c, vals = executeEmpQueryCursor(query, empid)
-    print("check exists count", c)
-    print(vals[0][0])
-    print("executed check query")
+    #print("check exists count", c)
+    #print(vals[0][0])
+    #print("executed check query")
     if vals[0][0] > 0:
         print("employee %d exists" % empid)
         return True
@@ -133,7 +131,7 @@ def updateEmp(empid, pwd, attr, newVal):
     #query = changeQueryTable(query, empid)
     #if empid % 2 == 0:
         #query = "select password from employees2 where empid = %d;" % (empid)
-    print("updating\n\n", query)
+    #print("updating\n\n", query)
     c, vals = executeEmpQueryCursor(query,empid)
     realPwd = repr(vals[0][0])[16:-3]
     #print(repr(vals[0][0])[16:-3])
@@ -143,7 +141,7 @@ def updateEmp(empid, pwd, attr, newVal):
         return -1
 
     newvalconvert = getMonetConvertedVal(newVal)
-    print(newvalconvert)
+    #print(newvalconvert)
     query = "update employees1 set %s = %s where empid = %d;" % (attr, newvalconvert, empid)
     query = changeQueryTable(query, empid)
     #if empid % 2 == 0:
@@ -167,17 +165,17 @@ def getAllEmployees():
     cursor = mcurs3
     x = cursor.execute(query)
     y = cursor.fetchall()
-    print('\n\n\n' + str(x) + '\n\n\n')
-    print(y)
+    #print('\n\n\n' + str(x) + '\n\n\n')
+    #print(y)
 
 def checkIfPwdsMatch(empid, givenPwd):
     query = "select password from employees where empid = %d;" % (empid)
     c, vals = executeEmpQueryCursorAll(query)
-    for v in vals:
-        print(v)
+    #for v in vals:
+        #print(v)
     realPwd = repr(vals[0])[17:-5]
-    print(realPwd)
-    print(getPwdHash(givenPwd))
+    #print(realPwd)
+    #print(getPwdHash(givenPwd))
     if realPwd != getPwdHash(givenPwd):
         print("Passwords do not match.")
         return False
@@ -200,11 +198,11 @@ def getManagerPwds():
 def getEmpsPrefs(empid):
     query = "select preferences from employees where empid = %d;" % empid
     c, vals = executeEmpQueryCursorAll(query)
-    print(c)
-    print(vals)
+    #print(c)
+    #print(vals)
     pp = json.loads(vals[0][0])
-    for y in pp:
-        print(y)
+    #for y in pp:
+        #print(y)
     return pp
 
 def changeEmpInfo(empid,name,addr,city,bank_name,bank_acct_num):
@@ -231,8 +229,8 @@ def updateWage(empid,newWage):
     query1 = "select json.filter(workinfo,\'position\') from employees where empid = %d" % empid
     c, vals = executeEmpQueryCursorAll(query1)
 
-    print(c)
-    print(vals[0][0][2:-2])
+    #print(c)
+    #print(vals[0][0][2:-2])
     job = vals[0][0][2:-2]
     
     workconvert = getMonetConvertedVal(json.dumps({"position":job,"wage":newWage}))
@@ -250,14 +248,14 @@ def changePassword(empid,orgpass,newpass):
         print("Old password is not valid.")
         return "Old password is not valid."
 
-    print("making new pwd hash")
+    #print("making new pwd hash")
     newPwdHash = getPwdHash(newpass)
     pwdJSONconvert = getMonetConvertedVal(json.dumps({"password":newPwdHash}))
     q = "update employees1 set password = %s where empid = %d;" % (pwdJSONconvert, empid) 
     q = changeQueryTable(q,empid)
-    print(q)
+    #print(q)
     x = executeEmpQuery(q,empid)
-    print(x)
+    #print(x)
     return "Password change successfully."
 
 def getMC3():
