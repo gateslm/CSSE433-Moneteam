@@ -1,6 +1,6 @@
 
 # from scheduler import mongo_connect
-from connections import mongoConn
+from scheduler import connections
 import pandas as pd
 import numpy as np
 import re
@@ -22,7 +22,7 @@ def view_history(employee_name,week_id):
         print "finished processing un_processed weeks"
 
     key = str(employee_name)+"_"+str(week_id)
-    mongoClient = mongoConn()
+    mongoClient = connections.mongoConn()
     db = mongoClient['employee_history']
 
     if db.find({"key":key}).count() <1:
@@ -53,4 +53,4 @@ def view_history(employee_name,week_id):
     return html_table
 
 
-view_history(101,1)
+#view_history(101,1)

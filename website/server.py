@@ -3,8 +3,7 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, send_from_directory, make_response
 
 import getEmpPWD
-import employeefunctions
-import connections
+from scheduler import employeefunctions
 import hashlib
 from pymongo import MongoClient, errors
 import gridfs
@@ -16,6 +15,7 @@ import ast
 from scheduler import generate_schedule_html_table as GenSched
 from scheduler import redis_connect
 from scheduler import parameters
+from scheduler import connections
 import push_history
 import view_history
 import numpy as np

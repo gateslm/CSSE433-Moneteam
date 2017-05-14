@@ -1,7 +1,7 @@
-import employeefunctions
+from scheduler import employeefunctions
 
 # from scheduler import mongo_connect
-from connections import mongoConn
+from scheduler import connections
 from scheduler import generate_schedule_html_table
 from scheduler import redis_conn
 from scheduler import parameters
@@ -32,7 +32,7 @@ def import_history(week_id):
     if len(employees) <1:
         return "the schedule for week "+str(week_id)+" is not generated yet, cannot be push to history"
 
-    mongoClient = mongoConn()
+    mongoClient = connections.mongoConn()
 
     db = mongoClient['employee_history']
 
@@ -61,7 +61,7 @@ def import_history(week_id):
 
 
 def put_weeknum_into_monet(weeknum):
-    q1  = "select json.filter(weeknums, \'vals\') from weeknumtable; "
+    q1  = "select json.filter(weekids, \'vals\') from mongoweekids; "
     count, res = employeefunctions.executeEmpQueryCursorAll(q1)
     #print(res)
     #print(res[0])
@@ -72,7 +72,7 @@ def put_weeknum_into_monet(weeknum):
     aa.append(weeknum)
     y = {'vals': aa}
     z = employeefunctions.getMonetConvertedVal(json.dumps(y))
-    q2 = "update weeknumtable set weeknums = %s;" % z
+    q2 = "update mongoweekids set weekids = %s;" % z
     print("q2 = ", q2)
     conn3 = employeefunctions.getMC3()
     c2 = conn3.execute(q2)
@@ -82,7 +82,7 @@ def put_weeknum_into_monet(weeknum):
 
 
 def get_weeknums_from_monet():
-    q1  = "select json.filter(weeknums, \'vals\') from weeknumtable; "
+    q1  = "select json.filter(weekids, \'vals\') from mongoweekids; "
     count, res = employeefunctions.executeEmpQueryCursorAll(q1)
     # print("select filter weeknums count", count)
     # print("returning", res[0])
@@ -91,7 +91,7 @@ def get_weeknums_from_monet():
 def delete_weeknums_in_monet():
     data = {"vals": []}
     converted = employeefunctions.getMonetConvertedVal(json.dumps(data))
-    q1  = "update weeknumtable set weeknums = %s" % converted
+    q1  = "update mongoweekids set weekids = %s" % converted
     conn3 = employeefunctions.getMC3()
     c1 = conn3.execute(q1)
     #print(c1)
