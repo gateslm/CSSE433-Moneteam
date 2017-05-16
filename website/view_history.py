@@ -1,6 +1,7 @@
 
 # from scheduler import mongo_connect
 from scheduler import connections
+from scheduler import employeefunctions
 import pandas as pd
 import numpy as np
 import re
@@ -39,7 +40,7 @@ def view_history(employee_name,week_id):
     df = pd.read_json(json_schedule)
 
     hours = np.sum(np.sum(df))
-    wages = 7
+    wages = int(employeefunctions.getWage(employee_name))
     total_wages = hours*wages
 
     html_table = df.to_html()
@@ -47,7 +48,7 @@ def view_history(employee_name,week_id):
     html_table = re.sub("False","",html_table)
     html_table = re.sub("True","&#10004",html_table)
 
-    html_table += "<b> You have earned $"+str(total_wages)+" in this week </b>"
+    html_table += "<div> You have earned $"+"<strong>"+str(total_wages)+"</strong>"+" in this week </div>"
 
     # print df
     return html_table

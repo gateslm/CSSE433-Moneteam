@@ -265,10 +265,10 @@ def getMC3():
 def getWage(empid):
     empid = int(empid)
     q = "select json.filter(workinfo, \'wage\') from employees "
-    q += "where empid = %d" % empid
-    c, vals = executeEmpQueryCursorAll(query)
-    print(vals, type(vals))
-    res = ast.literal_eval(vals)[0]
+    q += "where empid = %d;" % empid
+    c, vals = executeEmpQueryCursorAll(q)
+    print(vals[0][0], type(vals[0][0]))
+    res = ast.literal_eval(vals[0][0])[0]
     print("returning ", res, type(res))
     return res
 
