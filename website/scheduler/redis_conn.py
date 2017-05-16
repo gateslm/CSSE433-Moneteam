@@ -11,7 +11,7 @@ def get_connnect(hosts=["localhost"],ports=[6379]):
             # print port
             conn= redis.Redis(host=host, port=port,password="moneteamPassword433")
             conn.get("currentWeekID")
-            print "connected to redis on "+str(host)
+            # print "connected to redis on "+str(host)
             return conn
         except redis.ConnectionError:
             # print "catch connection error"
