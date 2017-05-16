@@ -60,25 +60,27 @@ def go_to_employee_homepage():
 @app.route('/admin_homepage', methods=["POST"])
 def go_to_admin_homepage():
     empid=request.form['adminID']
-
     return render_template("admin_settings_page.html", empid=empid, message="")
 
 
 @app.route('/upload_resume_page', methods=["POST"])
 def upload_resume_page():
+    print "---------------"
     try:
         result = mongoDB.fs.files.find()
         for r in result:
             t =r
 
         empid = request.form['empID']
-
+        print "---------------"
         return render_template("resume_upload.html", empid=empid)
     except errors.ServerSelectionTimeoutError as err:
+        print "---------------"
         return render_template("database_down.html", message="Cannot upload documents, Mongo is currently unavailable.")
 
 @app.route('/add_employee', methods=["POST"])
 def add_employee():
+    print "---------------"
     adminID = int(request.form['adminID'])
     empid = int(request.form['employeeID'])
     pwd = request.form['password']
@@ -96,12 +98,15 @@ def add_employee():
     result = employeefunctions.insertEmp(empid, name, pwd, address, city, position, wage, bankAccountNum, bankName)
     print("inserted !!!")
     if (result > 0):
+        print "---------------"
         return render_template("admin_settings_page.html", empid=adminID, message ="Added new employee successfully.")
     else:
+        print "---------------"
         return render_template("admin_settings_page.html", empid=adminID, message="Unable to add new employee.")
 
 @app.route('/edit_employee_submit', methods=["POST"])
 def edit_employee_info():
+    print "---------------"
     empID = int(request.form['empID'])
     name = request.form['Name']
     addr = request.form['address']
@@ -114,6 +119,7 @@ def edit_employee_info():
 
     print(res)
 
+    print "---------------"
     return render_template("employee_homepage.html", empid=empID, message=res)
 
 @app.route('/load_change_password_page', methods=["POST"])
@@ -123,15 +129,18 @@ def load_change_password_page():
 
 @app.route('/change_password', methods=["POST"])
 def change_password():
+    print "---------------"
     empID = int(request.form['empID'])
     oldpass = request.form['orgPassword']
     newpass = request.form['newPassword']
     newpass2 = request.form['newPasswordCheck']
     res = employeefunctions.changePassword(empID,oldpass,newpass)
+    print "---------------"
     return render_template("employee_homepage.html", empid=empID, message=res)
 
 @app.route('/load_employee_edit_page', methods=["POST"])
 def load_employee_edit_page():
+    print "---------------"
     empid = int(request.form['empID'])
 
     # TODO:Run Query
@@ -156,13 +165,13 @@ def load_employee_edit_page():
     empCity = res[2][2:-2]
     empBankName = res[3][2:-2]
     empBankNum = int(res[4][2:-2])
+    print "---------------"
     return render_template("edit_employee.html", empid=empid, emp_name=empName, emp_addr=empAddr, emp_city=empCity, emp_bank_name=empBankName, emp_bank_num=empBankNum)
 
 
 @app.route('/edit_employee', methods=["POST"])
 def edit_employee():
-    # Larry, could this be like the edit book page?
-    #  I would like to have a drop down of each json column to change the specific information in that area, then have that saved.
+    print "---------------"
     empid = int(request.form['employeeID'])
     #pwd = request.form['password']
     attr = request.form['attribute']
@@ -171,13 +180,16 @@ def edit_employee():
     result = employeefunctions.updateEmp(empid, pwd, attr, newVal)
     print("inserted !!!")
     if (result > 0):
+        print "---------------"
         return render_template("admin_settings_page.html", empid=adminID, message ="Edited information successfully.")
     else:
+        print "---------------"
         return render_template("admin_settings_page.html", empid=adminID, message="Unable to change information.")
 
 
 @app.route('/admin_login', methods=["POST"])
 def login_admin():
+    print "---------------"
     username = int(request.form['username'])
     pwd = request.form['pwd']
     managerpwds = employeefunctions.getManagerPwds()
@@ -186,9 +198,11 @@ def login_admin():
     print(givenpwdhashed, type(givenpwdhashed))
     if givenpwdhashed in managerpwds:
         print("PWD match")
+        print "---------------"
         return render_template("admin_settings_page.html", empid=username, message="")
     else:
         print("PWD don't match")
+        print "---------------"
         return render_template('login_failed_admin.html')
 
 
@@ -198,19 +212,18 @@ def employee_settings_login():
 
 @app.route('/schedule_generator', methods=["POST"])
 def schedule_generator():
-     print("In schedule generator")
-     empName = request.form['empName']
-     week_id = int(request.form['weekID'])
-     if empName == None or empName =="":
-         employee_name = "Invalid_EMPID"
-     else:
-         employee_name = empName
-
-     print("After selecting name: " + employee_name)
-
-     schedule = GenSched.generate_html(week_id, employee_name)
-
-     return render_template("schedule_shell.html", html=schedule, empName=employee_name)
+    print "---------------"
+    print("In schedule generator")
+    empName = request.form['empName']
+    week_id = int(request.form['weekID'])
+    if empName == None or empName =="":
+        employee_name = "Invalid_EMPID"
+    else:
+        employee_name = empName
+    print("After selecting name: " + employee_name)
+    schedule = GenSched.generate_html(week_id, employee_name)
+    print "---------------"
+    return render_template("schedule_shell.html", html=schedule, empName=employee_name)
 
 @app.route('/employee_settings')
 def employee_settings():
@@ -229,7 +242,6 @@ def edit_employee_page():
 @app.route('/admin')
 def admin():
      return render_template('login_admin.html')
-     # return '<html><head></head><body>admin</body></html>'
 
 
 @app.route('/admin_edit_page')
@@ -244,6 +256,7 @@ def allowed_file(filename):
 # http://code.runnable.com/UiPcaBXaxGNYAAAL/how-to-upload-a-file-to-the-server-in-flask-for-python
 @app.route('/upload_resume', methods=["POST"])
 def upload():
+    print "---------------"
     print("IN FUNCTION")
     if 'file' not in request.files:
         print("No file part")
@@ -256,11 +269,14 @@ def upload():
         mongoDB.fs.files.update({"_id":ObjectId(result)},{'$set':{'empid':int(empid)}})
         mongoDB.fs.files.update({"_id":ObjectId(result)},{'$set':{'filename':ff.filename}})
         print(result)
+        print "---------------"
         return render_template("employee_homepage.html", empid=empid, message="ID returned")
+    print "---------------"
     return render_template("employee_homepage.html", empid=empid, message="Did not upload file")
 
 @app.route('/get_document_list/<string:emp>')
 def get_document_list(emp):
+    print "---------------"
     empid = int(emp)
     result = mongoDB.fs.files.find({"empid":empid})
     print(result)
@@ -268,47 +284,57 @@ def get_document_list(emp):
     for r in result:
         print(r)
         ls.append([r['empid'], str(r['_id']), r['filename']])
+    print "---------------"
     return json.dumps({"res":ls})
 
 @app.route('/admin_view_documents', methods=["POST"])
 def admin_view_documents():
+    print "---------------"
     try:
         result = mongoDB.fs.files.find()
         for r in result:
             t = r
         empid = int(request.form['adminID'])
+        print "---------------"
         return render_template("admin_document_viewer.html", empid=empid, message="")
     except errors.ServerSelectionTimeoutError as err:
         print("Unable to connect to Mongo")
         print(err)
+        print "---------------"
         return render_template("database_down.html", message="Cannot view documents, Mongo is currently unavailable. ")
 
 @app.route('/get_all_document_list')
 def get_all_document_list():
     # empid = int(emp)
+    print "---------------"
     result = mongoDB.fs.files.find()
     print(result)
     ls = []
     for r in result:
         print(r)
         ls.append([r['empid'], str(r['_id']), r['filename']])
+    print "---------------"
     return json.dumps({"res":ls})
 
 @app.route('/view_documents', methods=["POST"])
 def view_documents():
+    print "---------------"
     try:
         result = mongoDB.fs.files.find()
         for r in result:
             t = r
         empid = int(request.form['empID'])
+        print "---------------"
         return render_template("document.html", empid=empid, message="")
     except errors.ServerSelectionTimeoutError as err:
         print("Unable to connect to Mongo")
         print(err)
+        print "---------------"
         return render_template("database_down.html", message="Cannot view documents, Mongo is currently unavailable. ")
 
 @app.route('/get_a_document', methods=["POST"])
 def get_a_document():
+    print "---------------"
     print("Getting a document")
     objId = request.form['ObjectID']
     print(objId)
@@ -319,46 +345,53 @@ def get_a_document():
     resp.headers['Content-Type'] = 'application/pdf'
     resp.headers['Content-Disposition'] = "attachment; filename={}".format(fInfo['filename'])
     print("Got file")
+    print "---------------"
     return resp
 
 @app.route('/delete_document', methods=["POST"])
 def delete_document():
+    print "---------------"
     objId = request.form['ObjectID']
     empid = request.form['empid']
     fs.delete(ObjectId(objId))
     exists = fs.exists(ObjectId(objId))
+    print "---------------"
     return render_template("document.html", empid=empid, message="File Deleted: " + str(not exists) )
 
 
 @app.route('/change_preferences/<string:emp>')
 def make_change_preference_page(emp):
+    print "---------------"
     print("here make change pref page")
     empid = int(emp)
     prefs = employeefunctions.getEmpsPrefs(empid)
     print("return from get prefs call")
     print(prefs)
+    print "---------------"
     return jsonify(prefs)
 
 @app.route('/generate_new_schedules', methods=["POST"])
 def generate_new_schedules():
+    print "---------------"
     adminID = request.form['adminID']
     weekID = request.form['weekID']
     if parameters.set_weekID(weekID):
         res = redis_connect.generate()
     else:
         res = "redis is not connected now, but the week ID is stored"
+    print "---------------"
     return render_template("admin_settings_page.html", empid=adminID, message=res)
 
 
 @app.route('/change_preferences_page', methods=["POST"])
 def change_preferences_page():
-    #print("here change pref page")
     empid = int(request.form['empID'])
     return render_template("change_preferences.html", empid=empid, message="Hope this works")
 
 
 @app.route('/save_preferences/<int:empid>/<int:weeknum>/<string:prefs>')
 def save_preferences(empid,weeknum,prefs):
+    print "---------------"
     vv = json.loads(prefs)
     print("in save_prefs")
     for x in vv:
@@ -379,6 +412,7 @@ def save_preferences(empid,weeknum,prefs):
     print(query)
     res = employeefunctions.executeEmpQuery(query,empid)
     print(res)
+    print "---------------"
     return "here save prefs"
 
 
@@ -389,26 +423,33 @@ def getEmpWage():
 
 @app.route('/edit_wage_submit',methods=["POST"])
 def setEmpWage():
+    print "---------------"
     adminid = int(request.form['adminID'])
     empid = int(request.form['empid'])
     wage = float(request.form['wage'])
     res = employeefunctions.updateWage(empid,wage)
+    print "---------------"
     return render_template("admin_settings_page.html", empid=adminid, message=res)
 
 @app.route('/user_get_employee_preferences/<int:empid>')
 def getemployeepreferences(empid):
+    print "---------------"
     query = "SELECT preferences FROM employees "
     query += "WHERE empid = %d;" % int(empid)
     print("in GETemployeepreferences")
+    print "---------------"
     return employeefunctions.executeEmpQueryCursor(query, empid)
 
 @app.route('/view_work_history/<int:empid>')
 def view_work_history(empid):
+    print "---------------"
     result = mongoDB.pastWork.find()
+    print "---------------"
     return jsonify(result)
 
 @app.route('/view_work_history_action', methods=["POST"])
 def view_work_history_action():
+    print "---------------"
     try:
         result = mongoDB.fs.files.find()
         for r in result:
@@ -418,26 +459,23 @@ def view_work_history_action():
 
         resultHTML = view_history.view_history(empid, week_id)
 
+        print "---------------"
         return render_template("view_history.html", empid=empid, html=resultHTML)
     except errors.ServerSelectionTimeoutError as err:
         print(err)
+        print "---------------"
         return render_template("database_down.html", message="Cannot view schedule, Mongo is currently unavailable. ")
 
 @app.route('/push_history', methods=["POST"])
 def push_history_action():
-#    try:
-#        result = mongoDB.fs.files.find()
-#        for r in result:
-#            t = r
+    print "---------------"
     adminid = int(request.form['adminID'])
     week_id = int(request.form['weekID'])
 
     result = push_history.import_history(week_id)
 
+    print "---------------"
     return render_template("admin_settings_page.html", empid=adminid, message=result)
-#    except errors.ServerSelectionTimeoutError as err:
-#        print(err)
-#        return render_template("database_down.html", message="Cannot push schedule, Mongo is currently unavailable. ")
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

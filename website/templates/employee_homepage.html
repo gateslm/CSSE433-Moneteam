@@ -4,6 +4,12 @@
 <head>
 </head>
 
+<script>
+function doSomething(){
+    alert("Why did you do that?");
+    return false;
+}
+</script>
 <body>
     {{ empid }}
     <br/> {{ message }}
@@ -15,7 +21,7 @@
         <input type="hidden" name="empID" value="{{empid}}" />
         <input type="submit" value="Upload Resume" />
     </form>
-    <form action="/generate_new_schedules" method="post">
+    <form onsubmit="return doSomething();">
         <input type="hidden" name="empID" value="{{empid}}" />
         <input type="submit" value="Do Something later. Don't Click" />
     </form>
