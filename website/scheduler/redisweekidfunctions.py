@@ -25,8 +25,9 @@ def redis_get_weeknums_from_monet():
     #print(res)
     #print(count)
     # print("select filter weeknums count", count)
-    print("redis get weeknums returning", res[0], type(res[0]))
-    return res[0]
+    aa = ast.literal_eval(res[0][0])[0]
+    print("redis get weeknums returning", aa, type(aa))
+    return aa
 
 def redis_delete_weeknums_in_monet():
     data = {"vals": []}
