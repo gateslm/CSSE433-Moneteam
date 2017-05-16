@@ -47,7 +47,7 @@ def view_history(employee_name,week_id):
     html_table = re.sub("False","",html_table)
     html_table = re.sub("True","&#10004",html_table)
 
-    html_table += "<b> You have earned "+str(total_wages)+" in this week </b>"
+    html_table += "<b> You have earned $"+str(total_wages)+" in this week </b>"
 
     # print df
     return html_table

@@ -2,6 +2,7 @@ import connections
 import hashlib
 import json
 import pymonetdb
+import ast
 
 
 mc1 = connections.monetConn1()
@@ -260,5 +261,16 @@ def changePassword(empid,orgpass,newpass):
 
 def getMC3():
     return mc3
+
+def getWage(empid):
+    empid = int(empid)
+    q = "select json.filter(workinfo, \'wage\') from employees "
+    q += "where empid = %d" % empid
+    c, vals = executeEmpQueryCursorAll(query)
+    print(vals, type(vals))
+    res = ast.literal_eval(vals)[0]
+    print("returning ", res, type(res))
+    return res
+
 
 #getEmpsPrefs(101)

@@ -39,14 +39,17 @@ def index():
 
 @app.route('/login', methods=["POST"])
 def login():
+    print "---------------"
     username = int(request.form['username'])
     pwd = request.form['pwd']
     result = employeefunctions.checkIfPwdsMatch(username,pwd)
     if result:
         print("PWD match")
+        print "---------------"
         return render_template("employee_homepage.html", empid=username, message="")
     else:
         print("PWD don't match")
+        print "---------------"
         return render_template('login_failed.html')
 
 @app.route('/employee_homepage', methods=["POST"])
