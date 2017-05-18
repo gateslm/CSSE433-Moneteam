@@ -400,9 +400,14 @@ def save_preferences(empid,weeknum,prefs):
     q0  =  "select preferences from employees where empid = %d;" % empid
     c, vals = employeefunctions.executeEmpQueryCursorAll(q0)
     print(vals)
-    #prefs = json.loads(prefs)
-    prefs = json.loads(vals[1,-1].split(","))
-    pp = {k: v for (k, v) in (vv.items() + prefs.items())}
+    print(vals[0])
+    print(vals[0][0])
+    if len(vals[0][0]):
+        pp = vv
+    else:
+        #prefs = json.loads(prefs)
+        prefs = json.loads(vals[0][0].split(","))
+        pp = {k: v for (k, v) in (vv.items() + prefs.items())}
     print("new, hopefully merged prefs are: ")
     print(pp)
 

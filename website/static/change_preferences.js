@@ -29,7 +29,7 @@ function submitScheduleRequest() {
      // TODO: Do me James!!!
 	var checkedBoxes = getCheckedSpots();
 	var weeknum = document.getElementById("weekid").value;
-	if (weeknum == "" || weeknum == null) {
+	if (weeknum == "" || weeknum == null || weeknum < 0) {
 		alert("please provide a week number");
 		return;
 	}
