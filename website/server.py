@@ -378,6 +378,7 @@ def generate_new_schedules():
     if parameters.set_weekID(weekID):
         res = redis_connect.generate()
     else:
+        print "Could not set weekid"
         res = "redis is not connected now, but the week ID is stored"
     print "---------------"
     return render_template("admin_settings_page.html", empid=adminID, message=res)

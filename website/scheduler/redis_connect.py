@@ -32,7 +32,7 @@ def generate():
     print "try to generate week: "+str(week_id)
 
     import auto_scheduler as schedule
-    employees_involved = get_current_employees()
+    employees_involved = get_current_employees(week_id)
     raw = schedule.result
     raw_list = raw.split(";")
     ssv_clean = clean_text(raw_list,"x_ssv",employees_involved)
@@ -71,7 +71,9 @@ def delete_old(conn,week_id,employees_involved):
         for day in range(1,8):
             key= "week"+str(week_id)+"_day"+str(day)+"_"+name
             if conn.exists(key)==1:
-             conn.delete(key)
+                conn.delete(key)
+                #print "delete key: "+str(key)
+
 
 
 

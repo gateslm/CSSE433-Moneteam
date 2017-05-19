@@ -185,6 +185,8 @@ model.obj = Objective(rule = goal, sense = minimize)
 #### Set up preference
 
 all_prefs = getAllPrefs()
+#print "here is all preference of the week: "
+#print all_prefs
 count = 0
 # print all_prefs
 for pref in all_prefs:
@@ -193,11 +195,12 @@ for pref in all_prefs:
     position = pref['duty']
     duty = duty_dict[position]
     week_number = pref['week_id']
-    if not week_number == week_id:
+    if not week_number == int(get_current_weekID()):
         continue
     day = pref['day']
     hour = pref['hour']
     cmd = add_pref(duty,e_id,day,hour,count)
+    print cmd
     exec cmd
     count+=1
 
