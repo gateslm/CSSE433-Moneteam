@@ -200,7 +200,7 @@ for pref in all_prefs:
     day = pref['day']
     hour = pref['hour']
     cmd = add_pref(duty,e_id,day,hour,count)
-    print cmd
+    # print cmd
     exec cmd
     count+=1
 

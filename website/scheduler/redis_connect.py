@@ -31,7 +31,10 @@ def generate():
     week_id = get_current_weekID()
     print "try to generate week: "+str(week_id)
 
+
     import auto_scheduler as schedule
+    reload(schedule)
+
     employees_involved = get_current_employees(week_id)
     raw = schedule.result
     raw_list = raw.split(";")
