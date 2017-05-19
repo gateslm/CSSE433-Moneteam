@@ -9,7 +9,7 @@ mc1 = connections.monetConn1()
 mc2 = connections.monetConn2()
 mc3 = connections.monetConn3()
 
-mcurs3 = mc3.cursor()
+#mcurs3 = mc3.cursor()
 
 
 jsonattrs = ["password","address","workinfo","preferences","paymentinfo"]
