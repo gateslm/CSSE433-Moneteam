@@ -65,6 +65,9 @@ def getAllemployee():
             print "unrecognized position"
 
 getAllemployee()
+print "there are current bar tenders:"
+print bts
+
 
 def get_current_employees(week_number):
     key1 = "week"+str(week_number)+"_bts"

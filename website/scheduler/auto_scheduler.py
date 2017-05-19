@@ -4,6 +4,8 @@ import pyomo
 from pyomo.environ import *
 from pyomo.opt import *
 from parameters import *
+#reload(bts)
+#reload(ssv)
 from import_pref import getAllPrefs
 from preference_setting import add_pref
 
