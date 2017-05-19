@@ -6,11 +6,11 @@ from pyomo.environ import *
 from pyomo.opt import *
 import re
 import pandas as pd
-from parameters import bts,ssv,get_current_weekID
+from parameters import bts,ssv,get_current_weekID,get_current_employees
 
 # week_id = get_current_weekID()
 
-employees_involved = []
+# employees_involved = []
 
 def save_employees(conn,week_id):
     key1 = "week"+str(week_id)+"_bts"
@@ -32,17 +32,18 @@ def generate():
     print "try to generate week: "+str(week_id)
 
     import auto_scheduler as schedule
+    employees_involved = get_current_employees()
     raw = schedule.result
     raw_list = raw.split(";")
-    ssv_clean = clean_text(raw_list,"x_ssv")
-    bts_clean = clean_text(raw_list,"x_bts")
+    ssv_clean = clean_text(raw_list,"x_ssv",employees_involved)
+    bts_clean = clean_text(raw_list,"x_bts",employees_involved)
 
     try:
         conn = redisConn()
         if conn == None:
             return "redis not connected"
         # conn = redis.Redis(host='moneteam-1.csse.rose-hulman.edu', port=6379)
-        delete_old(conn,week_id)
+        delete_old(conn,week_id,employees_involved)
         upload_redis(bts_clean,conn,week_id)
         upload_redis(ssv_clean,conn,week_id)
         save_employees(conn,week_id)
@@ -52,7 +53,7 @@ def generate():
         return "Sorry, redis server is currently unreachable, Please try again later"
     return "schedule has been generated successfully"
 
-def clean_text(raw_list,key):
+def clean_text(raw_list,key,employees_involved):
     gen_list = []
     for s in raw_list:
         if key in s:
@@ -65,7 +66,7 @@ def clean_text(raw_list,key):
             gen_list.append(info_list)
     return gen_list
 
-def delete_old(conn,week_id):
+def delete_old(conn,week_id,employees_involved):
     for name in employees_involved:
         for day in range(1,8):
             key= "week"+str(week_id)+"_day"+str(day)+"_"+name
